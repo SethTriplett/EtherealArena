@@ -21,7 +21,7 @@ public class UseDanmaku : MonoBehaviour, ISkill {
 
     public void UseSkill(Transform hand, bool isAutoRelease) {
         if (readyTimer <= 0) {
-            GameObject nextDanmaku = danmakuPool.GetDanmaku();
+            GameObject nextDanmaku = danmakuPool.GetDanmaku(0);
             if (nextDanmaku != null) {
                 nextDanmaku.transform.position = hand.position;
                 nextDanmaku.transform.rotation = hand.rotation;

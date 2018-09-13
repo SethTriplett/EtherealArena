@@ -63,5 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d4c60b4b3cfebb41bd1cbf3b4d2dd96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  danmaku: {fileID: 1644064600827450, guid: f52d8b1bce8795d4d8c79182263bb900, type: 2}
-  numberOfDanmaku: 100
+  danmakuList:
+  - {fileID: 1644064600827450, guid: f52d8b1bce8795d4d8c79182263bb900, type: 2}
+  - {fileID: 1952784063360642, guid: 6083265506a57a840a333b487da9cd6c, type: 2}
+  numberOfDanmaku: 6400000064000000

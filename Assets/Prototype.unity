@@ -1644,10 +1644,11 @@ GameObject:
   - component: {fileID: 1311749916}
   - component: {fileID: 1311749915}
   - component: {fileID: 1311749913}
+  - component: {fileID: 1311749920}
+  - component: {fileID: 1311749919}
   - component: {fileID: 1311749914}
   - component: {fileID: 1311749917}
   - component: {fileID: 1311749918}
-  - component: {fileID: 1311749919}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1797,6 +1798,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dad7b69176f0c94aaa61b95053e4a89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1311749920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1311749912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df59fa9d630c6c84d9ba3d59f491f5e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1401779178
 GameObject:
   m_ObjectHideFlags: 0
@@ -1808,6 +1820,7 @@ GameObject:
   - component: {fileID: 1401779179}
   - component: {fileID: 1401779181}
   - component: {fileID: 1401779182}
+  - component: {fileID: 1401779184}
   - component: {fileID: 1401779183}
   m_Layer: 0
   m_Name: Dummy
@@ -1925,6 +1938,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1401779184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1401779178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9066cacd9b76bea48a3e646257ebc205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 1311749916}
 --- !u!1 &1418601956
 GameObject:
   m_ObjectHideFlags: 0

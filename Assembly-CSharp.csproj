@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{043FEF08-E4FB-0262-B91D-6DE82C3F1EA5}</ProjectGuid>
+    <ProjectGuid>{2F97B3DE-1AE6-4ACF-B6B6-1BD9DD0BBEAC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -53,16 +53,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Danmaku.cs" />
-     <Compile Include="Assets\Scripts\DeactivateOOB.cs" />
-     <Compile Include="Assets\Scripts\EnemyHealthDisplay.cs" />
-     <Compile Include="Assets\Scripts\EnemyStatus.cs" />
-     <Compile Include="Assets\Scripts\ISkill.cs" />
-     <Compile Include="Assets\Scripts\ObjectPooler.cs" />
-     <Compile Include="Assets\Scripts\OutOfBounds.cs" />
-     <Compile Include="Assets\Scripts\PlayerControl.cs" />
-     <Compile Include="Assets\Scripts\PlayerEnergyDisplay.cs" />
-     <Compile Include="Assets\Scripts\UseDanmaku.cs" />
+     <Compile Include="Assets\Scripts\Enemies\EnemyHealthDisplay.cs" />
+     <Compile Include="Assets\Scripts\Enemies\EnemyStatus.cs" />
+     <Compile Include="Assets\Scripts\Enemies\KnifeDummy.cs" />
+     <Compile Include="Assets\Scripts\Management\ObjectPooler.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerControl.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerEnergyDisplay.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerStatus.cs" />
+     <Compile Include="Assets\Scripts\Player\UseDanmaku.cs" />
+     <Compile Include="Assets\Scripts\Skills\Danmaku.cs" />
+     <Compile Include="Assets\Scripts\Skills\DeactivateOOB.cs" />
+     <Compile Include="Assets\Scripts\Skills\ISkill.cs" />
+     <Compile Include="Assets\Scripts\Skills\Knife.cs" />
+     <Compile Include="Assets\Scripts\Skills\OutOfBounds.cs" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
@@ -81,16 +84,16 @@
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
  <Reference Include="UnityEditor.StandardEvents">
- <HintPath>C:/Users/Seth M Triplett/Documents/Arena Prototype/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+ <HintPath>C:/Users/Seth M Triplett/Documents/EphemeralArena/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>C:/Users/Seth M Triplett/Documents/Arena Prototype/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+ <HintPath>C:/Users/Seth M Triplett/Documents/EphemeralArena/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.PackageManagerUI.Editor">
- <HintPath>C:/Users/Seth M Triplett/Documents/Arena Prototype/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+ <HintPath>C:/Users/Seth M Triplett/Documents/EphemeralArena/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro">
- <HintPath>C:/Users/Seth M Triplett/Documents/Arena Prototype/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+ <HintPath>C:/Users/Seth M Triplett/Documents/EphemeralArena/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
