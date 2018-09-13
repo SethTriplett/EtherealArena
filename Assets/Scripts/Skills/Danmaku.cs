@@ -7,14 +7,9 @@ public class Danmaku : MonoBehaviour {
     private const float BASE_SPEED = 20f;
     private float speed = BASE_SPEED;
     private float angle;
-    private CircleCollider2D hitbox;
     private float baseDamage = 1f;
     private int userAttack = 0;
     private PlayerControl playerControlReference;
-
-    void Start() {
-        hitbox = GetComponent<CircleCollider2D>();
-    }
 
     void OnDisable() {
         speed = BASE_SPEED;
