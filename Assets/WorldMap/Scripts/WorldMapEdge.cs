@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace EphemeralArena.WorldMap {
+namespace EtherealArena.WorldMap {
 
 	public class WorldMapEdge : MonoBehaviour {
 		

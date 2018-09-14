@@ -11,13 +11,19 @@ public class EnemyStatus : MonoBehaviour {
 
     public int attack;
     public int defence;
-    public EnemyHealthDisplay UIDisplay;
+    [SerializeField] private EnemyHealthDisplay UIDisplay;
+    [SerializeField] private SceneManagement sceneManagement;
+    private KnifeDummy knifeDummy;
+    private bool defeated = false;
 
     void Start() {
         currentHealth = maxHealth;
         UIDisplay.SetMaxHealth(maxHealth);
         UIDisplay.SetHealth(currentHealth);
         UIDisplay.SetDisplayHealth(maxHealth);
+
+        // temporary
+        knifeDummy = GetComponent<KnifeDummy>();
     }
 
     void Update() {
@@ -27,7 +33,15 @@ public class EnemyStatus : MonoBehaviour {
     }
 
     void KO() {
-        print("KO");
+        if (!defeated) {
+            defeated = true;
+            sceneManagement.PlayerVictory();
+
+            // temporary
+            knifeDummy.StopAttacking();
+            knifeDummy.StopAllCoroutines();
+            transform.Rotate(0f, 0f, 90f);
+        }
     }
 
     public void TakeDamage(float damage) {

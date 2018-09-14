@@ -13,6 +13,8 @@ public class PlayerStatus : MonoBehaviour {
     private const int baseFlickerRate = 3;
     private SpriteRenderer playerSpriteRenderer;
     private SpriteRenderer playerArmSpriteRenderer;
+    // TODO: replace with event system
+    [SerializeField] SceneManagement sceneManagement;
 
     void Start() {
         currentHealth = maxHealth;
@@ -42,6 +44,7 @@ public class PlayerStatus : MonoBehaviour {
             } else {
                 playerSpriteRenderer.enabled = true;
                 playerArmSpriteRenderer.enabled = true;
+                gameObject.layer = 0;
             }
         }
     }
@@ -54,6 +57,7 @@ public class PlayerStatus : MonoBehaviour {
             }
             invulnerabilityTimer = baseInvulnerabilityTime;
             flickerFrames = - baseFlickerRate;
+            gameObject.layer = 8;
         }
     }
 
@@ -62,7 +66,13 @@ public class PlayerStatus : MonoBehaviour {
     }
 
     void KO() {
-        print("player KO");
+        playerSpriteRenderer.enabled = false;
+        playerArmSpriteRenderer.enabled = false;
+        sceneManagement.OpponentVictory();
+    }
+
+    public int GetHealth() {
+        return currentHealth;
     }
 
 }

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace EphemeralArena.WorldMap {
+namespace EtherealArena.WorldMap {
 
 	public class WorldMapPlayer : MonoBehaviour {
 

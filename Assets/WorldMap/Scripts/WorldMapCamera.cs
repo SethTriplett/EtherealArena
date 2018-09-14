@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EphemeralArena.WorldMap {
+namespace EtherealArena.WorldMap {
 	public class WorldMapCamera : MonoBehaviour {
 
 		[SerializeField] private Transform follow;
