@@ -19,6 +19,7 @@ public class PlayerControl : MonoBehaviour {
     private Transform hand;
     public ISkill[] equipedSkills = new ISkill[8];
     private ISkill activeSkill;
+    private bool stopMovement = false;
 
     void Start() {
         arm = transform.Find("Arm");
@@ -33,6 +34,12 @@ public class PlayerControl : MonoBehaviour {
     }
 
     void Update () {
+        if (!stopMovement) {
+            MovementAndAiming();
+        }
+    }
+
+    void MovementAndAiming() {
         // Movement
         // Get left-stick input
         float xInput = Input.GetAxis("Horizontal");
@@ -138,6 +145,14 @@ public class PlayerControl : MonoBehaviour {
         if (energy > 0) {
             this.energy += energy;
         }
+    }
+
+    public void StopMovement() {
+        this.stopMovement = true;
+    }
+
+    public void AllowMovement() {
+        this.stopMovement = false;
     }
 
 }

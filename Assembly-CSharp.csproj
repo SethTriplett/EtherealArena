@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{2F97B3DE-1AE6-4ACF-B6B6-1BD9DD0BBEAC}</ProjectGuid>
+    <ProjectGuid>{4D5F2C78-1AB4-AC11-5A1D-40B9E22291A6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -57,8 +57,10 @@
      <Compile Include="Assets\Scripts\Enemies\EnemyStatus.cs" />
      <Compile Include="Assets\Scripts\Enemies\KnifeDummy.cs" />
      <Compile Include="Assets\Scripts\Management\ObjectPooler.cs" />
+     <Compile Include="Assets\Scripts\Management\SceneManagement.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerControl.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerEnergyDisplay.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerLifeDisplay.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerStatus.cs" />
      <Compile Include="Assets\Scripts\Player\UseDanmaku.cs" />
      <Compile Include="Assets\Scripts\Skills\Danmaku.cs" />
@@ -66,6 +68,10 @@
      <Compile Include="Assets\Scripts\Skills\ISkill.cs" />
      <Compile Include="Assets\Scripts\Skills\Knife.cs" />
      <Compile Include="Assets\Scripts\Skills\OutOfBounds.cs" />
+     <Compile Include="Assets\WorldMap\Scripts\WorldMapCamera.cs" />
+     <Compile Include="Assets\WorldMap\Scripts\WorldMapEdge.cs" />
+     <Compile Include="Assets\WorldMap\Scripts\WorldMapNode.cs" />
+     <Compile Include="Assets\WorldMap\Scripts\WorldMapPlayer.cs" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
@@ -79,21 +85,22 @@
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
+     <None Include="Assets\WorldMap\Shaders\WorldMapBubble.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
  <Reference Include="UnityEditor.StandardEvents">
- <HintPath>C:/Users/Seth M Triplett/Documents/EphemeralArena/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+ <HintPath>C:/Users/Seth M Triplett/Documents/EtherealArena/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>C:/Users/Seth M Triplett/Documents/EphemeralArena/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+ <HintPath>C:/Users/Seth M Triplett/Documents/EtherealArena/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.PackageManagerUI.Editor">
- <HintPath>C:/Users/Seth M Triplett/Documents/EphemeralArena/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+ <HintPath>C:/Users/Seth M Triplett/Documents/EtherealArena/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro">
- <HintPath>C:/Users/Seth M Triplett/Documents/EphemeralArena/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+ <HintPath>C:/Users/Seth M Triplett/Documents/EtherealArena/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

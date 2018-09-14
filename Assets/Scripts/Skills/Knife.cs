@@ -41,7 +41,7 @@ public class Knife : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
-            if (!other.gameObject.layer.Equals("Invulnearable")) {
+            if (other.gameObject.layer != 8) {
                 PlayerStatus playerStatus = other.gameObject.GetComponent<PlayerStatus>();
                 if (playerStatus != null) {
                     playerStatus.TakeHit();
@@ -66,10 +66,7 @@ public class Knife : MonoBehaviour {
 
     public void SetTarget(Transform target) {
         this.target = target;
-    }
-
-    public void SetTracking(bool tracking) {
-        this.tracking = tracking;
+        this.tracking = true;
     }
 
 }

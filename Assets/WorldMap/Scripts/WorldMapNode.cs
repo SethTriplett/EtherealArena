@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace EphemeralArena.WorldMap {
+namespace EtherealArena.WorldMap {
 
 	public class WorldMapNode : MonoBehaviour {
 		

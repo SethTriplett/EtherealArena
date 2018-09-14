@@ -6,6 +6,7 @@ using TMPro;
 
 public class PlayerEnergyDisplay : MonoBehaviour {
 
+    /*
     private Slider energySlider;
     private Image sliderFill;
 
@@ -19,5 +20,6 @@ public class PlayerEnergyDisplay : MonoBehaviour {
     public void SetHealth(float energy) {
         energySlider.value = energy;
     }
+    */
 
 }

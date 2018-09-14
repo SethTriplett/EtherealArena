@@ -7,6 +7,7 @@ public class KnifeDummy : MonoBehaviour {
     private ObjectPooler knifePooler;
     [SerializeField] private Transform playerTransform;
     private float attackingTimer = 0f;
+    private bool stopAttacking = false;
 
     void Start() {
         knifePooler = ObjectPooler.sharedPooler;
@@ -14,15 +15,51 @@ public class KnifeDummy : MonoBehaviour {
 
     void Update() {
         if (attackingTimer <= 0) {
-            StartCoroutine(JackTheRipper(new Vector3(0, 0, 0), 5f, 60));
-            attackingTimer = 30f;
+            int attack = (int) Mathf.Floor(Random.Range(0, 2));
+            if (attack == 0) {
+                StartCoroutine(KnifeToss(5));
+            } else {
+                StartCoroutine(JackTheRipper(new Vector3(0, 0, 0), 5f, 60));
+            }
+            attackingTimer = 15f;
         } else {
             attackingTimer -= Time.deltaTime;
         }
     }
 
-    void KnifeToss() {
-
+    IEnumerator KnifeToss(int number) {
+        Vector3 targetVector = playerTransform.position - transform.position;
+        targetVector.Normalize();
+        Vector3 perpendicularVector = new Vector3(-targetVector.y, targetVector.x, 0f);
+        Vector3[] knifePos = new Vector3[number];
+        GameObject[] knives = new GameObject[number];
+        // Create a number of knives that fan out.
+        for (int i = 0; i < number; i++) {
+            float adjustedIndex = i - ((number - 1) / 2f);
+            knifePos[i] = adjustedIndex * perpendicularVector + targetVector + transform.position;
+            GameObject knife = knifePooler.GetDanmaku(1);
+            knife.SetActive(true);
+            if (knife != null) {
+                Knife knifeScript = knife.GetComponent<Knife>();
+                knife.transform.position = gameObject.transform.position;
+                knifeScript.SetTarget(playerTransform);
+                knifeScript.StartSpinningAnimation(2f);
+                knifeScript.StartAimingAnimation(1f);
+                knives[i] = knife;
+            }
+        }
+        // Lerp to be in front of the user
+        for (int j = 0; j < 60; j++) {
+            for (int i = 0; i < number; i++) {
+                GameObject knife = knives[i];
+                knife.transform.position = Vector3.LerpUnclamped(knife.transform.position, knifePos[i], 0.05f);
+            }
+            yield return new WaitForSeconds(0.016f);
+        }
+        for (int i = 0; i < number; i++) {
+            GameObject knife = knives[i];
+            knife.transform.position = knifePos[i];
+        }
     }
 
     IEnumerator JackTheRipper(Vector3 centerPoint, float radius, int number) {
@@ -37,11 +74,14 @@ public class KnifeDummy : MonoBehaviour {
                 knife.SetActive(true);
                 knifeScript.SetTarget(playerTransform);
                 knifeScript.StartSpinningAnimation(3f);
-                knifeScript.StartAimingAnimation(2.5f);
-                knifeScript.SetTracking(true);
+                knifeScript.StartAimingAnimation(3f);
             }
             yield return new WaitForSeconds(2f/number);
         }
+    }
+
+    public void StopAttacking() {
+        stopAttacking = true;
     }
 
 }
