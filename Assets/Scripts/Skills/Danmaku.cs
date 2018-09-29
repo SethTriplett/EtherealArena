@@ -9,7 +9,7 @@ public class Danmaku : MonoBehaviour {
     private float angle;
     private float baseDamage = 1f;
     private int userAttack = 0;
-    private PlayerControl playerControlReference;
+    private PlayerStatus playerStatusReference;
 
     void OnDisable() {
         speed = BASE_SPEED;
@@ -38,16 +38,16 @@ public class Danmaku : MonoBehaviour {
                 }
                 enemyStatus.TakeDamage(damage);
             }
-            if (playerControlReference != null) {
-                playerControlReference.gainEnergy(1f);
+            if (playerStatusReference != null) {
+                playerStatusReference.gainEnergy(1f);
             }
             speed = 0f;
             gameObject.SetActive(false);
         }
     }
 
-    public void setPlayerControlReference(PlayerControl pcr) {
-        this.playerControlReference = pcr;
+    public void SetPlayerStatusReference(PlayerStatus psr) {
+        this.playerStatusReference = psr;
     }
 
 }

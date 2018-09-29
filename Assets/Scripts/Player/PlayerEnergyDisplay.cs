@@ -6,20 +6,20 @@ using TMPro;
 
 public class PlayerEnergyDisplay : MonoBehaviour {
 
-    /*
     private Slider energySlider;
-    private Image sliderFill;
+    // private Image sliderFill;
 
-    private int maxHealth;
+    private int maxEnergy = 100;
 
     void Start() {
-        energySlider = transform.Find("Enemy Health").GetComponent<Slider>();
-        sliderFill = energySlider.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
+        energySlider = GetComponent<Slider>();
+        // sliderFill = transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
+
+        energySlider.maxValue = maxEnergy;
     }
 
-    public void SetHealth(float energy) {
+    public void SetEnergy(float energy) {
         energySlider.value = energy;
     }
-    */
 
 }

@@ -8,22 +8,36 @@ public class KnifeDummy : MonoBehaviour {
     [SerializeField] private Transform playerTransform;
     private float attackingTimer = 0f;
     private bool stopAttacking = false;
+    [SerializeField] private bool secondForm;
 
     void Start() {
         knifePooler = ObjectPooler.sharedPooler;
     }
 
     void Update() {
-        if (attackingTimer <= 0) {
-            int attack = (int) Mathf.Floor(Random.Range(0, 2));
-            if (attack == 0) {
+        if (!stopAttacking) {
+            Attack();
+        }
+    }
+    
+    void Attack() {
+        attackingTimer -= Time.deltaTime;
+        if (!secondForm) {
+            if (attackingTimer <= 0) {
                 StartCoroutine(KnifeToss(5));
-            } else {
-                StartCoroutine(JackTheRipper(new Vector3(0, 0, 0), 5f, 60));
             }
-            attackingTimer = 15f;
+            attackingTimer = 10f;
         } else {
-            attackingTimer -= Time.deltaTime;
+            if (attackingTimer <= 0) {
+                int attack = (int) Mathf.Floor(Random.Range(0, 2));
+                if (attack == 0) {
+                    StartCoroutine(KnifeToss(7));
+                    attackingTimer = 5f;
+                } else {
+                    StartCoroutine(JackTheRipper(new Vector3(0, 0, 0), 5f, 60));
+                    attackingTimer = 10f;
+                }
+            }
         }
     }
 
@@ -82,6 +96,7 @@ public class KnifeDummy : MonoBehaviour {
 
     public void StopAttacking() {
         stopAttacking = true;
+        StopAllCoroutines();
     }
 
 }
