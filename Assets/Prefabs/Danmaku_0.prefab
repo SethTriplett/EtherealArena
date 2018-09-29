@@ -69,6 +69,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9e64d6ef3f584347a507fd22c726962, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseDamage: 1
+  playerLevels: {fileID: 114355908056546720, guid: 6d3fe58cd4cd1a844863fc0c996b24c7,
+    type: 2}
 --- !u!114 &114623756723395564
 MonoBehaviour:
   m_ObjectHideFlags: 1

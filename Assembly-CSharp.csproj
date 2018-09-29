@@ -56,8 +56,11 @@
      <Compile Include="Assets\Scripts\Enemies\EnemyHealthDisplay.cs" />
      <Compile Include="Assets\Scripts\Enemies\EnemyStatus.cs" />
      <Compile Include="Assets\Scripts\Enemies\KnifeDummy.cs" />
+     <Compile Include="Assets\Scripts\Management\GameControllerLoader.cs" />
+     <Compile Include="Assets\Scripts\Management\GameControllerScript.cs" />
      <Compile Include="Assets\Scripts\Management\ObjectPooler.cs" />
      <Compile Include="Assets\Scripts\Management\SceneManagement.cs" />
+     <Compile Include="Assets\Scripts\Player\ControlMode.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerControl.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerEnergyDisplay.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerLifeDisplay.cs" />

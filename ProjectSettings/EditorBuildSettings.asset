@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/WorldMap/Scenes/WorldMap.unity
     guid: dd4a943b6e167d147a31e3dec44989d1
   - enabled: 1
-    path: Assets/Prototype.unity
+    path: Assets/Scenes/Prototype.unity
     guid: edadacd62f8564d488720036e1ce982f
+  - enabled: 1
+    path: Assets/Scenes/Fight2.unity
+    guid: cd1ff635329e78749a6ffdb492bdbe75
   m_configObjects: {}

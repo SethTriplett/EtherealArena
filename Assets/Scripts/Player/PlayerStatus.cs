@@ -6,6 +6,7 @@ public class PlayerStatus : MonoBehaviour {
 
     private int maxHealth = 3;
     private int currentHealth;
+    private float currentEnergy;
     private float invulnerabilityTimer;
     private const float baseInvulnerabilityTime = 4f;
     // Whether or not player sprite should flicker for invulnerability, negative for invisible frames, positive for visibile
@@ -15,9 +16,11 @@ public class PlayerStatus : MonoBehaviour {
     private SpriteRenderer playerArmSpriteRenderer;
     // TODO: replace with event system
     [SerializeField] SceneManagement sceneManagement;
+    [SerializeField] PlayerEnergyDisplay playerEnergyDisplay;
 
     void Start() {
         currentHealth = maxHealth;
+        currentEnergy = 0f;
         playerSpriteRenderer = GetComponent<SpriteRenderer>();
         playerArmSpriteRenderer = transform.Find("Arm").GetComponent<SpriteRenderer>();
     }
@@ -70,6 +73,14 @@ public class PlayerStatus : MonoBehaviour {
         playerArmSpriteRenderer.enabled = false;
         sceneManagement.OpponentVictory();
     }
+
+    public void gainEnergy(float energy) {
+        if (energy > 0) {
+            currentEnergy += energy;
+        }
+        playerEnergyDisplay.SetEnergy(currentEnergy);
+    }
+
 
     public int GetHealth() {
         return currentHealth;
