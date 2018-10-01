@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControl : MonoBehaviour {
+public class PlayerControl : MonoBehaviour, IEventListener {
 
     // This script handles player controls including movement, aiming, and using skills
 
@@ -12,7 +12,6 @@ public class PlayerControl : MonoBehaviour {
     private float aimingAngle = 0f;
     private bool leftStickMovement;
     private bool rightStickAiming = false;
-    private float energy = 0f;
     private Transform arm;
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer armRenderer;
@@ -22,7 +21,6 @@ public class PlayerControl : MonoBehaviour {
     private bool stopMovement = false;
     private bool focusingPosition = false;
     private bool usingSkillButton = false;
-    private ControlMode controlMode;
 
     void Start() {
         facingRight = false;
@@ -37,24 +35,19 @@ public class PlayerControl : MonoBehaviour {
         activeSkill = equipedSkills[0];
     }
 
+    void OnEnable() {
+        EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerVictoryEvent), this);
+    }
+
+    void OnDisable() {
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerVictoryEvent), this);
+    }
+
     void FixedUpdate () {
         checkFocus();
         checkButtons();
         if (!stopMovement) {
-            switch (controlMode) {
-                case ControlMode.Controller:
-                    MovementAndAiming();
-                    break;
-                case ControlMode.Keyboard:
-                    // MovementAndAimingKeyboard();
-                    break;
-                case ControlMode.KeyboardAndMouse:
-                    // MovementAndAimingMouse();
-                    break;
-                default:
-                    MovementAndAiming();
-                    break;
-            }
+            MovementAndAiming();
         }
     }
 
@@ -217,6 +210,13 @@ public class PlayerControl : MonoBehaviour {
 
     public void AllowMovement() {
         this.stopMovement = false;
+    }
+
+    public void ConsumeEvent(IEvent e) {
+        if (e.GetType() == typeof(PlayerVictoryEvent)) {
+            StopMovement();
+            gameObject.layer = 8;
+        }
     }
 
 }

@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerLifeDisplay : MonoBehaviour {
+public class PlayerLifeDisplay : MonoBehaviour, IEventListener {
 
-    private int health;
     private GameObject Life1;
     private GameObject Life2;
     private GameObject Life3;
     [SerializeField] private PlayerStatus playerStatus;
+
+    void OnEnable() {
+        EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerCurrentHealthEvent), this);
+    }
+
+    void OnDisable() {
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerCurrentHealthEvent), this);
+    }
 
     void Start() {
         Life1 = transform.Find("Image 1").gameObject;
@@ -17,8 +24,7 @@ public class PlayerLifeDisplay : MonoBehaviour {
         Life3 = transform.Find("Image 3").gameObject;
     }
 
-    void Update() {
-        this.health = playerStatus.GetHealth();
+    void SetHealthGauge(int health) {
         Life1.SetActive(false);
         Life2.SetActive(false);
         Life3.SetActive(false);
@@ -30,6 +36,13 @@ public class PlayerLifeDisplay : MonoBehaviour {
         }
         if (health >= 3) {
             Life3.SetActive(true);
+        }
+    }
+
+    public void ConsumeEvent(IEvent e) {
+        if (e.GetType() == typeof(PlayerCurrentHealthEvent)) {
+            PlayerCurrentHealthEvent currentHealthEvent = e as PlayerCurrentHealthEvent;
+            SetHealthGauge(currentHealthEvent.currentHealth);
         }
     }
 

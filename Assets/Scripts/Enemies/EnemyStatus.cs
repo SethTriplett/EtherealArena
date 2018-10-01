@@ -11,16 +11,13 @@ public class EnemyStatus : MonoBehaviour {
 
     public int attack;
     public int defence;
-    [SerializeField] private EnemyHealthDisplay UIDisplay;
-    [SerializeField] private SceneManagement sceneManagement;
     private KnifeDummy knifeDummy;
     private bool defeated = false;
 
     void Start() {
         currentHealth = maxHealth;
-        UIDisplay.SetMaxHealth(maxHealth);
-        UIDisplay.SetHealth(currentHealth);
-        UIDisplay.SetDisplayHealth(maxHealth);
+        EventMessanger.GetInstance().TriggerEvent(new EnemyMaxHealthEvent(maxHealth));
+        EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(maxHealth));
 
         // temporary
         knifeDummy = GetComponent<KnifeDummy>();
@@ -35,7 +32,7 @@ public class EnemyStatus : MonoBehaviour {
     void KO() {
         if (!defeated) {
             defeated = true;
-            sceneManagement.PlayerVictory();
+            EventMessanger.GetInstance().TriggerEvent(new PlayerVictoryEvent());
 
             // temporary
             knifeDummy.StopAttacking();
@@ -53,16 +50,7 @@ public class EnemyStatus : MonoBehaviour {
                 damage *= (1 + (- defence / 100));
                 currentHealth -= damage;
             }
-            UIDisplay.SetHealth(currentHealth);
-            UIDisplay.SetDisplayHealth((int) Mathf.Ceil(currentHealth));
-        }
-    }
-
-    // Deal damage ignoring defence
-    public void TakeRawDamage(float damage) {
-        if (damage > 0) {
-            currentHealth -= damage;
-            UIDisplay.SetHealth(currentHealth);
+            EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(currentHealth));
         }
     }
 
