@@ -634,6 +634,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224510152417091002}
   - component: {fileID: 114372054746828908}
+  - component: {fileID: 114401619054928106}
   m_Layer: 5
   m_Name: Energy Gauge
   m_TagString: Untagged
@@ -1403,7 +1404,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 3e8b46f0b5584a44fbca985d1159c5f7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ba692abcb6c959f49ba4163b291cdda9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1682,6 +1683,17 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114401619054928106
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1893084773578586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d71f651737c4943438c19482cf1553e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114408184684296938
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1884,7 +1896,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 3e8b46f0b5584a44fbca985d1159c5f7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ba692abcb6c959f49ba4163b291cdda9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2062,7 +2074,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 3e8b46f0b5584a44fbca985d1159c5f7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ba692abcb6c959f49ba4163b291cdda9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

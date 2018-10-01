@@ -5,17 +5,17 @@ using UnityEngine;
 public class UseDanmaku : MonoBehaviour, ISkill {
 
     // cooldown timer in frames
-    private int readyTimer;
+    private float readyTimer;
     private ObjectPooler danmakuPool;
 
     void Start () {
-        readyTimer = 0;
+        readyTimer = 0f;
         danmakuPool = ObjectPooler.sharedPooler;
     }
 
     void Update () {
         if (readyTimer > 0) {
-            readyTimer--;
+            readyTimer -= Time.deltaTime;
         }
     }
 
@@ -28,7 +28,7 @@ public class UseDanmaku : MonoBehaviour, ISkill {
                 nextDanmaku.transform.rotation = hand.rotation;
                 danmakuScript.SetPlayerStatusReference(gameObject.GetComponent<PlayerStatus>());
                 nextDanmaku.SetActive(true);
-                readyTimer = 10;
+                readyTimer = 0.166667f;
             }
         }
     }

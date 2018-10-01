@@ -14,9 +14,6 @@ public class PlayerStatus : MonoBehaviour {
     private const int baseFlickerRate = 3;
     private SpriteRenderer playerSpriteRenderer;
     private SpriteRenderer playerArmSpriteRenderer;
-    // TODO: replace with event system
-    [SerializeField] SceneManagement sceneManagement;
-    [SerializeField] PlayerEnergyDisplay playerEnergyDisplay;
 
     void Start() {
         currentHealth = maxHealth;
@@ -55,6 +52,7 @@ public class PlayerStatus : MonoBehaviour {
     public void TakeHit() {
         if (invulnerabilityTimer <= 0) {
             currentHealth--;
+            EventMessanger.GetInstance().TriggerEvent(new PlayerCurrentHealthEvent(currentHealth));
             if (currentHealth <= 0) {
                 KO();
             }
@@ -66,19 +64,20 @@ public class PlayerStatus : MonoBehaviour {
 
     void RestoreHealth() {
         currentHealth = maxHealth;
+        EventMessanger.GetInstance().TriggerEvent(new PlayerCurrentHealthEvent(currentHealth));
     }
 
     void KO() {
         playerSpriteRenderer.enabled = false;
         playerArmSpriteRenderer.enabled = false;
-        sceneManagement.OpponentVictory();
+        EventMessanger.GetInstance().TriggerEvent(new PlayerDefeatEvent());
     }
 
     public void gainEnergy(float energy) {
         if (energy > 0) {
             currentEnergy += energy;
         }
-        playerEnergyDisplay.SetEnergy(currentEnergy);
+        EventMessanger.GetInstance().TriggerEvent(new PlayerCurrentEnergyEvent(currentEnergy));
     }
 
 

@@ -46,7 +46,7 @@ public class Knife : MonoBehaviour {
                 if (playerStatus != null) {
                     playerStatus.TakeHit();
                 } else {
-                    print("No player");
+                    Debug.LogError("No player status script found.");
                 }
                 speed = 0f;
                 gameObject.SetActive(false);

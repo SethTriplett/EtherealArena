@@ -19,6 +19,10 @@ public class ObjectPooler : MonoBehaviour {
     }
 
     void Start () {
+        ReinstantiatePools();
+    }
+
+    public void ReinstantiatePools() {
         pools = new List<List<GameObject>>();
         for (int y = 0; y < danmakuList.Length; y++) {
             List<GameObject> pool = new List<GameObject>();
