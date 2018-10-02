@@ -25,7 +25,8 @@ public class GameControllerScript : MonoBehaviour {
         if (instance != null) {
             return instance;
         } else {
-            instance = FindObjectOfType<GameControllerScript>().gameObject;
+            GameControllerScript gc = FindObjectOfType<GameControllerScript>();
+            if (gc != null) instance = gc.gameObject;
             if (instance != null) {
                 DontDestroyOnLoad(instance);
                 return instance;

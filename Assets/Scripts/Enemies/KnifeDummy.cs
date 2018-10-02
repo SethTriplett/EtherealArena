@@ -2,15 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KnifeDummy : MonoBehaviour {
+public class KnifeDummy : MonoBehaviour, IEventListener {
 
     private ObjectPooler knifePooler;
     [SerializeField] private Transform playerTransform;
     private float attackingTimer = 0f;
     private bool stopAttacking = false;
-    [SerializeField] private bool secondForm;
+    private bool secondForm;
 
-    void Start() {
+    void OnEnable() {
+        EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerVictoryEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerDefeatEvent), this);
+    }
+
+    void OnDisable() {
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerVictoryEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerDefeatEvent), this);
+    }
+
+     void Start() {
         knifePooler = ObjectPooler.sharedPooler;
     }
 
@@ -94,9 +104,26 @@ public class KnifeDummy : MonoBehaviour {
         }
     }
 
-    public void StopAttacking() {
+    void StopAttacking() {
         stopAttacking = true;
         StopAllCoroutines();
     }
+
+    public void SetSecondForm(bool secondForm) {
+        this.secondForm = secondForm;
+    }
+
+    public void SetPlayerTransform(Transform player) {
+        this.playerTransform = player;
+    }
+
+    public void ConsumeEvent(IEvent e) {
+        if (e.GetType() == typeof(PlayerVictoryEvent)) {
+            StopAttacking();
+            transform.Rotate(0f, 0f, 90f);
+        } else if (e.GetType() == typeof(PlayerDefeatEvent)) {
+            StopAttacking();
+        }
+     }
 
 }

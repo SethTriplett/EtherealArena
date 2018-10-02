@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 70093679429836470}
   - component: {fileID: 114795304836551868}
   - component: {fileID: 114879015130010900}
+  - component: {fileID: 114015338971258618}
   - component: {fileID: 50976532659655090}
   m_Layer: 0
   m_Name: Dummy
@@ -79,6 +80,17 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.64, y: 1.28}
   m_Direction: 0
+--- !u!114 &114015338971258618
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1831163507507830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6d318a5e592caa4caf1e2bc5eb3a862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114795304836551868
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -91,10 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 5
-  attack: 0
   defence: 0
-  UIDisplay: {fileID: 0}
-  sceneManagement: {fileID: 0}
 --- !u!114 &114879015130010900
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -107,7 +116,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 0}
-  secondForm: 0
 --- !u!212 &212188918908551504
 SpriteRenderer:
   m_ObjectHideFlags: 1

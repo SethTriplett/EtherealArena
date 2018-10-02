@@ -2,25 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Handles enemies health and stats
 public class EnemyStatus : MonoBehaviour {
-
-    // Handles enemies health and stats
 
     public int maxHealth = 1;
     private float currentHealth;
 
-    public int attack;
     public int defence;
-    private KnifeDummy knifeDummy;
     private bool defeated = false;
 
     void Start() {
         currentHealth = maxHealth;
         EventMessanger.GetInstance().TriggerEvent(new EnemyMaxHealthEvent(maxHealth));
         EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(maxHealth));
-
-        // temporary
-        knifeDummy = GetComponent<KnifeDummy>();
     }
 
     void Update() {
@@ -33,11 +27,6 @@ public class EnemyStatus : MonoBehaviour {
         if (!defeated) {
             defeated = true;
             EventMessanger.GetInstance().TriggerEvent(new PlayerVictoryEvent());
-
-            // temporary
-            knifeDummy.StopAttacking();
-            knifeDummy.StopAllCoroutines();
-            transform.Rotate(0f, 0f, 90f);
         }
     }
 

@@ -53,10 +53,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Enemies\DummySelfLoading.cs" />
      <Compile Include="Assets\Scripts\Enemies\EnemyStatus.cs" />
      <Compile Include="Assets\Scripts\Enemies\KnifeDummy.cs" />
      <Compile Include="Assets\Scripts\Events\EnemyCurrentHealthEvent.cs" />
+     <Compile Include="Assets\Scripts\Events\EnemyDisplayLevelEvent.cs" />
      <Compile Include="Assets\Scripts\Events\EnemyMaxHealthEvent.cs" />
+     <Compile Include="Assets\Scripts\Events\EnemyStartingDataEvent.cs" />
      <Compile Include="Assets\Scripts\Events\EventMessanger.cs" />
      <Compile Include="Assets\Scripts\Events\IEvent.cs" />
      <Compile Include="Assets\Scripts\Events\IEventListener.cs" />
@@ -64,11 +67,9 @@
      <Compile Include="Assets\Scripts\Events\PlayerCurrentHealthEvent.cs" />
      <Compile Include="Assets\Scripts\Events\PlayerDefeatEvent.cs" />
      <Compile Include="Assets\Scripts\Events\PlayerVictoryEvent.cs" />
-     <Compile Include="Assets\Scripts\Management\EnemyLoader.cs" />
      <Compile Include="Assets\Scripts\Management\EnemyType.cs" />
-     <Compile Include="Assets\Scripts\Management\GameControllerLoader.cs" />
      <Compile Include="Assets\Scripts\Management\GameControllerScript.cs" />
-     <Compile Include="Assets\Scripts\Management\LoadBattleScene.cs" />
+     <Compile Include="Assets\Scripts\Management\LoadBattleSceneScript.cs" />
      <Compile Include="Assets\Scripts\Management\ObjectPooler.cs" />
      <Compile Include="Assets\Scripts\Management\SceneManagement.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerControl.cs" />
