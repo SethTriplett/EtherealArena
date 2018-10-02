@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 // Holds information for the battle to load when enter from the world map
-public class LoadBattleScene : MonoBehaviour {
+public class LoadBattleSceneScript : MonoBehaviour {
     
     private EnemyType enemyType;
     private int enemyLevel;
@@ -20,7 +20,7 @@ public class LoadBattleScene : MonoBehaviour {
         SceneManager.sceneLoaded += PrepareGameController;
     }
 
-    public void PrepareGameController(Scene scene, LoadSceneMode mode) {
+    void PrepareGameController(Scene scene, LoadSceneMode mode) {
         if (scene.name.Equals("Battle")) {
             sceneManagement.Reset();
             objectPooler.ReinstantiatePools();
@@ -35,8 +35,13 @@ public class LoadBattleScene : MonoBehaviour {
         } else {
             enemy = Instantiate(enemyPrefabs[(int) enemyType]);
         }
-        EnemyStatus enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.maxHealth = 5 * (enemyLevel + 1);
+        EventMessanger.GetInstance().TriggerEvent(new EnemyStartingDataEvent(enemyLevel));
+    }
+
+    public void LoadBattleScene(EnemyType enemyType, int enemyLevel) {
+        this.enemyType = enemyType;
+        this.enemyLevel = enemyLevel;
+        SceneManager.LoadScene("Battle");
     }
 
 }

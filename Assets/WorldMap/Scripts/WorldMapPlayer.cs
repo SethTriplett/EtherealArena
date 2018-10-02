@@ -51,7 +51,9 @@ namespace EtherealArena.WorldMap {
 					// TODO: replace this with an actual transition later.
 					// the scene changing itself should probably be done in another class, after a nice fade out
 
-					SceneManager.LoadScene(CURRENT_NODE.SceneToLoad);
+                    LoadBattleSceneScript loader = GameControllerScript.GetInstance().GetComponent<LoadBattleSceneScript>();
+                    loader.LoadBattleScene(CURRENT_NODE.EnemyType, CURRENT_NODE.EnemyLevel);
+
 				}
 			}
 
