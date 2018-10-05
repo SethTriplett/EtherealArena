@@ -67,10 +67,12 @@
      <Compile Include="Assets\Scripts\Events\PlayerCurrentHealthEvent.cs" />
      <Compile Include="Assets\Scripts\Events\PlayerDefeatEvent.cs" />
      <Compile Include="Assets\Scripts\Events\PlayerVictoryEvent.cs" />
+     <Compile Include="Assets\Scripts\Management\AttackSkillType.cs" />
      <Compile Include="Assets\Scripts\Management\EnemyType.cs" />
      <Compile Include="Assets\Scripts\Management\GameControllerScript.cs" />
      <Compile Include="Assets\Scripts\Management\LoadBattleSceneScript.cs" />
      <Compile Include="Assets\Scripts\Management\ObjectPooler.cs" />
+     <Compile Include="Assets\Scripts\Management\PlayerSkillManager.cs" />
      <Compile Include="Assets\Scripts\Management\SceneManagement.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerControl.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerStatus.cs" />

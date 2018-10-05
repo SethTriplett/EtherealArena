@@ -3,3 +3,5 @@
 /Library
 
 ChangeLog.txt
+*.txt~
+*.un~

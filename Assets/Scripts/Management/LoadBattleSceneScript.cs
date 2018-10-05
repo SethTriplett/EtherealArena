@@ -29,11 +29,10 @@ public class LoadBattleSceneScript : MonoBehaviour {
     }
 
     void LoadEnemy() {
-        GameObject enemy;
         if ((int) enemyType > enemyPrefabs.Length) {
-            enemy = Instantiate(enemyPrefabs[0]);
+            Instantiate(enemyPrefabs[0]);
         } else {
-            enemy = Instantiate(enemyPrefabs[(int) enemyType]);
+            Instantiate(enemyPrefabs[(int) enemyType]);
         }
         EventMessanger.GetInstance().TriggerEvent(new EnemyStartingDataEvent(enemyLevel));
     }
