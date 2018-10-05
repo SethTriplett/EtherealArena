@@ -13,6 +13,8 @@ namespace EtherealArena.WorldMap {
         // TODO: replace this property / field with the information about the battle that this node represents
         // which background it uses, what boss is inside it, etc.
 
+        public bool IsBattleNode { get { return isBattleNode;}}
+        [SerializeField] private bool isBattleNode;
         public EnemyType EnemyType { get { return enemyType; }}
         [SerializeField] private EnemyType enemyType;
         public int EnemyLevel { get { return enemyLevel; }}

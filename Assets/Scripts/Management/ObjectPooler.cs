@@ -6,6 +6,8 @@ public class ObjectPooler : MonoBehaviour {
 
     public static ObjectPooler sharedPooler;
     private List<List<GameObject>> pools;
+    // For the sake of clear organization, put each pool as a parent object of the pool of objects
+    private GameObject[] poolObjects;
     public GameObject[] danmakuList = new GameObject[2];
     public int[] numberOfDanmaku = new int[2];
     private int[] nextAvailable = new int[2];
@@ -23,6 +25,12 @@ public class ObjectPooler : MonoBehaviour {
     }
 
     public void ReinstantiatePools() {
+        poolObjects = new GameObject[danmakuList.Length];
+        for (int y = 0; y < danmakuList.Length; y++) {
+            GameObject poolObject = new GameObject();
+            poolObject.name = danmakuList[y].name + " Pool";
+            poolObjects[y] = poolObject;
+        }
         pools = new List<List<GameObject>>();
         for (int y = 0; y < danmakuList.Length; y++) {
             List<GameObject> pool = new List<GameObject>();
@@ -30,6 +38,7 @@ public class ObjectPooler : MonoBehaviour {
                 GameObject singleDanmaku = (GameObject) Instantiate(danmakuList[y]);
                 singleDanmaku.SetActive(false);
                 pool.Add(singleDanmaku);
+                singleDanmaku.transform.SetParent(poolObjects[y].transform);
             }
             pools.Add(pool);
         }

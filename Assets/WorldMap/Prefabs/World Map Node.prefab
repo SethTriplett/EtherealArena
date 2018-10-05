@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced70a401cb83ad42b8445769fdaec1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBattleNode: 0
   enemyType: 0
   enemyLevel: 0
 --- !u!212 &212545152759935894
