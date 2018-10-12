@@ -2,28 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Handles enemies health and stats
 public class EnemyStatus : MonoBehaviour {
-
-    // Handles enemies health and stats
 
     public int maxHealth = 1;
     private float currentHealth;
 
-    public int attack;
     public int defence;
-    [SerializeField] private EnemyHealthDisplay UIDisplay;
-    [SerializeField] private SceneManagement sceneManagement;
-    private KnifeDummy knifeDummy;
     private bool defeated = false;
 
     void Start() {
         currentHealth = maxHealth;
-        UIDisplay.SetMaxHealth(maxHealth);
-        UIDisplay.SetHealth(currentHealth);
-        UIDisplay.SetDisplayHealth(maxHealth);
-
-        // temporary
-        knifeDummy = GetComponent<KnifeDummy>();
+        EventMessanger.GetInstance().TriggerEvent(new EnemyMaxHealthEvent(maxHealth));
+        EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(maxHealth));
     }
 
     void Update() {
@@ -35,12 +26,7 @@ public class EnemyStatus : MonoBehaviour {
     void KO() {
         if (!defeated) {
             defeated = true;
-            sceneManagement.PlayerVictory();
-
-            // temporary
-            knifeDummy.StopAttacking();
-            knifeDummy.StopAllCoroutines();
-            transform.Rotate(0f, 0f, 90f);
+            EventMessanger.GetInstance().TriggerEvent(new PlayerVictoryEvent());
         }
     }
 
@@ -53,16 +39,7 @@ public class EnemyStatus : MonoBehaviour {
                 damage *= (1 + (- defence / 100));
                 currentHealth -= damage;
             }
-            UIDisplay.SetHealth(currentHealth);
-            UIDisplay.SetDisplayHealth((int) Mathf.Ceil(currentHealth));
-        }
-    }
-
-    // Deal damage ignoring defence
-    public void TakeRawDamage(float damage) {
-        if (damage > 0) {
-            currentHealth -= damage;
-            UIDisplay.SetHealth(currentHealth);
+            EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(currentHealth));
         }
     }
 
@@ -71,8 +48,7 @@ public class EnemyStatus : MonoBehaviour {
         if(currentHealth < maxHealth)
         {
             currentHealth = currentHealth + (int) (maxHealth / 10 < 1 ? 1 : maxHealth / 10);
-            UIDisplay.SetHealth(currentHealth);
-            UIDisplay.SetDisplayHealth((int)Mathf.Ceil(currentHealth));
+            EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(currentHealth));
         }
     }
 

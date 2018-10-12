@@ -307,19 +307,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Enemies\BloodBullet.cs" />
-    <Compile Include="Assets\Scripts\Enemies\EnemyHealthDisplay.cs" />
+    <Compile Include="Assets\Scripts\Enemies\DummySelfLoading.cs" />
     <Compile Include="Assets\Scripts\Enemies\EnemyStatus.cs" />
     <Compile Include="Assets\Scripts\Enemies\FirstBossController.cs" />
     <Compile Include="Assets\Scripts\Enemies\HandAttack.cs" />
     <Compile Include="Assets\Scripts\Enemies\KnifeDummy.cs" />
-    <Compile Include="Assets\Scripts\Management\GameControllerLoader.cs" />
+    <Compile Include="Assets\Scripts\Events\EnemyCurrentHealthEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\EnemyDisplayLevelEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\EnemyMaxHealthEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\EnemyStartingDataEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\EventMessanger.cs" />
+    <Compile Include="Assets\Scripts\Events\IEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\IEventListener.cs" />
+    <Compile Include="Assets\Scripts\Events\PlayerCurrentEnergyEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\PlayerCurrentHealthEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\PlayerDefeatEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\PlayerVictoryEvent.cs" />
+    <Compile Include="Assets\Scripts\Management\AttackSkillType.cs" />
+    <Compile Include="Assets\Scripts\Management\EnemyType.cs" />
     <Compile Include="Assets\Scripts\Management\GameControllerScript.cs" />
+    <Compile Include="Assets\Scripts\Management\LoadBattleSceneScript.cs" />
     <Compile Include="Assets\Scripts\Management\ObjectPooler.cs" />
+    <Compile Include="Assets\Scripts\Management\PlayerSkillManager.cs" />
     <Compile Include="Assets\Scripts\Management\SceneManagement.cs" />
-    <Compile Include="Assets\Scripts\Player\ControlMode.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerControl.cs" />
-    <Compile Include="Assets\Scripts\Player\PlayerEnergyDisplay.cs" />
-    <Compile Include="Assets\Scripts\Player\PlayerLifeDisplay.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerStatus.cs" />
     <Compile Include="Assets\Scripts\Player\UseDanmaku.cs" />
     <Compile Include="Assets\Scripts\Skills\Danmaku.cs" />
@@ -327,6 +338,11 @@
     <Compile Include="Assets\Scripts\Skills\ISkill.cs" />
     <Compile Include="Assets\Scripts\Skills\Knife.cs" />
     <Compile Include="Assets\Scripts\Skills\OutOfBounds.cs" />
+    <Compile Include="Assets\Scripts\UIManagement\DefeatScreen.cs" />
+    <Compile Include="Assets\Scripts\UIManagement\EnemyHealthDisplay.cs" />
+    <Compile Include="Assets\Scripts\UIManagement\PlayerEnergyDisplay.cs" />
+    <Compile Include="Assets\Scripts\UIManagement\PlayerLifeDisplay.cs" />
+    <Compile Include="Assets\Scripts\UIManagement\VictoryScreen.cs" />
     <Compile Include="Assets\WorldMap\Scripts\WorldMapCamera.cs" />
     <Compile Include="Assets\WorldMap\Scripts\WorldMapEdge.cs" />
     <Compile Include="Assets\WorldMap\Scripts\WorldMapNode.cs" />

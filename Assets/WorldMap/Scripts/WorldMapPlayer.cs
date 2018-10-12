@@ -51,7 +51,11 @@ namespace EtherealArena.WorldMap {
 					// TODO: replace this with an actual transition later.
 					// the scene changing itself should probably be done in another class, after a nice fade out
 
-					SceneManager.LoadScene(CURRENT_NODE.SceneToLoad);
+                    if (CURRENT_NODE.IsBattleNode) {
+                        LoadBattleSceneScript loader = GameControllerScript.GetInstance().GetComponent<LoadBattleSceneScript>();
+                        loader.LoadBattleScene(CURRENT_NODE.EnemyType, CURRENT_NODE.EnemyLevel);
+                    }
+
 				}
 			}
 
@@ -68,7 +72,7 @@ namespace EtherealArena.WorldMap {
 			// Make the player sprite face in the movement direction
 
 			bool facingRight = newNode.Position.x > CURRENT_NODE.Position.x;
-			spriteTransform.localScale = new Vector3(facingRight ? 1f : -1f, 1f, 1f) * 0.5f;
+			spriteTransform.localScale = new Vector3(facingRight ? 1f : -1f, 1f, 1f);
 
 			// Play an animation of moving to the new node
 

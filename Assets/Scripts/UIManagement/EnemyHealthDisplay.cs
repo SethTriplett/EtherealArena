@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class EnemyHealthDisplay : MonoBehaviour {
+public class EnemyHealthDisplay : MonoBehaviour, IEventListener {
 
     private Slider healthSlider;
     private Image sliderFill;
@@ -13,11 +13,21 @@ public class EnemyHealthDisplay : MonoBehaviour {
 
     private int maxHealth;
 
-    void Start() {
+    void Awake() {
         healthSlider = transform.Find("Enemy Health").GetComponent<Slider>();
         sliderFill = healthSlider.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
         currentHP = transform.Find("Current HP").GetComponent<TextMeshProUGUI>();
         maxHP = transform.Find("Max HP").GetComponent<TextMeshProUGUI>();
+    }
+
+    void OnEnable() {
+        EventMessanger.instance.SubscribeEvent(typeof(EnemyMaxHealthEvent), this);
+        EventMessanger.instance.SubscribeEvent(typeof(EnemyCurrentHealthEvent), this);
+    }
+
+    void OnDisable() {
+        EventMessanger.instance.UnsubscribeEvent(typeof(EnemyMaxHealthEvent), this);
+        EventMessanger.instance.UnsubscribeEvent(typeof(EnemyCurrentHealthEvent), this);
     }
 
     public void SetHealth(float health) {
@@ -39,4 +49,16 @@ public class EnemyHealthDisplay : MonoBehaviour {
         maxHP.SetText(maxHealth.ToString());
         healthSlider.maxValue = maxHealth;
     }
+
+    public void ConsumeEvent(IEvent e) {
+        if (e.GetType() == typeof(EnemyCurrentHealthEvent)) {
+            EnemyCurrentHealthEvent currentHealthEvent = e as EnemyCurrentHealthEvent;
+            SetHealth(currentHealthEvent.currentHealth);
+            SetDisplayHealth(Mathf.CeilToInt(currentHealthEvent.currentHealth));
+        } else if (e.GetType() == typeof(EnemyMaxHealthEvent)) {
+            EnemyMaxHealthEvent maxHealthEvent = e as EnemyMaxHealthEvent;
+            SetMaxHealth(maxHealthEvent.maxHealth);
+        }
+    }
+
 }

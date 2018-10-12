@@ -2,15 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KnifeDummy : MonoBehaviour {
+public class KnifeDummy : MonoBehaviour, IEventListener {
 
     private ObjectPooler knifePooler;
     [SerializeField] private Transform playerTransform;
     private float attackingTimer = 0f;
     private bool stopAttacking = false;
-    [SerializeField] private bool secondForm;
+    private bool secondForm;
 
-    void Start() {
+    void OnEnable() {
+        EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerVictoryEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerDefeatEvent), this);
+    }
+
+    void OnDisable() {
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerVictoryEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerDefeatEvent), this);
+    }
+
+     void Start() {
         knifePooler = ObjectPooler.sharedPooler;
     }
 
@@ -18,31 +28,26 @@ public class KnifeDummy : MonoBehaviour {
         if (!stopAttacking) {
             Attack();
         }
-
     }
     
     void Attack() {
         attackingTimer -= Time.deltaTime;
         if (!secondForm) {
             if (attackingTimer <= 0) {
-                StartCoroutine(CircleHell(transform.position, 5, 1, 8, playerTransform.position));
-                attackingTimer = 10f;
+                StartCoroutine(KnifeToss(5));
             }
-            
+            attackingTimer = 10f;
         } else {
             if (attackingTimer <= 0) {
-                //CircleHell(transform.position, 6, 5);
                 int attack = (int) Mathf.Floor(Random.Range(0, 2));
                 if (attack == 0) {
-                    StartCoroutine(CircleHell(transform.position, 6, 5, 3, playerTransform.position));
+                    StartCoroutine(KnifeToss(7));
                     attackingTimer = 5f;
                 } else {
-                    StartCoroutine(CircleHell(transform.position, 6, 5, 3, playerTransform.position));
+                    StartCoroutine(JackTheRipper(new Vector3(0, 0, 0), 5f, 60));
                     attackingTimer = 10f;
                 }
             }
-                
-          
         }
     }
 
@@ -99,42 +104,25 @@ public class KnifeDummy : MonoBehaviour {
         }
     }
 
-
-    public void StopAttacking() {
+    void StopAttacking() {
         stopAttacking = true;
         StopAllCoroutines();
     }
 
-    IEnumerator CircleHell(Vector3 centerPoint, int number, int radius, int numOfCircles, Vector3 playerLoc)
-    {
-        for (int j = 0; j < numOfCircles; j++)
-        {
-            float angleTar = Mathf.Atan2((playerLoc.y - transform.position.y), (playerLoc.x - transform.position.x));
-            Debug.Log(playerLoc.y - transform.position.y);
-            Debug.Log(angleTar);
-            Vector3 target = new Vector3(Mathf.Cos(angleTar - (Mathf.PI/2) + (Mathf.PI * j / numOfCircles)),  Mathf.Sin(angleTar - (Mathf.PI/2) + (Mathf.PI * j / numOfCircles)));
-            for (int i = 0; i < number; i++)
-            {
-                float angle = (-i / (float)number) * 2 * Mathf.PI + Mathf.PI / 2;
-                float xPos = centerPoint.x + radius * Mathf.Cos(angle);
-                float yPos = centerPoint.y + radius * Mathf.Sin(angle);
-                GameObject knife = knifePooler.GetDanmaku(1);
-                if (knife != null)
-                {
-                    knife.AddComponent<BloodBullet>();
-                    knife.GetComponent<Knife>().enabled = false;
-                    BloodBullet bloodBulletScript = knife.GetComponent<BloodBullet>();
-                    knife.transform.position = new Vector3(xPos, yPos, 0f);
-                    bloodBulletScript.setTarget(target);
-                    bloodBulletScript.setSpeed(j + 1);
-                    knife.SetActive(true);
-                }
-                //yield return new WaitForSeconds(2f / number);
-            }
-            yield return new WaitForSeconds(1);
-        }
-        //yield return new WaitForSeconds(1);
+    public void SetSecondForm(bool secondForm) {
+        this.secondForm = secondForm;
     }
 
+    public void SetPlayerTransform(Transform player) {
+        this.playerTransform = player;
+    }
 
+    public void ConsumeEvent(IEvent e) {
+        if (e.GetType() == typeof(PlayerVictoryEvent)) {
+            StopAttacking();
+            transform.Rotate(0f, 0f, 90f);
+        } else if (e.GetType() == typeof(PlayerDefeatEvent)) {
+            StopAttacking();
+        }
+     }
 }
