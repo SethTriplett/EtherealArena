@@ -125,5 +125,4 @@ public class KnifeDummy : MonoBehaviour, IEventListener {
             StopAttacking();
         }
      }
-
 }
