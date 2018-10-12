@@ -66,14 +66,4 @@ public class EnemyStatus : MonoBehaviour {
         }
     }
 
-    public void HealHealth()
-    {
-        if(currentHealth < maxHealth)
-        {
-            currentHealth = currentHealth + (int) (maxHealth / 10 < 1 ? 1 : maxHealth / 10);
-            UIDisplay.SetHealth(currentHealth);
-            UIDisplay.SetDisplayHealth((int)Mathf.Ceil(currentHealth));
-        }
-    }
-
 }
