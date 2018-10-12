@@ -9,8 +9,8 @@ public class ObjectPooler : MonoBehaviour {
     // For the sake of clear organization, put each pool as a parent object of the pool of objects
     private GameObject[] poolObjects;
     public GameObject[] danmakuList = new GameObject[2];
-    public int[] numberOfDanmaku = new int[2];
-    private int[] nextAvailable = new int[2];
+    public int[] numberOfDanmaku = new int[3];
+    private int[] nextAvailable = new int[3];
 
     void Awake() {
         if (sharedPooler == null) {

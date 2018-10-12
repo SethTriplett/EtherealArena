@@ -53,12 +53,13 @@ public class PlayerStatus : MonoBehaviour {
         if (invulnerabilityTimer <= 0) {
             currentHealth--;
             EventMessanger.GetInstance().TriggerEvent(new PlayerCurrentHealthEvent(currentHealth));
+            gameObject.layer = 8;
             if (currentHealth <= 0) {
                 KO();
+            } else {
+                invulnerabilityTimer = baseInvulnerabilityTime;
+                flickerFrames = - baseFlickerRate;
             }
-            invulnerabilityTimer = baseInvulnerabilityTime;
-            flickerFrames = - baseFlickerRate;
-            gameObject.layer = 8;
         }
     }
 
@@ -68,6 +69,7 @@ public class PlayerStatus : MonoBehaviour {
     }
 
     void KO() {
+        print("KO'ed");
         playerSpriteRenderer.enabled = false;
         playerArmSpriteRenderer.enabled = false;
         EventMessanger.GetInstance().TriggerEvent(new PlayerDefeatEvent());

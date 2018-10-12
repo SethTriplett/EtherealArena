@@ -53,8 +53,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Enemies\BloodBullet.cs" />
      <Compile Include="Assets\Scripts\Enemies\DummySelfLoading.cs" />
      <Compile Include="Assets\Scripts\Enemies\EnemyStatus.cs" />
+     <Compile Include="Assets\Scripts\Enemies\FirstBossController.cs" />
+     <Compile Include="Assets\Scripts\Enemies\HandAttack.cs" />
      <Compile Include="Assets\Scripts\Enemies\KnifeDummy.cs" />
      <Compile Include="Assets\Scripts\Events\EnemyCurrentHealthEvent.cs" />
      <Compile Include="Assets\Scripts\Events\EnemyDisplayLevelEvent.cs" />

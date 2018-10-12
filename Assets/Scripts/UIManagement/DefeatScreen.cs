@@ -22,7 +22,9 @@ public class BattleEndScreens : MonoBehaviour, IEventListener {
     void DisplayDefeatScreen() {
         defeatScreen.alpha = 1;
     }
+
     public void ConsumeEvent(IEvent e) {
+        print(e);
         if (e.GetType() == typeof(PlayerDefeatEvent)) {
             DisplayDefeatScreen();
         }

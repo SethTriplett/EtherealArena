@@ -52,7 +52,6 @@ public class Knife : MonoBehaviour {
                 gameObject.SetActive(false);
             }
         }
-
     }
 
     public void StartSpinningAnimation(float duration) {
