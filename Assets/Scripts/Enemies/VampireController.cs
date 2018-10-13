@@ -20,8 +20,10 @@ public class VampireController : MonoBehaviour {
     private bool grabbed;
     private Animator animator;
 
+    [SerializeField] private GameObject bloodBulletPrefab;
+    private int bloodBulletIndex;
 
-    // Use this for initialization
+
     void Start () {
 		bloodPooler = ObjectPooler.sharedPooler;
         curMeth = "attack";
@@ -31,6 +33,11 @@ public class VampireController : MonoBehaviour {
         GAS = 2;
         grabbed = false;
         animator = GetComponent<Animator>();
+        bloodBulletIndex = bloodPooler.GetIndex(bloodBulletPrefab);
+        if (bloodBulletIndex == -1) {
+            Debug.LogError("BloodBullet not found in object pooler");
+            bloodBulletIndex = 0;
+        }
     }
 	
 	// Update is called once per frame
@@ -125,7 +132,7 @@ public class VampireController : MonoBehaviour {
                 float angle = (-i / (float)number) * 2 * Mathf.PI + Mathf.PI / 2;
                 float xPos = centerPoint.x + radius * Mathf.Cos(angle);
                 float yPos = centerPoint.y + radius * Mathf.Sin(angle);
-                GameObject bloodBullet = bloodPooler.GetDanmaku(2);
+                GameObject bloodBullet = bloodPooler.GetDanmaku(bloodBulletIndex);
                 if (bloodBullet != null)
                 {
                     BloodBullet bloodBulletScript = bloodBullet.GetComponent<BloodBullet>();

@@ -75,6 +75,7 @@
      <Compile Include="Assets\Scripts\Management\GameControllerScript.cs" />
      <Compile Include="Assets\Scripts\Management\LoadBattleSceneScript.cs" />
      <Compile Include="Assets\Scripts\Management\ObjectPooler.cs" />
+     <Compile Include="Assets\Scripts\Management\OutOfBounds.cs" />
      <Compile Include="Assets\Scripts\Management\PlayerSkillManager.cs" />
      <Compile Include="Assets\Scripts\Management\SceneManagement.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerControl.cs" />
@@ -84,9 +85,9 @@
      <Compile Include="Assets\Scripts\Skills\DeactivateOOB.cs" />
      <Compile Include="Assets\Scripts\Skills\ISkill.cs" />
      <Compile Include="Assets\Scripts\Skills\Knife.cs" />
-     <Compile Include="Assets\Scripts\Skills\OutOfBounds.cs" />
      <Compile Include="Assets\Scripts\UIManagement\DefeatScreen.cs" />
      <Compile Include="Assets\Scripts\UIManagement\EnemyHealthDisplay.cs" />
+     <Compile Include="Assets\Scripts\UIManagement\EnemyLevelDisplay.cs" />
      <Compile Include="Assets\Scripts\UIManagement\PlayerEnergyDisplay.cs" />
      <Compile Include="Assets\Scripts\UIManagement\PlayerLifeDisplay.cs" />
      <Compile Include="Assets\Scripts\UIManagement\VictoryScreen.cs" />

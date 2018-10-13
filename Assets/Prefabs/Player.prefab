@@ -188,6 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dad7b69176f0c94aaa61b95053e4a89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  danmakuPrefab: {fileID: 0}
 --- !u!114 &114607742074941016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -210,6 +211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dad7b69176f0c94aaa61b95053e4a89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  danmakuPrefab: {fileID: 1644064600827450, guid: f52d8b1bce8795d4d8c79182263bb900,
+    type: 2}
 --- !u!212 &212480295416952198
 SpriteRenderer:
   m_ObjectHideFlags: 1
