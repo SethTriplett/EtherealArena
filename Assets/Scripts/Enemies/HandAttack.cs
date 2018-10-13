@@ -19,12 +19,10 @@ public class HandAttack : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log(col);
-        if(col.gameObject.name.Equals("Player"))
+        if(col.gameObject.tag.Equals("Player"))
         {
             player = col.gameObject;
-            transform.parent.gameObject.GetComponent<FirstBossController>().playerGrabbed();
-            Debug.Log("Should attack");
+            transform.parent.gameObject.GetComponent<VampireController>().playerGrabbed();
         }
     }
 

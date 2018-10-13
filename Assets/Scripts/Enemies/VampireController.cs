@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FirstBossController : MonoBehaviour {
+public class VampireController : MonoBehaviour {
 
     private ObjectPooler bloodPooler;
     [SerializeField]
     private Transform playerTransform;
-    private float attackingTimer = 0f;
-    private bool stopAttacking = false;
     [SerializeField] private bool secondForm;
     float timer;
     string curMeth;
@@ -20,6 +18,7 @@ public class FirstBossController : MonoBehaviour {
     [SerializeField] GameObject hand;
     private bool right;
     private bool grabbed;
+    private Animator animator;
 
 
     // Use this for initialization
@@ -31,6 +30,7 @@ public class FirstBossController : MonoBehaviour {
         right = true;
         GAS = 2;
         grabbed = false;
+        animator = GetComponent<Animator>();
     }
 	
 	// Update is called once per frame
@@ -72,7 +72,6 @@ public class FirstBossController : MonoBehaviour {
         if(!attacked)
         {
             timer = 10f;
-            Debug.Log("attack");
             if(Random.Range(0, 2) == 0)
             {
                 curMeth = "AG";
@@ -138,8 +137,19 @@ public class FirstBossController : MonoBehaviour {
                 }
                 //yield return new WaitForSeconds(2f / number);
             }
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
+            animator.SetTrigger("EnterChargeUp");
+            yield return new WaitForSeconds(0.5f);
+            if (j > 0) {
+                animator.SetTrigger("EnterAttack");
+            }
         }
+        yield return new WaitForSeconds(0.5f);
+        animator.SetTrigger("EnterChargeUp");
+        yield return new WaitForSeconds(0.5f);
+        animator.SetTrigger("EnterAttack");
+        yield return new WaitForSeconds(1f);
+        animator.SetTrigger("EnterIdle");
     }
     /* WIP for another attack
     IEnumerator BloodBolts(int number, Vector3 playerLoc)

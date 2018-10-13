@@ -923,6 +923,7 @@ GameObject:
   - component: {fileID: 1100659241}
   - component: {fileID: 1100659240}
   - component: {fileID: 1100659244}
+  - component: {fileID: 1100659245}
   m_Layer: 5
   m_Name: Defeat Screen
   m_TagString: Untagged
@@ -1018,6 +1019,17 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &1100659245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1100659239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0851470a045f65744a300d63797c5ada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1311749916 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4553529174436978, guid: a9b083bd74202434694aa5f016220271,

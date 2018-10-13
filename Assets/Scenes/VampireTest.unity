@@ -815,6 +815,7 @@ GameObject:
   - component: {fileID: 738550669}
   - component: {fileID: 738550668}
   - component: {fileID: 738550667}
+  - component: {fileID: 738550674}
   m_Layer: 0
   m_Name: Vampire
   m_TagString: Enemy
@@ -853,7 +854,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -966,12 +967,30 @@ Transform:
   m_GameObject: {fileID: 738550666}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.32, y: -3.38, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children:
   - {fileID: 1958134761}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &738550674
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 738550666}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 87709d84615237b47ad6ac0c0d978abe, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &783916285
 Prefab:
   m_ObjectHideFlags: 0
@@ -1025,16 +1044,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114069614025709498, guid: 6d3fe58cd4cd1a844863fc0c996b24c7,
-        type: 2}
-      propertyPath: danmakuList.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114069614025709498, guid: 6d3fe58cd4cd1a844863fc0c996b24c7,
-        type: 2}
-      propertyPath: numberOfDanmaku.Array.size
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 4120506079440836, guid: 6d3fe58cd4cd1a844863fc0c996b24c7, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1067,17 +1076,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114069614025709498, guid: 6d3fe58cd4cd1a844863fc0c996b24c7,
-        type: 2}
-      propertyPath: danmakuList.Array.data[2]
-      value: 
-      objectReference: {fileID: 1180124063533576, guid: 4ed1885d951889a4983c76242fb4b743,
-        type: 2}
-    - target: {fileID: 114069614025709498, guid: 6d3fe58cd4cd1a844863fc0c996b24c7,
-        type: 2}
-      propertyPath: numberOfDanmaku.Array.data[2]
-      value: 100
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d3fe58cd4cd1a844863fc0c996b24c7, type: 2}
   m_IsPrefabAsset: 0
@@ -1093,6 +1091,7 @@ GameObject:
   - component: {fileID: 1100659241}
   - component: {fileID: 1100659240}
   - component: {fileID: 1100659244}
+  - component: {fileID: 1100659245}
   m_Layer: 5
   m_Name: Defeat Screen
   m_TagString: Untagged
@@ -1188,6 +1187,17 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &1100659245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1100659239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0851470a045f65744a300d63797c5ada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1140007499 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4553529174436978, guid: a9b083bd74202434694aa5f016220271,

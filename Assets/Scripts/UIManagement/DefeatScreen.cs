@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class BattleEndScreens : MonoBehaviour, IEventListener {
+public class DefeatScreen : MonoBehaviour, IEventListener {
 
     private CanvasGroup defeatScreen;
 
@@ -24,7 +24,6 @@ public class BattleEndScreens : MonoBehaviour, IEventListener {
     }
 
     public void ConsumeEvent(IEvent e) {
-        print(e);
         if (e.GetType() == typeof(PlayerDefeatEvent)) {
             DisplayDefeatScreen();
         }

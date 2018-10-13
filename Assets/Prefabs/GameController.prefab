@@ -82,7 +82,8 @@ MonoBehaviour:
   danmakuList:
   - {fileID: 1644064600827450, guid: f52d8b1bce8795d4d8c79182263bb900, type: 2}
   - {fileID: 1952784063360642, guid: 6083265506a57a840a333b487da9cd6c, type: 2}
-  numberOfDanmaku: 6400000064000000
+  - {fileID: 1180124063533576, guid: 4ed1885d951889a4983c76242fb4b743, type: 2}
+  numberOfDanmaku: 640000006400000064000000
 --- !u!114 &114374012729824210
 MonoBehaviour:
   m_ObjectHideFlags: 1
