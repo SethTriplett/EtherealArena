@@ -181,6 +181,8 @@ MonoBehaviour:
   GAS: 10
   speed: 5
   hand: {fileID: 1616163168464198}
+  bloodBulletPrefab: {fileID: 1180124063533576, guid: 4ed1885d951889a4983c76242fb4b743,
+    type: 2}
 --- !u!114 &114428874703445658
 MonoBehaviour:
   m_ObjectHideFlags: 1
