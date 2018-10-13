@@ -43,4 +43,24 @@ public class EnemyStatus : MonoBehaviour {
         }
     }
 
+    public void HealHealth(float healthHealed) {
+        if (healthHealed > 0) {
+            currentHealth += healthHealed;
+            if (currentHealth > maxHealth) {
+                currentHealth = maxHealth;
+            }
+            EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(currentHealth));
+        }
+    }
+
+    public void HealHealthPortion(float portion) {
+        if (portion > 0) {
+            currentHealth += maxHealth * portion;
+            if (currentHealth > maxHealth) {
+                currentHealth = maxHealth;
+            }
+            EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(currentHealth));
+        }
+    }
+
 }
