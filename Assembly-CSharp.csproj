@@ -58,6 +58,7 @@
      <Compile Include="Assets\Scripts\Enemies\EnemyStatus.cs" />
      <Compile Include="Assets\Scripts\Enemies\HandAttack.cs" />
      <Compile Include="Assets\Scripts\Enemies\KnifeDummy.cs" />
+     <Compile Include="Assets\Scripts\Enemies\LarvaController.cs" />
      <Compile Include="Assets\Scripts\Enemies\VampireController.cs" />
      <Compile Include="Assets\Scripts\Events\EnemyCurrentHealthEvent.cs" />
      <Compile Include="Assets\Scripts\Events\EnemyDisplayLevelEvent.cs" />

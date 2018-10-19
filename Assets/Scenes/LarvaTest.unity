@@ -422,17 +422,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114269742265221696, guid: 1efb903b3f25c8e48b61aef8f27e5cbc,
-        type: 2}
-      propertyPath: playerTransform
-      value: 
-      objectReference: {fileID: 1140007499}
     - target: {fileID: 1717231491924888, guid: 1efb903b3f25c8e48b61aef8f27e5cbc, type: 2}
       propertyPath: m_Name
       value: Larva
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 114269742265221696, guid: 1efb903b3f25c8e48b61aef8f27e5cbc, type: 2}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1efb903b3f25c8e48b61aef8f27e5cbc, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1 &416216323
@@ -941,28 +935,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a8b5e2d5eebfd343a6eb7c621a27351, type: 2}
   m_IsPrefabAsset: 0
---- !u!1 &830354862 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1717231491924888, guid: 1efb903b3f25c8e48b61aef8f27e5cbc,
-    type: 2}
-  m_PrefabInternal: {fileID: 415539654}
---- !u!114 &830354863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 830354862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e44783b3ff9444ea87fd3af2b4a9a31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timer: 0
-  speed: 10
-  target: {x: 0, y: 0, z: 0}
-  direction: 0
-  bloodBulletPrefab: {fileID: 0}
-  behaviorState: 0
 --- !u!1 &1100659239
 GameObject:
   m_ObjectHideFlags: 0
@@ -1082,11 +1054,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0851470a045f65744a300d63797c5ada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &1140007499 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4553529174436978, guid: a9b083bd74202434694aa5f016220271,
-    type: 2}
-  m_PrefabInternal: {fileID: 474069416}
 --- !u!1 &1584465873
 GameObject:
   m_ObjectHideFlags: 0
@@ -1308,22 +1275,22 @@ Prefab:
     - target: {fileID: 224123176367491736, guid: c6643d9aed69b98498da61557ab9d9de,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224943937578922722, guid: c6643d9aed69b98498da61557ab9d9de,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224427395865552008, guid: c6643d9aed69b98498da61557ab9d9de,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224019039449622580, guid: c6643d9aed69b98498da61557ab9d9de,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6643d9aed69b98498da61557ab9d9de, type: 2}
