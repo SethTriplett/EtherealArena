@@ -51,8 +51,6 @@ public class ObjectPooler : MonoBehaviour {
     // Input a prefab to get its index in list
     public int GetIndex(GameObject prefab) {
         for (int i = 0; i < danmakuList.Length; i++) {
-            print("p: " + prefab);
-            print("d: " + danmakuList[i]);
             if (danmakuList[i] == prefab) {
                 return i;
             }

@@ -12,6 +12,11 @@ public class EnemyHealthDisplay : MonoBehaviour, IEventListener {
     private TextMeshProUGUI maxHP;
 
     private int maxHealth;
+    // Used to allow health bars to transition
+    private float lerpHealth;
+    private float currentHealth;
+
+    private float LerpSpeed;
 
     void Awake() {
         healthSlider = transform.Find("Enemy Health").GetComponent<Slider>();
@@ -30,11 +35,25 @@ public class EnemyHealthDisplay : MonoBehaviour, IEventListener {
         EventMessanger.instance.UnsubscribeEvent(typeof(EnemyCurrentHealthEvent), this);
     }
 
+    void Update() {
+        LerpHealth();
+    }
+
+    private void LerpHealth() {
+        // Lerp display health to real health
+        if (lerpHealth != currentHealth) {
+            lerpHealth = Mathf.Lerp(lerpHealth, currentHealth, 0.1f);
+            if (Mathf.Abs(lerpHealth - currentHealth) < 0.0001) lerpHealth = currentHealth;
+            healthSlider.value = lerpHealth;
+            float proportion = lerpHealth / maxHealth;
+            Color fillColor = Color.HSVToRGB(proportion * 135 / 360f, 1f, 1f);
+            sliderFill.color = fillColor;
+        }
+    }
+
     public void SetHealth(float health) {
-        healthSlider.value = health;
-        float proportion = health / maxHealth;
-        Color fillColor = Color.HSVToRGB(proportion * 135 / 360f, 1f, 1f);
-        sliderFill.color = fillColor;
+        currentHealth = health;
+        LerpHealth();
     }
 
     public void SetDisplayHealth(int displayHealth) {

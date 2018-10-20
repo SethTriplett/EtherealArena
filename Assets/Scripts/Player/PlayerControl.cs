@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour, IEventListener {
     private Transform hand;
     public ISkill[] equipedSkills = new ISkill[8];
     private ISkill activeSkill;
-    private bool stopMovement = false;
+    private bool stunned = false;
     private bool focusingPosition = false;
     private bool usingSkillButton = false;
 
@@ -53,7 +53,7 @@ public class PlayerControl : MonoBehaviour, IEventListener {
     void FixedUpdate () {
         checkFocus();
         checkButtons();
-        if (!stopMovement) {
+        if (!stunned) {
             MovementAndAiming();
         }
     }
@@ -196,11 +196,13 @@ public class PlayerControl : MonoBehaviour, IEventListener {
 
 
         // Auto Release with right stick
-        if (rightStickAiming || usingSkillButton) {
+        if (rightStickAiming || usingSkillButton || focusingPosition) {
             // Rotate arm after determining direction
             arm.rotation = Quaternion.Euler(0f, 0f, aimingAngle);
             armRenderer.sprite = armSprite;
-            activeSkill.UseSkill(hand, true);
+            if (rightStickAiming || usingSkillButton && !stunned) {
+                activeSkill.UseSkill(hand, true);
+            }
         } else {
             arm.rotation = Quaternion.Euler(0f, 0f, facingRight ? 0f : 180f);
             armRenderer.sprite = idleArmSprite;
@@ -223,17 +225,17 @@ public class PlayerControl : MonoBehaviour, IEventListener {
         }
     }
 
-    public void StopMovement() {
-        this.stopMovement = true;
+    public void StunPlayer() {
+        this.stunned = true;
     }
 
-    public void AllowMovement() {
-        this.stopMovement = false;
+    public void UnStunPlayer() {
+        this.stunned = false;
     }
 
     public void ConsumeEvent(IEvent e) {
         if (e.GetType() == typeof(PlayerVictoryEvent)) {
-            StopMovement();
+            StunPlayer();
             gameObject.layer = 8;
         }
     }

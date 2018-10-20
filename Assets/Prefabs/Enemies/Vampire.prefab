@@ -39,9 +39,10 @@ GameObject:
   - component: {fileID: 212980857397950520}
   - component: {fileID: 61332498295971352}
   - component: {fileID: 114657061031619414}
-  - component: {fileID: 114869662128004030}
   - component: {fileID: 50627489113115646}
-  - component: {fileID: 114266944049779706}
+  - component: {fileID: 114645588920732972}
+  - component: {fileID: 95674222801844498}
+  - component: {fileID: 114073306971342244}
   m_Layer: 0
   m_Name: Vampire
   m_TagString: Enemy
@@ -56,7 +57,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1717231491924888}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7, y: 0, z: 0}
+  m_LocalPosition: {x: -5.32, y: -3.38, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children:
   - {fileID: 4912234954233516}
@@ -108,18 +109,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.02717757, y: 0.06341463}
+  m_Offset: {x: -0.11981398, y: 0.016680002}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 2}
+    oldSize: {x: 1.48, y: 2.56}
     newSize: {x: 1.28, y: 1.28}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7317085, y: 0.7317085}
+  m_Size: {x: 1.0864649, y: 2.4660583}
   m_EdgeRadius: 0
 --- !u!61 &61614322090700526
 BoxCollider2D:
@@ -146,7 +147,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1993351, y: 0.1881373}
   m_EdgeRadius: 0
---- !u!114 &114266944049779706
+--- !u!95 &95674222801844498
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1717231491924888}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 87709d84615237b47ad6ac0c0d978abe, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114073306971342244
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -154,15 +173,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1717231491924888}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e44783b3ff9444ea87fd3af2b4a9a31, type: 3}
+  m_Script: {fileID: 11500000, guid: 414308cb55064ed46a1a66e489507dc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: 0
-  speed: 10
-  target: {x: 0, y: 0, z: 0}
-  direction: 0
-  bloodBulletPrefab: {fileID: 0}
-  behaviorState: 0
 --- !u!114 &114428874703445658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -174,6 +187,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 304aef03c7150f541820a7933fe731c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114645588920732972
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1717231491924888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a30d06b8bfce85e459a45492ece074ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 0}
+  secondForm: 0
+  GAS: 10
+  speed: 5
+  hand: {fileID: 1616163168464198}
+  bloodBulletPrefab: {fileID: 1180124063533576, guid: 4ed1885d951889a4983c76242fb4b743,
+    type: 2}
 --- !u!114 &114657061031619414
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -186,18 +217,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 5
-  defence: 0
---- !u!114 &114869662128004030
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1717231491924888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6d318a5e592caa4caf1e2bc5eb3a862, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  currentPhase: 1
+  maxPhase: 3
 --- !u!212 &212980857397950520
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -233,7 +254,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: b1150febb26a02f47b9446c4dbbc8f3c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d5446273c81928540b1ece0aa2efb036, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
