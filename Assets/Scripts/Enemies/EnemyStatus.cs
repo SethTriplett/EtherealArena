@@ -8,18 +8,32 @@ public class EnemyStatus : MonoBehaviour {
     public int maxHealth = 1;
     private float currentHealth;
 
-    public int defence;
+    // The current phase of the boss. 1 in the first phase.
+    [SerializeField] private int currentPhase;
+    // The number of phases in a boss. 3 at most.
+    [SerializeField] private int maxPhase;
+
     private bool defeated = false;
+    private bool invulnerable = false;
+
+    private IPhaseTransition phaseTransitioner;
+    private int level = 5;
 
     void Start() {
         currentHealth = maxHealth;
+        phaseTransitioner = GetComponent<IPhaseTransition>();
         EventMessanger.GetInstance().TriggerEvent(new EnemyMaxHealthEvent(maxHealth));
         EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(maxHealth));
     }
 
     void Update() {
         if (currentHealth <= 0f) {
-            KO();
+            if (currentPhase >= maxPhase) {
+                KO();
+            } else {
+                currentPhase++;
+                TransitionPhases(currentPhase);
+            }
         }
     }
 
@@ -30,7 +44,16 @@ public class EnemyStatus : MonoBehaviour {
         }
     }
 
+    void TransitionPhases(int nextPhase) {
+        maxHealth = phaseTransitioner.GetPhaseMaxHP(nextPhase, this.level);
+        currentHealth = maxHealth;
+        EventMessanger.GetInstance().TriggerEvent(new EnemyMaxHealthEvent(maxHealth));
+        EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(currentHealth));
+        phaseTransitioner.PhaseTransition(nextPhase);
+    }
+
     public void TakeDamage(float damage) {
+        /* Defence is no longer planned to be implemented
         if (damage > 0) {
             if (defence > 0) {
                 damage *= 1 / (1 + (defence / 100f));
@@ -41,6 +64,11 @@ public class EnemyStatus : MonoBehaviour {
             }
             EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(currentHealth));
         }
+        */
+        if (damage > 0 && !invulnerable) {
+            currentHealth -= damage;
+        }
+        EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(currentHealth));
     }
 
     public void HealHealth(float healthHealed) {

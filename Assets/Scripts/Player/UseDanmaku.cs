@@ -13,7 +13,6 @@ public class UseDanmaku : MonoBehaviour, ISkill {
     void Start () {
         readyTimer = 0f;
         danmakuPool = ObjectPooler.sharedPooler;
-        print("dp: " + danmakuPrefab);
         danmakuIndex = danmakuPool.GetIndex(danmakuPrefab);
         if (danmakuIndex == -1) {
             Debug.LogError("Danmaku index not found in pooler.");
