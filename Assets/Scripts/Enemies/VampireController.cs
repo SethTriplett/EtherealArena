@@ -115,7 +115,6 @@ public class VampireController : MonoBehaviour {
         {
             timer = 10f;
             float helper = Random.Range(0, 3);
-            Debug.Log(helper);
             if(helper == 0)
             {
                 curMeth = "AG";
@@ -141,7 +140,6 @@ public class VampireController : MonoBehaviour {
             moveVec = chooseLocation();
         }
         hand.SetActive(false);
-        Debug.Log(curMeth);
     }
     
     //A method to randomly choose the next location to move to and returns the vector point from the current position to the
@@ -161,7 +159,7 @@ public class VampireController : MonoBehaviour {
 
     private void move()
     {
-        if (!(Mathf.Abs(target.x - transform.position.x) < .05) && !(Mathf.Abs(target.y - transform.position.y) < .05))
+        if (!(Mathf.Abs(target.x - transform.position.x) < .05f) && !(Mathf.Abs(target.y - transform.position.y) < .05f))
         {
             transform.position += moveVec * Time.deltaTime * speed;
         }
@@ -329,7 +327,6 @@ public class VampireController : MonoBehaviour {
             }
             else
             {
-                Debug.Log("Charging");
                 transform.position = transform.position + target * GAS * Time.deltaTime;
             }
         } 
