@@ -44,10 +44,12 @@ public class PlayerControl : MonoBehaviour, IEventListener {
 
     void OnEnable() {
         EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerVictoryEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerDefeatEvent), this);
     }
 
     void OnDisable() {
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerVictoryEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerDefeatEvent), this);
     }
 
     void FixedUpdate () {
@@ -235,6 +237,9 @@ public class PlayerControl : MonoBehaviour, IEventListener {
 
     public void ConsumeEvent(IEvent e) {
         if (e.GetType() == typeof(PlayerVictoryEvent)) {
+            StunPlayer();
+            gameObject.layer = 8;
+        } else if (e.GetType() == typeof(PlayerDefeatEvent)) {
             StunPlayer();
             gameObject.layer = 8;
         }

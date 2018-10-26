@@ -1,7 +1,14 @@
 /obj
 /Temp
 /Library
+/.vs
+/.vscode
+*.csproj
+*.sln
+
 
 ChangeLog.txt
 *.txt~
 *.un~
+*~
+*.swp

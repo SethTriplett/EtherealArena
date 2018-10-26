@@ -76,6 +76,7 @@ public class PlayerStatus : MonoBehaviour {
     void KO() {
         playerSpriteRenderer.enabled = false;
         playerArmSpriteRenderer.enabled = false;
+        playerHeadSpriteRenderer.enabled = false;
         EventMessanger.GetInstance().TriggerEvent(new PlayerDefeatEvent());
     }
 
