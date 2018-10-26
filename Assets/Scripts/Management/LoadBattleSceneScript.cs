@@ -14,6 +14,26 @@ public class LoadBattleSceneScript : MonoBehaviour {
 
     public GameObject[] enemyPrefabs;
 
+    public EnemyType EnemyType {
+        get {
+            return enemyType;
+        }
+
+        set {
+            enemyType = value;
+        }
+    }
+
+    public int EnemyLevel {
+        get {
+            return enemyLevel;
+        }
+
+        set {
+            enemyLevel = value;
+        }
+    }
+
     void Start() {
         sceneManagement = GetComponent<SceneManagement>();
         objectPooler = GetComponent<ObjectPooler>();

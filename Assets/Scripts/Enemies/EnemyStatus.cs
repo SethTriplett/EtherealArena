@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using GameJolt.API.Objects;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,6 +42,11 @@ public class EnemyStatus : MonoBehaviour {
     void KO() {
         if (!defeated) {
             defeated = true;
+            LoadBattleSceneScript loadBattleSceneScript = FindObjectOfType<LoadBattleSceneScript>();
+            GameJolt.API.Scores.Add(
+                new Score((int)Time.timeSinceLevelLoad, 
+                Time.timeSinceLevelLoad.ToString(), "Someone w/ " + SystemInfo.deviceModel), 
+                HighscoresManager.GetHighscoresIndex(loadBattleSceneScript.EnemyType, loadBattleSceneScript.EnemyLevel), isSuccess => Debug.Log("Highscores update success=" + isSuccess));
             EventMessanger.GetInstance().TriggerEvent(new PlayerVictoryEvent());
         }
     }
