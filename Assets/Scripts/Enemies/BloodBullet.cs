@@ -7,19 +7,16 @@ public class BloodBullet : MonoBehaviour {
 
     private const float baseSpeed = 10f;
     private float speed;
-    private float angle;
-    private float spinAnimationTimer = 0f;
-    private float aimingAnimationTimer = 0f;
-    private Quaternion aimedDirection;
     private Transform target;
     private float timeCounter;
     private float width;
     private float height;
     private float moveSpeed;
-    private Vector3 centerPoint;
-    private Vector3 tar;
+    [SerializeField] private Vector3 centerPoint;
+    [SerializeField] private Vector3 tar;
     private float timer;
     private int attack;
+    private int ATK2Speed;
 
     private readonly int ATK_1 = 1;
     private readonly int ATK_2 = 2;
@@ -34,24 +31,29 @@ public class BloodBullet : MonoBehaviour {
         speed = 10;
         width = 1;
         height = 1;
-        centerPoint = transform.position;
-        timer = Time.time + 2f;
     }
-	
-	void Update () {
+
+    void OnEnable()
+    {
+        centerPoint = transform.position;
+        timeCounter = 0;
+        speed = 10;
+    }
+
+    void Update()
+    {
         if (timer <= Time.time)
         {
             if (attack == ATK_1)
             {
                 Attack1();
             }
-            else if(attack == ATK_2)
+            else if (attack == ATK_2)
             {
                 Attack2();
-                //Debug.Log("Attack 2");
             }
         }
-	}
+    }
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
@@ -74,12 +76,13 @@ public class BloodBullet : MonoBehaviour {
 
     }
 
+
     public void setSpeed(int s)
     {
         moveSpeed = s;
     }
 
-    public void setTimer(int t)
+    public void setTimer(float t)
     {
         timer = Time.time + t;
     }
@@ -95,17 +98,27 @@ public class BloodBullet : MonoBehaviour {
 
     private void Attack2()
     {
-        transform.position = transform.position + tar;
+        transform.position = transform.position + tar * Time.deltaTime * ATK2Speed;
+    }
+
+    public void calcTarget(Vector3 toTarget)
+    {
+        tar = Vector3.Normalize(new Vector3(toTarget.x - transform.position.x, toTarget.y - transform.position.y));
     }
 
     public void setAttackOne()
     {
         attack = ATK_1;
-        //Debug.Log("set attack 1");
     }
 
     public void setAttackTwo()
     {
         attack = ATK_2;
     }
+
+    public void setATK2Speed(int theSpeed)
+    {
+        ATK2Speed = theSpeed;
+    }
+
 }

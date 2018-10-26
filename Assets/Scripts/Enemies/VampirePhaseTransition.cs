@@ -11,6 +11,7 @@ public class VampirePhaseTransition : MonoBehaviour, IPhaseTransition {
     }
 
     public void PhaseTransition(int nextPhase) {
+        vampireController.StopFunction();
         if (nextPhase == 2) {
             vampireController.StopAllCoroutines();
         } else if (nextPhase == 3) {

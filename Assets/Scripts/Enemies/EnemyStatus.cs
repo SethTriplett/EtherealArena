@@ -98,4 +98,9 @@ public class EnemyStatus : MonoBehaviour {
         }
     }
 
+    public int getPhase()
+    {
+        return currentPhase;
+    }
+
 }
