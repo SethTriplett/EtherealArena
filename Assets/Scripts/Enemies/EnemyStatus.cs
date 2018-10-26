@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Handles enemies health and stats
-public class EnemyStatus : MonoBehaviour {
+public class EnemyStatus : MonoBehaviour, IEventListener {
 
-    public int maxHealth = 1;
+    public int maxHealth;
     private float currentHealth;
 
     // The current phase of the boss. 1 in the first phase.
@@ -19,13 +19,21 @@ public class EnemyStatus : MonoBehaviour {
     private bool invulnerable = false;
 
     private IPhaseTransition phaseTransitioner;
-    private int level = 5;
+    private int level;
 
     void Start() {
         currentHealth = maxHealth;
         phaseTransitioner = GetComponent<IPhaseTransition>();
         EventMessanger.GetInstance().TriggerEvent(new EnemyMaxHealthEvent(maxHealth));
         EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(maxHealth));
+    }
+
+    void OnEnable() {
+        EventMessanger.GetInstance().SubscribeEvent(typeof(EnemyStartingDataEvent), this);
+    }
+
+    void OnDisable() {
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(EnemyStartingDataEvent), this);
     }
 
     void Update() {
@@ -42,12 +50,13 @@ public class EnemyStatus : MonoBehaviour {
     void KO() {
         if (!defeated) {
             defeated = true;
+            EventMessanger.GetInstance().TriggerEvent(new PlayerVictoryEvent());
+            
             LoadBattleSceneScript loadBattleSceneScript = FindObjectOfType<LoadBattleSceneScript>();
             GameJolt.API.Scores.Add(
                 new Score((int)Time.timeSinceLevelLoad, 
                 Time.timeSinceLevelLoad.ToString(), "Someone w/ " + SystemInfo.deviceModel), 
                 HighscoresManager.GetHighscoresIndex(loadBattleSceneScript.EnemyType, loadBattleSceneScript.EnemyLevel), isSuccess => Debug.Log("Highscores update success=" + isSuccess));
-            EventMessanger.GetInstance().TriggerEvent(new PlayerVictoryEvent());
         }
     }
 
@@ -101,6 +110,17 @@ public class EnemyStatus : MonoBehaviour {
     public int getPhase()
     {
         return currentPhase;
+    }
+
+    public void SetMaxPhase(int phase) {
+        this.maxPhase = phase;
+    }
+
+    public void ConsumeEvent(IEvent e) {
+        if (e.GetType() == typeof(EnemyStartingDataEvent)) {
+            EnemyStartingDataEvent dataEvent = e as EnemyStartingDataEvent;
+            this.level = dataEvent.level;
+        }
     }
 
 }

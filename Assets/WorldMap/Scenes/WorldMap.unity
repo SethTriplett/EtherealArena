@@ -541,7 +541,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2fefd24bd2d933a459c6eac46aba3fd6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a44c15e90d5f9ae41bc2637d405c2325, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1834,12 +1834,22 @@ Prefab:
     - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
         type: 2}
       propertyPath: enemyLevel
-      value: 50
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
         type: 2}
       propertyPath: isBattleNode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
+        type: 2}
+      propertyPath: enemyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
+        type: 2}
+      propertyPath: enemyMaxPhase
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 770e668600fa5554182a466d8234c01b, type: 2}
