@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 114645588920732972}
   - component: {fileID: 95674222801844498}
   - component: {fileID: 114073306971342244}
+  - component: {fileID: 114126099800875132}
   m_Layer: 0
   m_Name: Vampire
   m_TagString: Enemy
@@ -176,6 +177,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 414308cb55064ed46a1a66e489507dc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114126099800875132
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1717231491924888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a8ad764c9c0ec0438ce45720060d8d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114428874703445658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -205,6 +217,7 @@ MonoBehaviour:
   hand: {fileID: 1616163168464198}
   bloodBulletPrefab: {fileID: 1180124063533576, guid: 4ed1885d951889a4983c76242fb4b743,
     type: 2}
+  batBulletPrefab: {fileID: 0}
 --- !u!114 &114657061031619414
 MonoBehaviour:
   m_ObjectHideFlags: 1

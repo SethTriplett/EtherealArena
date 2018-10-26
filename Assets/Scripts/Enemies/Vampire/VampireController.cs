@@ -221,6 +221,7 @@ public class VampireController : MonoBehaviour {
                 {
                     BloodBullet bloodBulletScript = bloodBullet.GetComponent<BloodBullet>();
                     bloodBullet.transform.position = new Vector3(xPos, yPos, 0f);
+                    bloodBulletScript.SetOwner(gameObject);
                     bloodBulletScript.setTarget(target);
                     bloodBulletScript.setAttackOne();
                     bloodBulletScript.setSpeed(j + 3);
@@ -246,7 +247,6 @@ public class VampireController : MonoBehaviour {
      //WIP for another attack
     IEnumerator BloodBolts(int number, Transform playerLoc, Vector3 centerPoint, float radius, int speedIncrease)
     {
-        Debug.Log("BloodBolts");
         for (int i = 0; i < number; i++)
         {
             float angleTar = Mathf.Atan2((playerLoc.position.y - transform.position.y), (playerLoc.position.x - transform.position.x));
@@ -256,6 +256,7 @@ public class VampireController : MonoBehaviour {
             {
                 BloodBullet bloodBulletScript = bloodBullet.GetComponent<BloodBullet>();
                 bloodBullet.transform.position = target;
+                bloodBulletScript.SetOwner(gameObject);
                 bloodBulletScript.calcTarget(playerLoc.position);
                 bloodBulletScript.setAttackTwo();
                 bloodBulletScript.setATK2Speed(15 + speedIncrease);
@@ -287,10 +288,8 @@ public class VampireController : MonoBehaviour {
 
     void GrabAttack()
     {
-        //Debug.Log("Grab attack");
         if (GATime - Time.time <= 0)
         {
-            //Debug.Log("Returning");
             hand.SetActive(false);
             target = Vector3.Normalize(moveLoc[curPos] - transform.position);
             transform.position = transform.position + target * GAS * Time.deltaTime;
@@ -361,6 +360,16 @@ public class VampireController : MonoBehaviour {
         hand.SetActive(false);
         run = false;
         timer = 1.5f;
+        animator.SetTrigger("EnterIdle");
+        StopAttacks();
+    }
+
+    public void StopAttacks() {
+        EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
+    }
+
+    public void SetPlayerTransform(Transform playerTransform) {
+        this.playerTransform = playerTransform;
     }
 
 }

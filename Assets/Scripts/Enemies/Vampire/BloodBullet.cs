@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BloodBullet : MonoBehaviour {
-
+public class BloodBullet : MonoBehaviour, IEventListener {
 
     private const float baseSpeed = 10f;
     private float speed;
@@ -23,13 +22,16 @@ public class BloodBullet : MonoBehaviour {
 
     private Animator anim;
     private bool deactivating;
+
+    // The user of this attack (ie the vampire)
+    private GameObject owner;
     
     void reset()
     {
         speed = baseSpeed;
     }
 
-    void Start () {
+    void Awake() {
         timeCounter = 0;
         speed = 10;
         width = 1;
@@ -39,11 +41,16 @@ public class BloodBullet : MonoBehaviour {
 
     void OnEnable()
     {
+        EventMessanger.GetInstance().SubscribeEvent(typeof(DeleteAttacksEvent), this);
         centerPoint = transform.position;
         timeCounter = 0;
         speed = 10;
         deactivating = false;
         anim.SetTrigger("Appear");
+    }
+
+    void OnDisable() {
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(DeleteAttacksEvent), this);
     }
 
     void Update()
@@ -134,6 +141,19 @@ public class BloodBullet : MonoBehaviour {
     public void setATK2Speed(int theSpeed)
     {
         ATK2Speed = theSpeed;
+    }
+
+    public void SetOwner(GameObject owner) {
+        this.owner = owner;
+    }
+
+    public void ConsumeEvent(IEvent e) {
+        if (e.GetType() == typeof(DeleteAttacksEvent)) {
+            DeleteAttacksEvent deleteAttacksEvent = e as DeleteAttacksEvent;
+            if (deleteAttacksEvent.owner == this.owner) {
+                StartCoroutine(Deactivate());
+            }
+        }
     }
 
 }
