@@ -20,6 +20,9 @@ public class BloodBullet : MonoBehaviour {
 
     private readonly int ATK_1 = 1;
     private readonly int ATK_2 = 2;
+
+    private Animator anim;
+    private bool deactivating;
     
     void reset()
     {
@@ -31,6 +34,7 @@ public class BloodBullet : MonoBehaviour {
         speed = 10;
         width = 1;
         height = 1;
+        anim = GetComponent<Animator>();
     }
 
     void OnEnable()
@@ -38,11 +42,13 @@ public class BloodBullet : MonoBehaviour {
         centerPoint = transform.position;
         timeCounter = 0;
         speed = 10;
+        deactivating = false;
+        anim.SetTrigger("Appear");
     }
 
     void Update()
     {
-        if (timer <= Time.time)
+        if (timer <= Time.time && !deactivating)
         {
             if (attack == ATK_1)
             {
@@ -65,9 +71,18 @@ public class BloodBullet : MonoBehaviour {
                     Debug.LogError("No player status script found.");
                 }
                 speed = 0f;
-                gameObject.SetActive(false);
+                StartCoroutine(Deactivate());
             }
         }
+    }
+
+    IEnumerator Deactivate() {
+        deactivating = true;
+        anim.SetTrigger("Disappear");
+        while(!(anim.GetCurrentAnimatorStateInfo(0).IsName("AwaitingDeactivation"))) {
+            yield return null;
+        }
+        gameObject.SetActive(false);
     }
 
     public void setTarget(Vector3 target)
