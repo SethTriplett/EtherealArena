@@ -29,19 +29,15 @@ public class BloodBullet : MonoBehaviour {
     void Start () {
         timeCounter = 0;
         speed = 10;
-        //ATK2Speed = 3;
         width = 1;
         height = 1;
-        //centerPoint = transform.position;
     }
 
     void OnEnable()
     {
         centerPoint = transform.position;
-        //timer = Time.time + 2f;
         timeCounter = 0;
         speed = 10;
-        //Debug.Log(attack);
     }
 
     void Update()
@@ -55,12 +51,11 @@ public class BloodBullet : MonoBehaviour {
             else if (attack == ATK_2)
             {
                 Attack2();
-                //Debug.Log("Attack 2");
             }
         }
     }
 
-        void OnTriggerEnter2D(Collider2D other) {
+    void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
             if (other.gameObject.layer != 8) {
                 PlayerStatus playerStatus = other.gameObject.GetComponent<PlayerStatus>();
@@ -114,7 +109,6 @@ public class BloodBullet : MonoBehaviour {
     public void setAttackOne()
     {
         attack = ATK_1;
-        //Debug.Log("set attack 1");
     }
 
     public void setAttackTwo()
@@ -126,4 +120,5 @@ public class BloodBullet : MonoBehaviour {
     {
         ATK2Speed = theSpeed;
     }
+
 }
