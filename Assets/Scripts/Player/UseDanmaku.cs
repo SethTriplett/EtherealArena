@@ -33,7 +33,7 @@ public class UseDanmaku : MonoBehaviour, ISkill {
             if (nextDanmaku != null) {
                 nextDanmaku.transform.position = hand.position;
                 nextDanmaku.transform.rotation = hand.rotation;
-                danmakuScript.SetPlayerStatusReference(gameObject.GetComponent<PlayerStatus>());
+                danmakuScript.SetOwner(gameObject);
                 nextDanmaku.SetActive(true);
                 readyTimer = 0.166667f;
             }

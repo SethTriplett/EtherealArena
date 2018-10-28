@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BloodBullet : MonoBehaviour, IEventListener {
+public class BloodBullet : MonoBehaviour, IEventListener, IPoolable {
 
     private const float baseSpeed = 10f;
     private float speed;

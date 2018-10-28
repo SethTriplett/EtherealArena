@@ -43,19 +43,22 @@ public class VampireController : MonoBehaviour {
         timer = -1f;
         attacked = true;
         right = true;
-        //GAS = 2;
         GADone = false;
         grabbed = false;
         run = false;
         animator = GetComponent<Animator>();
         bloodBulletIndex = bloodPooler.GetIndex(bloodBulletPrefab);
-        batBulletIndex = bloodPooler.GetIndex(batBulletPrefab);
-        status = GetComponent<EnemyStatus>();
-        canTurn = true;
         if (bloodBulletIndex == -1) {
-            Debug.LogError("BloodBullet not found in object pooler");
+            Debug.LogError("Blood Bullet index not found.");
             bloodBulletIndex = 0;
         }
+        batBulletIndex = bloodPooler.GetIndex(batBulletPrefab);
+        if (batBulletIndex == -1) {
+            Debug.LogError("Bat Bullet index not found.");
+            batBulletIndex = 0;
+        }
+        status = GetComponent<EnemyStatus>();
+        canTurn = true;
         if (moveLoc == null || moveLoc.Count != 4)
         {
             moveLoc = new List<Vector3>();

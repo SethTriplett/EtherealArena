@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BatBulletController : MonoBehaviour {
+public class BatBulletController : MonoBehaviour, IPoolable {
 
     private Transform target;
     private float timeCounter;

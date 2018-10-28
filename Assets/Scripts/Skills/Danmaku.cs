@@ -2,24 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Danmaku : MonoBehaviour {
+public class Danmaku : MonoBehaviour, IPoolable {
 
     private const float BASE_SPEED = 20f;
     private float speed = BASE_SPEED;
     private float angle;
+    private float radAngle;
     private float baseDamage = 1f;
-    private int userAttack = 0;
-    private PlayerStatus playerStatusReference;
+    private GameObject owner;
 
     void OnDisable() {
         speed = BASE_SPEED;
     }
 
     void Update() {
-        angle = gameObject.transform.rotation.eulerAngles.z;
-        angle *= Mathf.PI / 180;
-        gameObject.transform.position += Vector3.right * Mathf.Cos(angle) * speed * Time.deltaTime;
-        gameObject.transform.position += Vector3.up * Mathf.Sin(angle) * speed * Time.deltaTime;
+        SetAnglesFromRotation();
+        gameObject.transform.position += Vector3.right * Mathf.Cos(radAngle) * speed * Time.deltaTime;
+        gameObject.transform.position += Vector3.up * Mathf.Sin(radAngle) * speed * Time.deltaTime;
+    }
+
+    void SetAnglesFromRotation() {
+        angle = transform.rotation.eulerAngles.z;
+        radAngle = angle * Mathf.PI / 180f;
     }
 
     void OnTriggerEnter2D(Collider2D other) {
@@ -27,27 +31,19 @@ public class Danmaku : MonoBehaviour {
         if (other.CompareTag("Enemy")) {
             EnemyStatus enemyStatus = other.GetComponent<EnemyStatus>();
             if (enemyStatus != null) {
-                float damage;
-                if (userAttack >= 0) {
-                    damage = baseDamage * (1 + (userAttack / 100f));
-                } else {
-                    // for now scale negative attack downward disproportionately
-                    //float damage = baseDamage / (1 + (- userAttack / 100f));
-
-                    damage = baseDamage * (1 + (userAttack / 100f));
-                }
-                enemyStatus.TakeDamage(damage);
+                enemyStatus.TakeDamage(baseDamage);
             }
-            if (playerStatusReference != null) {
-                playerStatusReference.gainEnergy(1f);
+            if (owner != null) {
+                PlayerStatus playerStatusReference = owner.GetComponent<PlayerStatus>();
+                if (playerStatusReference != null) playerStatusReference.gainEnergy(1f);
             }
             speed = 0f;
             gameObject.SetActive(false);
         }
     }
 
-    public void SetPlayerStatusReference(PlayerStatus psr) {
-        this.playerStatusReference = psr;
+    public void SetOwner(GameObject owner) {
+        this.owner = owner;
     }
 
 }
