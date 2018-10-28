@@ -10,6 +10,9 @@ public class KnifeDummy : MonoBehaviour, IEventListener {
     private bool stopAttacking = false;
     private bool secondForm;
 
+    [SerializeField] private GameObject knifePrefab;
+    private int knifeIndex;
+
     void OnEnable() {
         EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerVictoryEvent), this);
         EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerDefeatEvent), this);
@@ -22,6 +25,11 @@ public class KnifeDummy : MonoBehaviour, IEventListener {
 
      void Start() {
         knifePooler = ObjectPooler.sharedPooler;
+        knifeIndex = knifePooler.GetIndex(knifePrefab);
+        if (knifeIndex == -1) {
+            Debug.LogError("Knife index not found in pooler");
+            knifeIndex = 0;
+        }
     }
 
     void Update() {
@@ -61,7 +69,7 @@ public class KnifeDummy : MonoBehaviour, IEventListener {
         for (int i = 0; i < number; i++) {
             float adjustedIndex = i - ((number - 1) / 2f);
             knifePos[i] = adjustedIndex * perpendicularVector + targetVector + transform.position;
-            GameObject knife = knifePooler.GetDanmaku(1);
+            GameObject knife = knifePooler.GetDanmaku(knifeIndex);
             knife.SetActive(true);
             if (knife != null) {
                 Knife knifeScript = knife.GetComponent<Knife>();
@@ -91,7 +99,7 @@ public class KnifeDummy : MonoBehaviour, IEventListener {
             float angle = (-i / (float) number) * 2 * Mathf.PI + Mathf.PI / 2;
             float xPos = centerPoint.x + radius * Mathf.Cos(angle);
             float yPos = centerPoint.y + radius * Mathf.Sin(angle);
-            GameObject knife = knifePooler.GetDanmaku(1);
+            GameObject knife = knifePooler.GetDanmaku(knifeIndex);
             if (knife != null) {
                 Knife knifeScript = knife.GetComponent<Knife>();
                 knife.transform.position = new Vector3(xPos, yPos, 0f);

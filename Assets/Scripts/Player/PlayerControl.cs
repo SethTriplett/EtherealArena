@@ -13,21 +13,28 @@ public class PlayerControl : MonoBehaviour, IEventListener {
     private bool leftStickMovement;
     private bool rightStickAiming = false;
     private Transform arm;
-    private SpriteRenderer spriteRenderer;
+    private Transform head;
+    private SpriteRenderer bodyRenderer;
     private SpriteRenderer armRenderer;
+    private SpriteRenderer headRenderer;
     private Transform hand;
     public ISkill[] equipedSkills = new ISkill[8];
     private ISkill activeSkill;
-    private bool stopMovement = false;
+    private bool stunned = false;
     private bool focusingPosition = false;
     private bool usingSkillButton = false;
+
+    [SerializeField] private Sprite armSprite;
+    [SerializeField] private Sprite idleArmSprite;
 
     void Start() {
         facingRight = false;
         arm = transform.Find("Arm");
         hand = arm.Find("Hand");
-        spriteRenderer = arm.GetComponent<SpriteRenderer>();
-        armRenderer = GetComponentInChildren<SpriteRenderer>();
+        head = transform.Find("Head");
+        bodyRenderer = GetComponent<SpriteRenderer>();
+        armRenderer = arm.GetComponent<SpriteRenderer>();
+        headRenderer = head.GetComponent<SpriteRenderer>();
 
         // Temporary
         equipedSkills[0] = GetComponent<UseDanmaku>();
@@ -37,16 +44,18 @@ public class PlayerControl : MonoBehaviour, IEventListener {
 
     void OnEnable() {
         EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerVictoryEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerDefeatEvent), this);
     }
 
     void OnDisable() {
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerVictoryEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerDefeatEvent), this);
     }
 
     void FixedUpdate () {
         checkFocus();
         checkButtons();
-        if (!stopMovement) {
+        if (!stunned) {
             MovementAndAiming();
         }
     }
@@ -164,27 +173,41 @@ public class PlayerControl : MonoBehaviour, IEventListener {
         // flip sprites and set values accordingly
         if (!facingRight) {
             gameObject.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
-            spriteRenderer.flipY = true;
+            bodyRenderer.flipY = true;
             armRenderer.flipY = true;
+            headRenderer.flipY = true;
             if (arm.localPosition.y > 0) {
                 arm.localPosition = new Vector3(arm.localPosition.x, -arm.localPosition.y, arm.localPosition.z);
             }
-        } else {
+            if (head.localPosition.y > 0) {
+                head.localPosition = new Vector3(head.localPosition.x, -head.localPosition.y, head.localPosition.z);
+            }
+         } else {
             gameObject.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-            spriteRenderer.flipY = false;
+            bodyRenderer.flipY = false;
             armRenderer.flipY = false;
-             if (arm.localPosition.y < 0) {
+            headRenderer.flipY = false;
+            if (arm.localPosition.y < 0) {
                 arm.localPosition = new Vector3(arm.localPosition.x, -arm.localPosition.y, arm.localPosition.z);
             }
-        }
+            if (head.localPosition.y < 0) {
+                head.localPosition = new Vector3(head.localPosition.x, -head.localPosition.y, head.localPosition.z);
+            }
+         }
 
 
-        // Rotate arm after determining direction
-        arm.rotation = Quaternion.Euler(0f, 0f, aimingAngle);
 
         // Auto Release with right stick
-        if (rightStickAiming || usingSkillButton) {
-            activeSkill.UseSkill(hand, true);
+        if (rightStickAiming || usingSkillButton || focusingPosition) {
+            // Rotate arm after determining direction
+            arm.rotation = Quaternion.Euler(0f, 0f, aimingAngle);
+            armRenderer.sprite = armSprite;
+            if (rightStickAiming || usingSkillButton && !stunned) {
+                activeSkill.UseSkill(hand, true);
+            }
+        } else {
+            arm.rotation = Quaternion.Euler(0f, 0f, facingRight ? 0f : 180f);
+            armRenderer.sprite = idleArmSprite;
         }
     }
 
@@ -204,17 +227,20 @@ public class PlayerControl : MonoBehaviour, IEventListener {
         }
     }
 
-    public void StopMovement() {
-        this.stopMovement = true;
+    public void StunPlayer() {
+        this.stunned = true;
     }
 
-    public void AllowMovement() {
-        this.stopMovement = false;
+    public void UnStunPlayer() {
+        this.stunned = false;
     }
 
     public void ConsumeEvent(IEvent e) {
         if (e.GetType() == typeof(PlayerVictoryEvent)) {
-            StopMovement();
+            StunPlayer();
+            gameObject.layer = 8;
+        } else if (e.GetType() == typeof(PlayerDefeatEvent)) {
+            StunPlayer();
             gameObject.layer = 8;
         }
     }

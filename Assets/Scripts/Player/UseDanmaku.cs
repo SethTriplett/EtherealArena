@@ -7,10 +7,17 @@ public class UseDanmaku : MonoBehaviour, ISkill {
     // cooldown timer in frames
     private float readyTimer;
     private ObjectPooler danmakuPool;
+    [SerializeField] private GameObject danmakuPrefab;
+    private int danmakuIndex;
 
     void Start () {
         readyTimer = 0f;
         danmakuPool = ObjectPooler.sharedPooler;
+        danmakuIndex = danmakuPool.GetIndex(danmakuPrefab);
+        if (danmakuIndex == -1) {
+            Debug.LogError("Danmaku index not found in pooler.");
+            danmakuIndex = 0;
+        }
     }
 
     void Update () {
@@ -21,7 +28,7 @@ public class UseDanmaku : MonoBehaviour, ISkill {
 
     public void UseSkill(Transform hand, bool isAutoRelease) {
         if (readyTimer <= 0) {
-            GameObject nextDanmaku = danmakuPool.GetDanmaku(0);
+            GameObject nextDanmaku = danmakuPool.GetDanmaku(danmakuIndex);
             Danmaku danmakuScript = nextDanmaku.GetComponent<Danmaku>();
             if (nextDanmaku != null) {
                 nextDanmaku.transform.position = hand.position;

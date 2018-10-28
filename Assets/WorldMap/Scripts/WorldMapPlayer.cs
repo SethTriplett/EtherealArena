@@ -18,6 +18,12 @@ namespace EtherealArena.WorldMap {
 		private static WorldMapNode CURRENT_NODE;
 		private bool canMove = true;
 
+        public WorldMapNode CurrentNode {
+            get {
+                return CURRENT_NODE;
+            }
+        }
+
 		private void Awake() {
 
 			// If the current node is null, it's the first time the world map has loaded.
@@ -53,7 +59,7 @@ namespace EtherealArena.WorldMap {
 
                     if (CURRENT_NODE.IsBattleNode) {
                         LoadBattleSceneScript loader = GameControllerScript.GetInstance().GetComponent<LoadBattleSceneScript>();
-                        loader.LoadBattleScene(CURRENT_NODE.EnemyType, CURRENT_NODE.EnemyLevel);
+                        loader.LoadBattleScene(CURRENT_NODE.EnemyType, CURRENT_NODE.EnemyLevel, CURRENT_NODE.EnemyMaxPhase);
                     }
 
 				}

@@ -8,9 +8,9 @@ public class ObjectPooler : MonoBehaviour {
     private List<List<GameObject>> pools;
     // For the sake of clear organization, put each pool as a parent object of the pool of objects
     private GameObject[] poolObjects;
-    public GameObject[] danmakuList = new GameObject[2];
-    public int[] numberOfDanmaku = new int[2];
-    private int[] nextAvailable = new int[2];
+    [SerializeField] public GameObject[] danmakuList;
+    [SerializeField] private int[] numberOfDanmaku;
+    private int[] nextAvailable;
 
     void Awake() {
         if (sharedPooler == null) {
@@ -26,6 +26,7 @@ public class ObjectPooler : MonoBehaviour {
 
     public void ReinstantiatePools() {
         poolObjects = new GameObject[danmakuList.Length];
+        nextAvailable = new int[danmakuList.Length];
         for (int y = 0; y < danmakuList.Length; y++) {
             GameObject poolObject = new GameObject();
             poolObject.name = danmakuList[y].name + " Pool";
@@ -47,6 +48,17 @@ public class ObjectPooler : MonoBehaviour {
         }
     }
 
+    // Input a prefab to get its index in list
+    public int GetIndex(GameObject prefab) {
+        for (int i = 0; i < danmakuList.Length; i++) {
+            if (danmakuList[i] == prefab) {
+                return i;
+            }
+        }
+        // If not found return -1
+        return -1;
+    }
+
     public GameObject GetDanmaku(int type) {
         int startingIndex = nextAvailable[type];
         do {
@@ -62,4 +74,5 @@ public class ObjectPooler : MonoBehaviour {
         } while (nextAvailable[type] != startingIndex);
         return null;
     }
+
 }
