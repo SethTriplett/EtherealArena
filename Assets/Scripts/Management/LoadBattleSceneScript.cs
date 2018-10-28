@@ -73,7 +73,7 @@ public class LoadBattleSceneScript : MonoBehaviour {
         this.enemyType = enemyType;
         this.enemyLevel = enemyLevel;
         this.enemyMaxPhase = enemyMaxPhase;
-        SceneManager.LoadScene("Battle");
+        Vignette.LoadScene("Battle");
     }
 
 }
