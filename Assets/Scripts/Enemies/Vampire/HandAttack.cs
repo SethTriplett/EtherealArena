@@ -22,6 +22,8 @@ public class HandAttack : MonoBehaviour {
         if(col.gameObject.tag.Equals("Player"))
         {
             player = col.gameObject;
+            PlayerControl playerControl = player.GetComponent<PlayerControl>();
+            if (playerControl != null) playerControl.StunPlayer();
             transform.parent.gameObject.GetComponent<VampireController>().playerGrabbed();
         }
     }
@@ -31,6 +33,8 @@ public class HandAttack : MonoBehaviour {
         if (player != null)
         {
             player.GetComponent<PlayerStatus>().TakeHit();
+            PlayerControl playerControl = player.GetComponent<PlayerControl>();
+            if (playerControl != null) playerControl.UnStunPlayer();
             transform.parent.gameObject.GetComponent<EnemyStatus>().HealHealthPortion(0.1f);
         }
         player = null;

@@ -38,6 +38,7 @@ public class PlayerControl : MonoBehaviour, IEventListener {
 
         // Temporary
         equipedSkills[0] = GetComponent<UseDanmaku>();
+        equipedSkills[1] = GetComponent<UseFlamethrower>();
 
         activeSkill = equipedSkills[0];
     }
