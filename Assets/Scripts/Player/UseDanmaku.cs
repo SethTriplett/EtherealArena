@@ -12,7 +12,7 @@ public class UseDanmaku : MonoBehaviour, ISkill {
 
     void Start () {
         readyTimer = 0f;
-        danmakuPool = ObjectPooler.sharedPooler;
+        danmakuPool = ObjectPooler.instance;
         danmakuIndex = danmakuPool.GetIndex(danmakuPrefab);
         if (danmakuIndex == -1) {
             Debug.LogError("Danmaku index not found in pooler.");
@@ -36,6 +36,9 @@ public class UseDanmaku : MonoBehaviour, ISkill {
                 danmakuScript.SetOwner(gameObject);
                 nextDanmaku.SetActive(true);
                 readyTimer = 0.166667f;
+
+                //Temp
+                AudioManager.GetInstance().PlaySound(0);
             }
         }
     }

@@ -52,7 +52,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4029262302968546}
-  - component: {fileID: 114518921384407280}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Untagged
@@ -71,6 +70,7 @@ GameObject:
   - component: {fileID: 212480295416952198}
   - component: {fileID: 114465652978299496}
   - component: {fileID: 114607742074941016}
+  - component: {fileID: 114003058426028886}
   - component: {fileID: 114630994448526842}
   - component: {fileID: 50573223761268146}
   - component: {fileID: 61880520503946768}
@@ -156,7 +156,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 0
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!61 &61880520503946768
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -218,6 +218,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114003058426028886
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1391119132681712}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaec1e84a36c17b40be05a2400b6cf5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireballPrefab: {fileID: 1054486580523634, guid: 3f8a6fc1e1859644f8a384212003bc36,
+    type: 2}
 --- !u!114 &114465652978299496
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -231,18 +244,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   armSprite: {fileID: 21300000, guid: 3a856fba6678292419c9a6f71db5024d, type: 3}
   idleArmSprite: {fileID: 21300000, guid: b48230f0d5404d741a987c967ce6c2b2, type: 3}
---- !u!114 &114518921384407280
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1309045599856856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dad7b69176f0c94aaa61b95053e4a89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  danmakuPrefab: {fileID: 0}
 --- !u!114 &114607742074941016
 MonoBehaviour:
   m_ObjectHideFlags: 1

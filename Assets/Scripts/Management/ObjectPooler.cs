@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour {
 
-    public static ObjectPooler sharedPooler;
+    public static ObjectPooler instance;
     private List<List<GameObject>> pools;
     // For the sake of clear organization, put each pool as a parent object of the pool of objects
     private GameObject[] poolObjects;
@@ -13,9 +13,9 @@ public class ObjectPooler : MonoBehaviour {
     private int[] nextAvailable;
 
     void Awake() {
-        if (sharedPooler == null) {
-            sharedPooler = this;
-        } else if (sharedPooler != this) {
+        if (instance == null) {
+            instance = this;
+        } else if (instance != this) {
             Destroy(gameObject);
         }
     }

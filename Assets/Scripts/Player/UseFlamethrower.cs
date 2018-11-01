@@ -12,7 +12,7 @@ public class UseFlamethrower : MonoBehaviour, ISkill {
 
     void Start () {
         readyTimer = 0f;
-        danmakuPool = ObjectPooler.sharedPooler;
+        danmakuPool = ObjectPooler.instance;
         fireballIndex = danmakuPool.GetIndex(fireballPrefab);
         if (fireballIndex == -1) {
             Debug.LogError("Fireball index not found in pooler.");
