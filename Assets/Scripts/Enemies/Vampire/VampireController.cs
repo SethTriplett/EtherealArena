@@ -38,7 +38,7 @@ public class VampireController : MonoBehaviour {
 
 
     void Start () {
-		bloodPooler = ObjectPooler.sharedPooler;
+		bloodPooler = ObjectPooler.instance;
         curMeth = "attack";
         timer = -1f;
         attacked = true;

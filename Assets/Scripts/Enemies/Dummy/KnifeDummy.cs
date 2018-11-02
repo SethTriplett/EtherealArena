@@ -24,7 +24,7 @@ public class KnifeDummy : MonoBehaviour, IEventListener {
     }
 
      void Start() {
-        knifePooler = ObjectPooler.sharedPooler;
+        knifePooler = ObjectPooler.instance;
         knifeIndex = knifePooler.GetIndex(knifePrefab);
         if (knifeIndex == -1) {
             Debug.LogError("Knife index not found in pooler");

@@ -15,6 +15,7 @@ public class GameControllerScript : MonoBehaviour {
                 DontDestroyOnLoad(gameObject);
             } else {
                 DontDestroyOnLoad(instance);
+                if (instance != this.gameObject) Destroy(this.gameObject);
             }
         } else {
             Destroy(gameObject);
@@ -31,7 +32,7 @@ public class GameControllerScript : MonoBehaviour {
                 DontDestroyOnLoad(instance);
                 return instance;
             } else {
-                Debug.LogError("Returning null EventMessanger");
+                Debug.LogError("Returning null GameController");
                 return null;
             }
         }
