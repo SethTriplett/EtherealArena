@@ -12,6 +12,7 @@ public class Vignette : MonoBehaviour {
 
 	private bool busy = false;
 	private Material mat = null;
+    [SerializeField] private bool startActive; // Have the vignette active on the start screen
 
 	private void Awake() {
 
@@ -23,6 +24,7 @@ public class Vignette : MonoBehaviour {
 			
 			Image i = GetComponentInChildren<Image>();
 			mat = Instantiate(i.material);
+            if (startActive) mat.SetFloat("_Alpha", 0.4f);
 			i.material = mat;
 		}
 	}

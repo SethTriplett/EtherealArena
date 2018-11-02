@@ -64,7 +64,7 @@ public class EnemyStatus : MonoBehaviour, IEventListener {
         maxHealth = phaseTransitioner.GetPhaseMaxHP(nextPhase, this.level);
         currentHealth = maxHealth;
         EventMessanger.GetInstance().TriggerEvent(new EnemyMaxHealthEvent(maxHealth));
-        EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(currentHealth));
+        EventMessanger.GetInstance().TriggerEvent(new EnemyHealthTransitionEvent(1.5f, nextPhase));
         phaseTransitioner.PhaseTransition(nextPhase);
     }
 
