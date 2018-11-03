@@ -26,7 +26,7 @@ public class UseDanmaku : MonoBehaviour, ISkill {
         }
     }
 
-    public void UseSkill(Transform hand, bool isAutoRelease) {
+    public void UseSkill(Transform hand) {
         if (readyTimer <= 0) {
             GameObject nextDanmaku = danmakuPool.GetDanmaku(danmakuIndex);
             Danmaku danmakuScript = nextDanmaku.GetComponent<Danmaku>();
@@ -41,6 +41,22 @@ public class UseDanmaku : MonoBehaviour, ISkill {
                 AudioManager.GetInstance().PlaySound(0);
             }
         }
+    }
+
+    public void ReleaseSkill() {
+        // Do nothing
+    }
+
+    public void AimSkill(Transform hand) {
+        // Do nothing
+    }
+
+    public void SetActiveSkill() {
+        // Do nothing
+    }
+
+    public void SetInactiveSkill() {
+        // Do nothing
     }
 
 }

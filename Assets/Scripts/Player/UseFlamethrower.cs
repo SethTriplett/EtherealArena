@@ -26,7 +26,7 @@ public class UseFlamethrower : MonoBehaviour, ISkill {
         }
     }
 
-    public void UseSkill(Transform hand, bool isAutoRelease) {
+    public void UseSkill(Transform hand) {
         if (readyTimer <= 0) {
             GameObject nextFireball = danmakuPool.GetDanmaku(fireballIndex);
             Flamethrower flamethrowerScript = nextFireball.GetComponent<Flamethrower>();
@@ -38,6 +38,22 @@ public class UseFlamethrower : MonoBehaviour, ISkill {
                 readyTimer = 0.1f;
             }
         }
+    }
+
+    public void ReleaseSkill() {
+        // Do nothing
+    }
+
+    public void AimSkill(Transform hand) {
+        // Do nothing
+    }
+
+    public void SetActiveSkill() {
+        // Do nothing
+    }
+
+    public void SetInactiveSkill() {
+        // Do nothing
     }
 
 }

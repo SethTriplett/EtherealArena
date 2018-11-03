@@ -18,11 +18,13 @@ public class PlayerControl : MonoBehaviour, IEventListener {
     private SpriteRenderer armRenderer;
     private SpriteRenderer headRenderer;
     private Transform hand;
-    public ISkill[] equipedSkills = new ISkill[8];
+    public ISkill[] equipedSkills = new ISkill[3];
     private ISkill activeSkill;
+    private int activeSkillIndex;
     private bool stunned = false;
     private bool focusingPosition = false;
     private bool usingSkillButton = false;
+    private bool usingSkillPreviousFrame = false;
 
     [SerializeField] private Sprite armSprite;
     [SerializeField] private Sprite idleArmSprite;
@@ -39,8 +41,10 @@ public class PlayerControl : MonoBehaviour, IEventListener {
         // Temporary
         equipedSkills[0] = GetComponent<UseDanmaku>();
         equipedSkills[1] = GetComponent<UseFlamethrower>();
+        equipedSkills[2] = GetComponent<UseLightBow>();
 
-        activeSkill = equipedSkills[0];
+        activeSkillIndex = 0;
+        activeSkill = equipedSkills[activeSkillIndex];
     }
 
     void OnEnable() {
@@ -54,8 +58,9 @@ public class PlayerControl : MonoBehaviour, IEventListener {
     }
 
     void FixedUpdate () {
-        checkFocus();
-        checkButtons();
+        CheckFocus();
+        CheckSkillButton();
+        CheckSwapSkill();
         if (!stunned) {
             MovementAndAiming();
         }
@@ -198,34 +203,61 @@ public class PlayerControl : MonoBehaviour, IEventListener {
 
 
 
-        // Auto Release with right stick
+        // Use skill or aim
         if (rightStickAiming || usingSkillButton || focusingPosition) {
             // Rotate arm after determining direction
             arm.rotation = Quaternion.Euler(0f, 0f, aimingAngle);
             armRenderer.sprite = armSprite;
             if (rightStickAiming || usingSkillButton && !stunned) {
-                activeSkill.UseSkill(hand, true);
+                activeSkill.UseSkill(hand);
+                usingSkillPreviousFrame = true;
+            } else if (!(rightStickAiming || usingSkillButton) && !stunned) {
+                if (usingSkillPreviousFrame) {
+                    activeSkill.ReleaseSkill();
+                }
+                // Used when the player is holding their position (to aim the bow)
+                activeSkill.AimSkill(hand);
+                usingSkillPreviousFrame = false;
             }
         } else {
+            if (usingSkillPreviousFrame) {
+                activeSkill.ReleaseSkill();
+            }
             arm.rotation = Quaternion.Euler(0f, 0f, facingRight ? 0f : 180f);
             armRenderer.sprite = idleArmSprite;
+            activeSkill.AimSkill(hand);
+            usingSkillPreviousFrame = false;
         }
     }
 
-    void checkFocus() {
-        if (Input.GetAxis("RB") > 0 || Input.GetAxis("LB") > 0) {
+    void CheckFocus() {
+        if (Input.GetButton("RB") || Input.GetButton("LB")) {
             focusingPosition = true;
         } else {
             focusingPosition = false;
         }
     }
 
-    void checkButtons() {
-        if (Input.GetAxis("A") > 0) {
+    void CheckSkillButton() {
+        if (Input.GetButton("A")) {
             usingSkillButton = true;
         } else {
             usingSkillButton = false;
         }
+    }
+
+    void CheckSwapSkill() {
+        if (Input.GetButtonDown("X")) {
+            ChangeActiveSkill();
+        }
+    }
+
+    void ChangeActiveSkill() {
+        activeSkill.SetInactiveSkill();
+        activeSkillIndex++;
+        activeSkillIndex %= equipedSkills.Length;
+        activeSkill = equipedSkills[activeSkillIndex];
+        activeSkill.SetActiveSkill();
     }
 
     public void StunPlayer() {
