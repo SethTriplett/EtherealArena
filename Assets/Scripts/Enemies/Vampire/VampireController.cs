@@ -162,12 +162,15 @@ public class VampireController : MonoBehaviour {
 
     private void move()
     {
-        if (!(Mathf.Abs(target.x - transform.position.x) < .05f) && !(Mathf.Abs(target.y - transform.position.y) < .05f))
+        if (!(Mathf.Abs(target.x - transform.position.x) < .1f) || !(Mathf.Abs(target.y - transform.position.y) < .1f))
         {
             transform.position += moveVec * Time.deltaTime * speed;
         }
         else
         {
+            Debug.Log(transform.position);
+            Debug.Log(target);
+            Debug.Log("X: " + Mathf.Abs(target.x - transform.position.x) + "\nY: " + Mathf.Abs(target.y - transform.position.y));
             transform.position = target;
             timer = -1;
         }
