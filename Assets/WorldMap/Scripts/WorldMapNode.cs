@@ -19,6 +19,8 @@ namespace EtherealArena.WorldMap {
         [SerializeField] private EnemyType enemyType;
         public int EnemyLevel { get { return enemyLevel; }}
         [SerializeField] private int enemyLevel;
+        public int EnemyMaxPhase { get { return enemyMaxPhase; }}
+        [SerializeField] private int enemyMaxPhase;
 
         private void Start() {
 

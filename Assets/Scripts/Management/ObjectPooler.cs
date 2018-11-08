@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour {
 
-    public static ObjectPooler sharedPooler;
+    public static ObjectPooler instance;
     private List<List<GameObject>> pools;
     // For the sake of clear organization, put each pool as a parent object of the pool of objects
     private GameObject[] poolObjects;
@@ -13,9 +13,9 @@ public class ObjectPooler : MonoBehaviour {
     private int[] nextAvailable;
 
     void Awake() {
-        if (sharedPooler == null) {
-            sharedPooler = this;
-        } else if (sharedPooler != this) {
+        if (instance == null) {
+            instance = this;
+        } else if (instance != this) {
             Destroy(gameObject);
         }
     }
@@ -51,7 +51,14 @@ public class ObjectPooler : MonoBehaviour {
     // Input a prefab to get its index in list
     public int GetIndex(GameObject prefab) {
         for (int i = 0; i < danmakuList.Length; i++) {
-            if (danmakuList[i] == prefab) {
+            // Compares the main logic scripts on the objects to check if they're the same
+            IPoolable pooledObject = danmakuList[i].GetComponent<IPoolable>();
+            IPoolable requestedObject = prefab.GetComponent<IPoolable>();
+            if (pooledObject == null) {
+                Debug.LogError(danmakuList[i] + " is missing IPoolable.");
+            } else if (requestedObject == null) {
+                Debug.LogError(prefab + " is missing IPoolable.");
+            } else if (pooledObject.GetType() == requestedObject.GetType()) {
                 return i;
             }
         }

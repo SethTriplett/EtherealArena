@@ -1,3 +1,3 @@
 public enum EnemyType {
-    Dummy
+    Dummy, Vampire
 }

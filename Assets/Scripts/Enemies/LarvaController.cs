@@ -35,7 +35,7 @@ public class LarvaController : MonoBehaviour
     {
         IDLE_TARGET_LOC = new Vector3(-7.0f, 0.0f);
         TOP_SCREEN_LOC = new Vector3(-7.0f, 3.5f);
-        bloodPooler = ObjectPooler.sharedPooler;
+        bloodPooler = ObjectPooler.instance;
         timer = IDLE_TIME;
         attacked = true;
         right = true;
