@@ -6,9 +6,12 @@ public class EnemyStartingDataEvent : IEvent {
     // Number of phases in the boss. If 0, will be determined by level
     public int maxPhase;
 
-    public EnemyStartingDataEvent(int level, int maxPhase) {
+    public string name;
+
+    public EnemyStartingDataEvent(int level, int maxPhase, string name) {
         this.level = level;
         this.maxPhase = maxPhase;
+        this.name = name;
     }
 
 }

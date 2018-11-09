@@ -35,15 +35,17 @@ public class DarkArrow : MonoBehaviour, IPoolable, IEventListener {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("Player") && other.gameObject.layer != 8) {
-            PlayerStatus playerStatus = other.GetComponent<PlayerStatus>();
-            if (playerStatus != null) {
-                playerStatus.TakeHit();
-            } else {
-                Debug.LogError("Player status not found.");
+        if (arrowState == ArrowState.released) {
+            if (other.CompareTag("Player") && other.gameObject.layer != 8) {
+                PlayerStatus playerStatus = other.GetComponent<PlayerStatus>();
+                if (playerStatus != null) {
+                    playerStatus.TakeHit();
+                } else {
+                    Debug.LogError("Player status not found.");
+                }
+                speed = 0f;
+                Deactivate();
             }
-            speed = 0f;
-            Deactivate();
         }
     }
 

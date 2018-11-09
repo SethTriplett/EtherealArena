@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114364212801043122}
   - component: {fileID: 114623756723395564}
   - component: {fileID: 58838890510351380}
+  - component: {fileID: 95410351097609078}
   m_Layer: 0
   m_Name: SpiritShot(Enemy)
   m_TagString: Untagged
@@ -58,6 +59,24 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.16
+--- !u!95 &95410351097609078
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1644064600827450}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ee8fcb76ff71d074684b94b62037aba2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114364212801043122
 MonoBehaviour:
   m_ObjectHideFlags: 1

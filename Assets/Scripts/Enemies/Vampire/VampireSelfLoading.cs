@@ -16,18 +16,27 @@ public class VampireSelfLoading : MonoBehaviour, IEventListener {
     void SetStats(int level, int maxPhase) {
         EnemyStatus enemyStatus = GetComponent<EnemyStatus>();
         VampireController vampireController = GetComponent<VampireController>();
-        EventMessanger.GetInstance().TriggerEvent(new EnemyDisplayLevelEvent(level));
-        enemyStatus.maxHealth = 5 * (level + 1);
         if (maxPhase > 0) {
             enemyStatus.SetMaxPhase(maxPhase);
         } else {
             if (level < 30) {
                 enemyStatus.SetMaxPhase(1);
+                maxPhase = 1;
             } else if (level < 60) {
                 enemyStatus.SetMaxPhase(2);
+                maxPhase = 2;
             } else {
                 enemyStatus.SetMaxPhase(3);
+                maxPhase = 3;
             }
+        }
+        float totalHealth = 5 * (level + 1);
+        if (maxPhase == 1) {
+            enemyStatus.maxHealth = (int) totalHealth;
+        } else if (maxPhase == 2) {
+            enemyStatus.maxHealth = Mathf.FloorToInt(totalHealth * 4f / 10f);
+        } else if (maxPhase == 3) {
+            enemyStatus.maxHealth = Mathf.FloorToInt(totalHealth * 2f / 10f);
         }
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         vampireController.SetPlayerTransform(player.transform);

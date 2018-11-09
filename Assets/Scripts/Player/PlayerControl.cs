@@ -45,6 +45,7 @@ public class PlayerControl : MonoBehaviour, IEventListener {
 
         activeSkillIndex = 0;
         activeSkill = equipedSkills[activeSkillIndex];
+        EventMessanger.GetInstance().TriggerEvent(new SkillIconEvent(1));
     }
 
     void OnEnable() {
@@ -258,6 +259,7 @@ public class PlayerControl : MonoBehaviour, IEventListener {
         activeSkillIndex %= equipedSkills.Length;
         activeSkill = equipedSkills[activeSkillIndex];
         activeSkill.SetActiveSkill();
+        EventMessanger.GetInstance().TriggerEvent(new SkillIconEvent(activeSkillIndex + 1));
     }
 
     public void StunPlayer() {
@@ -270,9 +272,11 @@ public class PlayerControl : MonoBehaviour, IEventListener {
 
     public void ConsumeEvent(IEvent e) {
         if (e.GetType() == typeof(PlayerVictoryEvent)) {
+            AudioManager.GetInstance().StopSound(Sound.FireLoop);
             StunPlayer();
             gameObject.layer = 8;
         } else if (e.GetType() == typeof(PlayerDefeatEvent)) {
+            AudioManager.GetInstance().StopSound(Sound.FireLoop);
             StunPlayer();
             gameObject.layer = 8;
         }

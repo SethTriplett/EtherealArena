@@ -11,6 +11,7 @@ public class SpiritShotEnemy : MonoBehaviour, IPoolable, IEventListener {
     private GameObject owner;
 
     void OnEnable() {
+        SetAnglesFromRotation();
         EventMessanger.GetInstance().SubscribeEvent(typeof(DeleteAttacksEvent), this);
     }
 
