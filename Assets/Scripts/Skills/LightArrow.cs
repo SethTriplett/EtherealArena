@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightArrow : MonoBehaviour, IPoolable {
+public class LightArrow : MonoBehaviour, IPoolable, IEventListener {
 
     private enum ArrowState {
         charging, released
@@ -16,6 +16,14 @@ public class LightArrow : MonoBehaviour, IPoolable {
 
     void Awake() {
         speed = 30f;
+    }
+
+    void OnEnable() {
+        EventMessanger.GetInstance().SubscribeEvent(typeof(DeleteAttacksEvent), this);
+    }
+
+    void OnDisable() {
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(DeleteAttacksEvent), this);
     }
 
     void Update() {
@@ -33,6 +41,8 @@ public class LightArrow : MonoBehaviour, IPoolable {
             float damage = CalcDamage(chargeLevel);
             if (enemyStatus != null) {
                 enemyStatus.TakeDamage(damage);
+            } else {
+                Debug.LogError("Enemy Status not found.");
             }
             if (owner != null) {
                 PlayerStatus playerStatusReference = owner.GetComponent<PlayerStatus>();
@@ -58,6 +68,10 @@ public class LightArrow : MonoBehaviour, IPoolable {
 
     public void SetOwner(GameObject owner) {
         this.owner = owner;
+    }
+
+    private void Deactivate() {
+        gameObject.SetActive(false);
     }
 
     private void SetSpeed(int chargeLevel) {
@@ -100,5 +114,14 @@ public class LightArrow : MonoBehaviour, IPoolable {
         }
         return 0.1f;
     }
-    
+
+    public void ConsumeEvent(IEvent e) {
+        if (e.GetType() == typeof(DeleteAttacksEvent)) {
+            DeleteAttacksEvent deleteAttacksEvent = e as DeleteAttacksEvent;
+            if (deleteAttacksEvent.owner == owner) {
+                Deactivate();
+            }
+        }
+    }
+ 
 }

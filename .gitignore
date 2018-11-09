@@ -3,6 +3,7 @@
 /Library
 /.vs
 /.vscode
+/Build
 *.csproj
 *.sln
 
