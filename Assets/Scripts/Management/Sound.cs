@@ -3,5 +3,10 @@
 public enum Sound {
     Schff,
     WarpOut,
-    WarpIn
+    WarpIn,
+    Charge,
+    BowRelease,
+    FireStart,
+    FireLoop,
+    FireEnd
 }

@@ -30,6 +30,7 @@ public class DarkFlame : MonoBehaviour, IPoolable, IEventListener {
 
     void OnDisable() {
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(DeleteAttacksEvent), this);
+        spriteRenderer.color = new Color(1, 1, 1, 1);
     }
 
     void Update() {
@@ -60,14 +61,16 @@ public class DarkFlame : MonoBehaviour, IPoolable, IEventListener {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("Player") && other.gameObject.layer != 8) {
-            PlayerStatus playerStatus = other.GetComponent<PlayerStatus>();
-            if (playerStatus != null) {
-                playerStatus.TakeHit();
-            } else {
-                Debug.LogError("Player status not found.");
+        if (!deactivating) {
+            if (other.CompareTag("Player") && other.gameObject.layer != 8) {
+                PlayerStatus playerStatus = other.GetComponent<PlayerStatus>();
+                if (playerStatus != null) {
+                    playerStatus.TakeHit();
+                } else {
+                    Debug.LogError("Player status not found.");
+                }
+                Deactivate();
             }
-            Deactivate();
         }
     }
 

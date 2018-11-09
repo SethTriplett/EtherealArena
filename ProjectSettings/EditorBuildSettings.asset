@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/TitleScreen.unity
     guid: fca01d9cc52cf92459e41aee3def56a0
   - enabled: 1
-    path: Assets/WorldMap/Scenes/WorldMap.unity
+    path: Assets/Scenes/WorldMap.unity
     guid: dd4a943b6e167d147a31e3dec44989d1
   - enabled: 0
     path: Assets/Scenes/Prototype.unity
@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Battle.unity
     guid: 9cb408a278c50ce4a82250234602eefd
+  - enabled: 1
+    path: Assets/Scenes/FinalBattle.unity
+    guid: b4ae11286cc00da4e9bc205a11c4173f
   m_configObjects: {}

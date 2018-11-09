@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class DarkPlayerController : MonoBehaviour {
 
+    private enum DarkPlayerState {
+        Idle, Attacking
+    }
+    private DarkPlayerState state;
+
     private int phase;
     [SerializeField] private Transform hand;
 
@@ -29,18 +34,28 @@ public class DarkPlayerController : MonoBehaviour {
     private int darkBowIndex;
     private int darkArrowIndex;
     private int darkFlameIndex;
-    
 
-    private float stormTimer = 0;
-    private float arrowTimer = 0f;
-    private float warpTimer = 0f;
+    private float cooldownTimer = 5f;
+    private int attack;
+
+    private float warpTimer;
+
     private const float WARP_DURATION = 1f;
+    private readonly Vector3[] positions = {
+        new Vector3(6.2f, 3.8f, 0),
+        new Vector3(-6.2f, 3.8f, 0),
+        new Vector3(-6.2f, -3.8f, 0),
+        new Vector3(6.2f, -3.8f, 0),
+        new Vector3(0f, 0f, 0)
+    };
 
     void Start() {
         spiritShotIndex = ObjectPooler.instance.GetIndex(spiritShotPrefab);
         darkBowIndex = ObjectPooler.instance.GetIndex(darkBowPrefab);
         darkArrowIndex = ObjectPooler.instance.GetIndex(darkArrowPrefab);
         darkFlameIndex = ObjectPooler.instance.GetIndex(darkFlamePrefab);
+
+        state = DarkPlayerState.Idle;
 
         bodyRenderer = GetComponent<SpriteRenderer>();
         arm = transform.Find("DarkPlayer_Arm");
@@ -54,20 +69,62 @@ public class DarkPlayerController : MonoBehaviour {
     }
 
     void Update() {
-        arrowTimer -= Time.deltaTime;
-        if (arrowTimer <= 0) {
-            //StartCoroutine(Storm(10, -45));
-            //Arrow();
-            //StartCoroutine(ArcherStorm());
-            //StartCoroutine(CrossFire());
-            StartCoroutine(UnholyImmolation());
-            arrowTimer = 10f;
+        if (state == DarkPlayerState.Idle) {
+            cooldownTimer -= Time.deltaTime;
+            if (cooldownTimer < 0) {
+                int rand = Random.Range(0, 5);
+                if (rand == 0) {
+                    StartCoroutine(Warp(positions[1]));
+                    attack = 0;
+                } else if (rand == 1) {
+                    StartCoroutine(Warp(positions[4]));
+                    attack = 1;
+                } else if (rand == 2) {
+                    StartCoroutine(Warp(positions[2]));
+                    attack = 2;
+                } else if (rand == 3) {
+                    StartCoroutine(Warp(positions[0]));
+                    attack = 3;
+                } else if (rand == 4) {
+                    StartCoroutine(Warp(positions[3]));
+                    attack = 4;
+                } 
+                cooldownTimer = 3f;
+                state = DarkPlayerState.Attacking;
+            }
+        } else if (state == DarkPlayerState.Attacking) {
+            cooldownTimer -= Time.deltaTime;
+            if (cooldownTimer < 0) {
+                if (attack == 0) {
+                    StartCoroutine(Storm(10, -45));
+                }
+                //Arrow();
+                else if (attack == 2) {
+                    StartCoroutine(ArcherStorm());
+                } else if (attack == 3) {
+                    StartCoroutine(CrossFire());
+                } else if (attack == 4) {
+                    StartCoroutine(UnholyImmolation());
+                }
+                if (attack == 1) {
+                    StartCoroutine(EndlessPursuit());
+                }
+                cooldownTimer = 15f;
+                state = DarkPlayerState.Idle;
+            }
         }
 
         warpTimer -= Time.deltaTime;
         if (warpTimer <= 0) {
-            StartCoroutine(Warp());
+            //StartCoroutine(Warp(transform.position));
             warpTimer = 5f;
+        }
+
+        // Face toward the center
+        if (transform.position.x < -1) {
+            facingRight = true;
+        } else if (transform.position.x > 1) {
+            facingRight = false;
         }
 
         if (!facingRight) {
@@ -90,6 +147,7 @@ public class DarkPlayerController : MonoBehaviour {
             bodyRenderer.flipY = false;
             armRenderer.flipY = false;
             headRenderer.flipY = false;
+            SatorationRenderer.flipY = false;
             if (arm.localPosition.y < 0) {
                 arm.localPosition = new Vector3(arm.localPosition.x, -arm.localPosition.y, arm.localPosition.z);
             }
@@ -102,10 +160,11 @@ public class DarkPlayerController : MonoBehaviour {
         }
     }
 
-    private IEnumerator Warp() {
+    private IEnumerator Warp(Vector3 destination) {
         animator.SetTrigger("WarpOut");
         AudioManager.GetInstance().PlaySound(Sound.WarpOut);
         yield return new WaitForSeconds(WARP_DURATION);
+        transform.position = destination;
         animator.SetTrigger("WarpIn");
         AudioManager.GetInstance().PlaySound(Sound.WarpIn);
         yield return null;
@@ -113,7 +172,7 @@ public class DarkPlayerController : MonoBehaviour {
     }
 
     private IEnumerator Storm(int waves, float aimedAngle) {
-        stormTimer = 10f;
+        if (Mathf.Abs(transform.position.x) < 4 || Mathf.Abs(transform.position.y) < 3) Debug.LogError("Close to center.");
         arm.rotation = Quaternion.Euler(0f, 0f, aimedAngle);
         for (int x = 0; x < waves; x++) {
             // Alternate patterns
@@ -124,7 +183,7 @@ public class DarkPlayerController : MonoBehaviour {
                     spiritShot.transform.position = hand.position;
                     spiritShotScript.SetOwner(gameObject);
                     // Orient each shot
-                    spiritShotScript.SetAngles(aimedAngle - (STORM_SPREAD_ANGLE / 2f) + (STORM_SPREAD_ANGLE * y / SHOTS_PER_WAVE));
+                    spiritShot.transform.rotation = Quaternion.Euler(0, 0, aimedAngle - (STORM_SPREAD_ANGLE / 2f) + (STORM_SPREAD_ANGLE * y / SHOTS_PER_WAVE));
                     spiritShot.SetActive(true);
                 }
             } else {
@@ -134,12 +193,41 @@ public class DarkPlayerController : MonoBehaviour {
                     spiritShot.transform.position = hand.position;
                     spiritShotScript.SetOwner(gameObject);
                     // Orient each shot
-                    spiritShotScript.SetAngles(aimedAngle - (STORM_SPREAD_ANGLE / 2f) + (STORM_SPREAD_ANGLE * y / (SHOTS_PER_WAVE - 1)));
+                    spiritShot.transform.rotation = Quaternion.Euler(0, 0, aimedAngle - (STORM_SPREAD_ANGLE / 2f) + (STORM_SPREAD_ANGLE * y / (SHOTS_PER_WAVE - 1)));
                     spiritShot.SetActive(true);
                 }
             }
             yield return new WaitForSeconds(0.4f);
         }
+        arm.localEulerAngles = new Vector3(0, 0, 0);
+        cooldownTimer = 5f;
+    }
+
+    private IEnumerator EndlessPursuit() {
+        if (transform.position != Vector3.zero) Debug.LogError("Wrong position");
+        float angle = 90f;
+        float duration = 10f;
+
+        while (duration > 0f) {
+            facingRight = angle <= 90 || angle > 270;
+            arm.rotation = Quaternion.Euler(0, 0, angle);
+            GameObject shot = ObjectPooler.instance.GetDanmaku(spiritShotIndex);
+            SpiritShotEnemy spiritShotScript = shot.GetComponent<SpiritShotEnemy>();
+            spiritShotScript.SetOwner(gameObject);
+            shot.transform.position = hand.position;
+            shot.transform.rotation = hand.rotation;
+            shot.SetActive(true);
+
+            yield return new WaitForSeconds(0.1f);
+            duration -= 0.1f;
+
+            angle -= 10f;
+            if (angle < 0) angle += 360f;
+            angle %= 360f;
+        }
+        arm.localEulerAngles = new Vector3(0, 0, 0);
+        cooldownTimer = 5f;
+
     }
 
     private void Arrow() {
@@ -149,7 +237,6 @@ public class DarkPlayerController : MonoBehaviour {
         darkBow.transform.position = new Vector3(transform.position.x + 1.5f, transform.position.y + Random.Range(-1f, 1f), 0f);
         darkBow.SetActive(true);
         StartCoroutine(darkBowScript.AutoChargeAndFire());
-        arrowTimer = 2f;
     }
 
     private IEnumerator ArcherStorm() {
@@ -221,6 +308,8 @@ public class DarkPlayerController : MonoBehaviour {
             bows[x].Deactivate();
         }
 
+        cooldownTimer = 10f;
+
     }
 
     private IEnumerator CrossFire() {
@@ -246,13 +335,14 @@ public class DarkPlayerController : MonoBehaviour {
         }
 
         yield return null;
+        cooldownTimer = 10f;
     }
 
     private IEnumerator UnholyImmolation() {
         const int NUM_FLAMES = 11;
         Vector3 CENTER_POINT = Vector3.zero;
         float CONVERGE_SPEED = 1f;
-        float ANGULAR_SPEED = 2f;
+        float ANGULAR_SPEED = 1.8f;
 
         // Set up
         GameObject[] flames = new GameObject[NUM_FLAMES];
@@ -266,8 +356,8 @@ public class DarkPlayerController : MonoBehaviour {
             darkFlameScript.SetOwner(gameObject);
             darkFlameScript.SetIdle();
 
-            float xPos = 6 * Mathf.Sin((x * 2 * Mathf.PI / (NUM_FLAMES + 1)) + randomOffset);
-            float yPos = 6 * Mathf.Cos(x * 2 * Mathf.PI / (NUM_FLAMES + 1) + randomOffset);
+            float xPos = 7 * Mathf.Sin((x * 2 * Mathf.PI / (NUM_FLAMES + 1)) + randomOffset);
+            float yPos = 7 * Mathf.Cos(x * 2 * Mathf.PI / (NUM_FLAMES + 1) + randomOffset);
             flame.transform.position = new Vector3(xPos, yPos, 0f);
 
             flame.SetActive(true);
@@ -293,13 +383,16 @@ public class DarkPlayerController : MonoBehaviour {
             }
             yield return null;
             timeOut -= Time.deltaTime;
+        }
 
-            //converged = true;
-        }
+        // cleanup
         for (int x = 0; x < NUM_FLAMES; x++) {
-            DarkFlame darkFlame = flames[x].GetComponent<DarkFlame>();
-            darkFlame.Deactivate();
+            if (flames[x].activeSelf) {
+                DarkFlame darkFlame = flames[x].GetComponent<DarkFlame>();
+                darkFlame.Deactivate();
+            }
         }
+        cooldownTimer = 10f;
     }
 
 }

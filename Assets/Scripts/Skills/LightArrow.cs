@@ -36,20 +36,22 @@ public class LightArrow : MonoBehaviour, IPoolable, IEventListener {
 
     void OnTriggerEnter2D(Collider2D other) {
         // if colliding with an enemy, deal damage play hit animation
-        if (other.CompareTag("Enemy")) {
-            EnemyStatus enemyStatus = other.GetComponent<EnemyStatus>();
-            float damage = CalcDamage(chargeLevel);
-            if (enemyStatus != null) {
-                enemyStatus.TakeDamage(damage);
-            } else {
-                Debug.LogError("Enemy Status not found.");
+        if (arrowState == ArrowState.released) {
+            if (other.CompareTag("Enemy")) {
+                EnemyStatus enemyStatus = other.GetComponent<EnemyStatus>();
+                float damage = CalcDamage(chargeLevel);
+                if (enemyStatus != null) {
+                    enemyStatus.TakeDamage(damage);
+                } else {
+                    Debug.LogError("Enemy Status not found.");
+                }
+                if (owner != null) {
+                    PlayerStatus playerStatusReference = owner.GetComponent<PlayerStatus>();
+                    if (playerStatusReference != null) playerStatusReference.gainEnergy(damage);
+                }
+                speed = 0f;
+                gameObject.SetActive(false);
             }
-            if (owner != null) {
-                PlayerStatus playerStatusReference = owner.GetComponent<PlayerStatus>();
-                if (playerStatusReference != null) playerStatusReference.gainEnergy(damage);
-            }
-            speed = 0f;
-            gameObject.SetActive(false);
         }
     }
 
