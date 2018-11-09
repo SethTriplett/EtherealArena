@@ -39,7 +39,7 @@ public class PlayerControl : MonoBehaviour, IEventListener {
         headRenderer = head.GetComponent<SpriteRenderer>();
 
         // Temporary
-        equipedSkills[0] = GetComponent<UseDanmaku>();
+        equipedSkills[0] = GetComponent<UseSpiritShot>();
         equipedSkills[1] = GetComponent<UseFlamethrower>();
         equipedSkills[2] = GetComponent<UseLightBow>();
 
