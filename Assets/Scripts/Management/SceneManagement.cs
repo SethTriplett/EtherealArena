@@ -30,6 +30,8 @@ public class SceneManagement : MonoBehaviour, IEventListener {
     void Update() {
         if (victory || defeat) {
             if (Input.GetButtonUp("A")) {
+                victory = false;
+                defeat = false;
                 SceneManager.LoadScene("WorldMap");
             }
         }
