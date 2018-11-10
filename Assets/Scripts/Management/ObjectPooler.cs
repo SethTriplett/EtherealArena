@@ -67,18 +67,21 @@ public class ObjectPooler : MonoBehaviour {
     }
 
     public GameObject GetDanmaku(int type) {
+        
         int startingIndex = nextAvailable[type];
         do {
             if (!pools[type][nextAvailable[type]].activeInHierarchy) {
                 int readyIndex = nextAvailable[type];
                 nextAvailable[type]++;
                 nextAvailable[type] %= numberOfDanmaku[type];
+                
                 return pools[type][readyIndex];
             } else {
                 nextAvailable[type]++;
                 nextAvailable[type] %= numberOfDanmaku[type];
             }
         } while (nextAvailable[type] != startingIndex);
+        
         return null;
     }
 

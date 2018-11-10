@@ -5,10 +5,10 @@ using UnityEngine;
 public class Burnable : MonoBehaviour {
 
     private float temperature;
-    private readonly float BASE_TEMPERATURE = 37f;
+    private const float BASE_TEMPERATURE = 37f;
     private EnemyStatus enemyStatus;
     private float burnTimer; //Time after burn until temperature decreases
-    private readonly float BASE_BURN_TIMER = 1f;
+    private const float BASE_BURN_TIMER = 1f;
 
     void Awake() {
         enemyStatus = GetComponent<EnemyStatus>();

@@ -12,11 +12,11 @@ public class EnemyLevelDisplay : MonoBehaviour, IEventListener {
     }
 
     void OnEnable() {
-        EventMessanger.GetInstance().SubscribeEvent(typeof(EnemyDisplayLevelEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(EnemyStartingDataEvent), this);
     }
 
     void OnDisable() {
-        EventMessanger.GetInstance().UnsubscribeEvent(typeof(EnemyDisplayLevelEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(EnemyStartingDataEvent), this);
     }
 
     void SetEnemyLevelDisplay(int level) {
@@ -24,8 +24,8 @@ public class EnemyLevelDisplay : MonoBehaviour, IEventListener {
     }
 
     public void ConsumeEvent(IEvent e) {
-        if (e.GetType() == typeof(EnemyDisplayLevelEvent)) {
-            EnemyDisplayLevelEvent displayLevelEvent = e as EnemyDisplayLevelEvent;
+        if (e.GetType() == typeof(EnemyStartingDataEvent)) {
+            EnemyStartingDataEvent displayLevelEvent = e as EnemyStartingDataEvent;
             SetEnemyLevelDisplay(displayLevelEvent.level);
         }
     }

@@ -9,6 +9,7 @@ public class UseFlamethrower : MonoBehaviour, ISkill {
     private ObjectPooler danmakuPool;
     [SerializeField] private GameObject fireballPrefab;
     private int fireballIndex;
+    private bool usingFire;
 
     void Start () {
         readyTimer = 0f;
@@ -18,6 +19,7 @@ public class UseFlamethrower : MonoBehaviour, ISkill {
             Debug.LogError("Fireball index not found in pooler.");
             fireballIndex = 0;
         }
+        usingFire = false;
     }
 
     void Update () {
@@ -27,6 +29,10 @@ public class UseFlamethrower : MonoBehaviour, ISkill {
     }
 
     public void UseSkill(Transform hand) {
+        if (!usingFire) {
+            AudioManager.GetInstance().PlaySound(Sound.FireLoop);
+            usingFire = true;
+        }
         if (readyTimer <= 0) {
             GameObject nextFireball = danmakuPool.GetDanmaku(fireballIndex);
             Flamethrower flamethrowerScript = nextFireball.GetComponent<Flamethrower>();
@@ -41,7 +47,10 @@ public class UseFlamethrower : MonoBehaviour, ISkill {
     }
 
     public void ReleaseSkill() {
-        // Do nothing
+        usingFire = false;
+        AudioManager.GetInstance().StopSound(Sound.FireStart);
+        AudioManager.GetInstance().StopSound(Sound.FireLoop);
+        AudioManager.GetInstance().PlaySound(Sound.FireEnd);
     }
 
     public void AimSkill(Transform hand) {
@@ -53,7 +62,10 @@ public class UseFlamethrower : MonoBehaviour, ISkill {
     }
 
     public void SetInactiveSkill() {
-        // Do nothing
+        usingFire = false;
+        AudioManager.GetInstance().StopSound(Sound.FireStart);
+        AudioManager.GetInstance().StopSound(Sound.FireLoop);
+        AudioManager.GetInstance().PlaySound(Sound.FireEnd);
     }
 
 }

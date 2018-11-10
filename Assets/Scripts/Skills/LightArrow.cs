@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightArrow : MonoBehaviour, IPoolable {
+public class LightArrow : MonoBehaviour, IPoolable, IEventListener {
 
     private enum ArrowState {
         charging, released
@@ -18,6 +18,14 @@ public class LightArrow : MonoBehaviour, IPoolable {
         speed = 30f;
     }
 
+    void OnEnable() {
+        EventMessanger.GetInstance().SubscribeEvent(typeof(DeleteAttacksEvent), this);
+    }
+
+    void OnDisable() {
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(DeleteAttacksEvent), this);
+    }
+
     void Update() {
         if (arrowState == ArrowState.charging) {
             angle = transform.rotation.eulerAngles.z;
@@ -28,18 +36,22 @@ public class LightArrow : MonoBehaviour, IPoolable {
 
     void OnTriggerEnter2D(Collider2D other) {
         // if colliding with an enemy, deal damage play hit animation
-        if (other.CompareTag("Enemy")) {
-            EnemyStatus enemyStatus = other.GetComponent<EnemyStatus>();
-            float damage = CalcDamage(chargeLevel);
-            if (enemyStatus != null) {
-                enemyStatus.TakeDamage(damage);
+        if (arrowState == ArrowState.released) {
+            if (other.CompareTag("Enemy")) {
+                EnemyStatus enemyStatus = other.GetComponent<EnemyStatus>();
+                float damage = CalcDamage(chargeLevel);
+                if (enemyStatus != null) {
+                    enemyStatus.TakeDamage(damage);
+                } else {
+                    Debug.LogError("Enemy Status not found.");
+                }
+                if (owner != null) {
+                    PlayerStatus playerStatusReference = owner.GetComponent<PlayerStatus>();
+                    if (playerStatusReference != null) playerStatusReference.gainEnergy(damage);
+                }
+                speed = 0f;
+                gameObject.SetActive(false);
             }
-            if (owner != null) {
-                PlayerStatus playerStatusReference = owner.GetComponent<PlayerStatus>();
-                if (playerStatusReference != null) playerStatusReference.gainEnergy(damage);
-            }
-            speed = 0f;
-            gameObject.SetActive(false);
         }
     }
 
@@ -58,6 +70,10 @@ public class LightArrow : MonoBehaviour, IPoolable {
 
     public void SetOwner(GameObject owner) {
         this.owner = owner;
+    }
+
+    private void Deactivate() {
+        gameObject.SetActive(false);
     }
 
     private void SetSpeed(int chargeLevel) {
@@ -100,5 +116,14 @@ public class LightArrow : MonoBehaviour, IPoolable {
         }
         return 0.1f;
     }
-    
+
+    public void ConsumeEvent(IEvent e) {
+        if (e.GetType() == typeof(DeleteAttacksEvent)) {
+            DeleteAttacksEvent deleteAttacksEvent = e as DeleteAttacksEvent;
+            if (deleteAttacksEvent.owner == owner) {
+                Deactivate();
+            }
+        }
+    }
+ 
 }

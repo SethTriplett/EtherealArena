@@ -28,6 +28,7 @@ public class UseLightBow : MonoBehaviour, ISkill {
             arrowScript.SetCharging();
             arrowScript.SetOwner(gameObject);
             arrow.SetActive(true);
+            AudioManager.GetInstance().PlaySound(Sound.Charge);
         }
 
         // Set bow transform
@@ -67,6 +68,8 @@ public class UseLightBow : MonoBehaviour, ISkill {
         arrowScript.SetReleased();
         chargeTime = 0f;
         bowRenderer.sprite = bowSprites[0];
+        AudioManager.GetInstance().PlaySound(Sound.BowRelease);
+        AudioManager.GetInstance().StopSound(Sound.Charge);
     }
 
     public void SetActiveSkill() {
@@ -75,6 +78,7 @@ public class UseLightBow : MonoBehaviour, ISkill {
 
     public void SetInactiveSkill() {
         bow.SetActive(false);
+        AudioManager.GetInstance().StopSound(Sound.Charge);
     }
 
     private float FindArrowOffset(int chargeLevel) {
