@@ -56,6 +56,7 @@ public class BatBulletController : MonoBehaviour, IPoolable {
     //gotta deal with player collision and I might possibly try and use this for bouncing the bat back into the arena
     void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("a bat had a collision");
         if (other.CompareTag("Player"))
         {
             if (other.gameObject.layer != 8)
@@ -71,7 +72,7 @@ public class BatBulletController : MonoBehaviour, IPoolable {
                 moveSpeed = 0f;
                 gameObject.SetActive(false);
             }
-        }
+        } 
     }
 
     public void setBounces(int numOfBounces)

@@ -89,7 +89,10 @@ public class Flamethrower : MonoBehaviour, IEventListener, IPoolable {
             speed = 0f;
             StartCoroutine(Deactivate());
         }
-
+        else if (other.transform.parent.gameObject.CompareTag("bat"))
+        {
+            other.transform.parent.gameObject.SetActive(false);
+        }
     }
 
     IEnumerator Deactivate() {
