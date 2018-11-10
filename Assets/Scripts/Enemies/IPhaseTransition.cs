@@ -5,6 +5,6 @@ public interface IPhaseTransition {
     void PhaseTransition(int nextPhase);
 
     // Return HP for the next phase based on phase and level
-    int GetPhaseMaxHP(int nextPhase, int level);
+    int GetPhaseMaxHP(int nextPhase, int level, int maxPhase);
 
 }

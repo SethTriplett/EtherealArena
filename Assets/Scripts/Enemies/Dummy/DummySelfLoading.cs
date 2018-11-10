@@ -16,7 +16,6 @@ public class DummySelfLoading : MonoBehaviour, IEventListener {
     void SetStats(int level) {
         EnemyStatus enemyStatus = GetComponent<EnemyStatus>();
         KnifeDummy knifeDummy = GetComponent<KnifeDummy>();
-        EventMessanger.GetInstance().TriggerEvent(new EnemyDisplayLevelEvent(level));
         enemyStatus.maxHealth = 5 * (level + 1);
         knifeDummy.SetSecondForm(level >= 40);
         GameObject player = GameObject.FindGameObjectWithTag("Player");

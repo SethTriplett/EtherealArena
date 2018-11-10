@@ -78,6 +78,7 @@ public class PlayerStatus : MonoBehaviour {
         playerArmSpriteRenderer.enabled = false;
         playerHeadSpriteRenderer.enabled = false;
         EventMessanger.GetInstance().TriggerEvent(new PlayerDefeatEvent());
+        EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
     }
 
     public void gainEnergy(float energy) {

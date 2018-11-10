@@ -92,4 +92,11 @@ public class AudioManager : MonoBehaviour {
         Debug.LogWarning("Couldn't play sound: " + sound);
     }
 
+    public void StopSound(Sound sound) {
+        int soundIndex = soundIndexList.IndexOf(sound);
+        for (int x = 0; x < numberOfSounds[soundIndex]; x++) {
+            pools[soundIndex][x].Stop();
+        }
+    }
+
 }

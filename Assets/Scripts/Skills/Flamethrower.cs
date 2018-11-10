@@ -8,12 +8,12 @@ public class Flamethrower : MonoBehaviour, IEventListener, IPoolable {
     private bool deactivating;
     private SpriteRenderer spriteRenderer;
     private readonly Vector3 STARTING_SCALE = new Vector3(0.2f, 0.2f, 0.2f);
-    private readonly float START_SPEED = 17f;
-    private readonly float TARGET_SPEED = 2f;
-    private readonly float LERP_RATE = 0.1f;
-    private readonly float SCALE_UP_RATE = 4f;
-    private readonly float DISAPPEAR_RATE = 0.15f;  //Independent of deactivate
-    private readonly float BASE_TIME = 2f;
+    private const float START_SPEED = 17f;
+    private const float TARGET_SPEED = 2f;
+    private const float LERP_RATE = 0.1f;
+    private const float SCALE_UP_RATE = 4f;
+    private const float DISAPPEAR_RATE = 0.15f;  //Independent of deactivate
+    private const float BASE_TIME = 2f;
     private float speed;
     private float angle;
     private float radAngle;
@@ -32,6 +32,7 @@ public class Flamethrower : MonoBehaviour, IEventListener, IPoolable {
         remainingTime = BASE_TIME;
         spriteRenderer.sortingOrder = 200;
         SetAnglesFromRotation();
+        transform.rotation = Quaternion.Euler(Vector3.zero);
 
         EventMessanger.GetInstance().SubscribeEvent(typeof(DeleteAttacksEvent), this);
     }
@@ -44,7 +45,6 @@ public class Flamethrower : MonoBehaviour, IEventListener, IPoolable {
         transform.position += Vector3.right * Mathf.Cos(radAngle) * speed * Time.deltaTime;
         transform.position += Vector3.up * Mathf.Sin(radAngle) * speed * Time.deltaTime;
         transform.localScale += Vector3.one * SCALE_UP_RATE * Time.deltaTime;
-        transform.rotation = Quaternion.Euler(Vector3.zero);
 
         float alpha = spriteRenderer.color.a;
         alpha -= DISAPPEAR_RATE * Time.deltaTime;
