@@ -14,12 +14,14 @@ public class PlayerStatus : MonoBehaviour {
     private const int baseFlickerRate = 3;
     private SpriteRenderer playerSpriteRenderer;
     private SpriteRenderer playerArmSpriteRenderer;
+    private SpriteRenderer playerHeadSpriteRenderer;
 
     void Start() {
         currentHealth = maxHealth;
         currentEnergy = 0f;
         playerSpriteRenderer = GetComponent<SpriteRenderer>();
         playerArmSpriteRenderer = transform.Find("Arm").GetComponent<SpriteRenderer>();
+        playerHeadSpriteRenderer = transform.Find("Head").GetComponent<SpriteRenderer>();
     }
 
     void Update() {
@@ -31,6 +33,7 @@ public class PlayerStatus : MonoBehaviour {
                     if (flickerFrames == 0) {
                         playerSpriteRenderer.enabled = true;
                         playerArmSpriteRenderer.enabled = true;
+                        playerHeadSpriteRenderer.enabled = true;
                         flickerFrames = baseFlickerRate;
                     }
                 } else if (flickerFrames > 0) {
@@ -38,12 +41,14 @@ public class PlayerStatus : MonoBehaviour {
                     if (flickerFrames == 0) {
                         playerSpriteRenderer.enabled = false;
                         playerArmSpriteRenderer.enabled = false;
+                        playerHeadSpriteRenderer.enabled = false;
                         flickerFrames = -baseFlickerRate;
                     }
                 }
             } else {
                 playerSpriteRenderer.enabled = true;
                 playerArmSpriteRenderer.enabled = true;
+                playerHeadSpriteRenderer.enabled = true;
                 gameObject.layer = 0;
             }
         }
@@ -69,10 +74,11 @@ public class PlayerStatus : MonoBehaviour {
     }
 
     void KO() {
-        print("KO'ed");
         playerSpriteRenderer.enabled = false;
         playerArmSpriteRenderer.enabled = false;
+        playerHeadSpriteRenderer.enabled = false;
         EventMessanger.GetInstance().TriggerEvent(new PlayerDefeatEvent());
+        EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
     }
 
     public void gainEnergy(float energy) {
