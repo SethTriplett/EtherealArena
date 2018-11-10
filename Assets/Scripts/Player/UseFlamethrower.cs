@@ -62,10 +62,14 @@ public class UseFlamethrower : MonoBehaviour, ISkill {
     }
 
     public void SetInactiveSkill() {
-        usingFire = false;
         AudioManager.GetInstance().StopSound(Sound.FireStart);
         AudioManager.GetInstance().StopSound(Sound.FireLoop);
-        AudioManager.GetInstance().PlaySound(Sound.FireEnd);
+        if (usingFire) {
+            AudioManager.GetInstance().PlaySound(Sound.FireEnd);
+        } else {
+            AudioManager.GetInstance().StopSound(Sound.FireEnd);
+        }
+        usingFire = false;
     }
 
 }

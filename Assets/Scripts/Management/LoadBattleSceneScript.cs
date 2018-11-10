@@ -57,7 +57,18 @@ public class LoadBattleSceneScript : MonoBehaviour {
             sceneManagement.Reset();
             objectPooler.ReinstantiatePools();
             LoadEnemy();
+            LoadBackground();
         }
+    }
+
+    void LoadBackground() {
+        BackgroundEnum bg = BackgroundEnum.TelepathicBackground;
+        if (enemyType == EnemyType.Vampire) {
+            bg = BackgroundEnum.VampireBackground;
+        } else if (enemyType == EnemyType.DarkPlayer) {
+            bg = BackgroundEnum.DarkPortal;
+        }
+        EventMessanger.GetInstance().TriggerEvent(new BackgroundLoadEvent(bg));
     }
 
     void LoadEnemy() {

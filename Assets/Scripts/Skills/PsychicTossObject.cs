@@ -8,8 +8,11 @@ public class PsychicTossObject : MonoBehaviour , IEventListener {
     float speed = 1f;
 
     public void setWangle(Vector3 angle){
-        wangle = angle;    
-        wangle *= speed;    
+        wangle = angle;
+        wangle *= speed;
+    }
+    public void SetAngle(float angle) {
+        setWangle(new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f));
     }
     public void setSpeed (float sped){
         speed = sped;
@@ -28,18 +31,6 @@ public class PsychicTossObject : MonoBehaviour , IEventListener {
         Vector3 rotation = transform.rotation.eulerAngles;
         rotation = new Vector3(rotation.x, rotation.y, rotation.z - 75 * Time.deltaTime);
         transform.rotation = Quaternion.Euler(rotation);
-        if (transform.position.x > 11) {
-            transform.position = new Vector3(-11f, transform.position.y, transform.position.z);
-        }
-        if (transform.position.x < -11) {
-            transform.position = new Vector3(11f, transform.position.y, transform.position.z);
-        }
-        if (transform.position.y > 8) {
-            transform.position = new Vector3(transform.position.x ,-8f , transform.position.z);
-        }
-        if (transform.position.y < -8) {
-            transform.position = new Vector3(transform.position.x ,+8f , transform.position.z);
-        }
     }
 
     void OnEnable (){
@@ -47,6 +38,21 @@ public class PsychicTossObject : MonoBehaviour , IEventListener {
     }
     void OnDisable (){
         EventMessanger.instance.UnsubscribeEvent(typeof(DeleteAttacksEvent),this);
+    }
+        
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag("Player")) {
+            if (other.gameObject.layer != 8) {
+                PlayerStatus playerStatus = other.gameObject.GetComponent<PlayerStatus>();
+                if (playerStatus != null) {
+                    playerStatus.TakeHit();
+                } else {
+                    Debug.LogError("No player status script found.");
+                }
+                speed = 0f;
+                gameObject.SetActive(false);
+            }
+        }
     }
 
     public void ConsumeEvent (IEvent e){
@@ -60,4 +66,5 @@ public class PsychicTossObject : MonoBehaviour , IEventListener {
     private void Deactivate(){
         gameObject.SetActive(false);
     }
+
 }

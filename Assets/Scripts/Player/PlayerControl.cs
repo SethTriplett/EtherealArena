@@ -279,6 +279,9 @@ public class PlayerControl : MonoBehaviour, IEventListener {
             AudioManager.GetInstance().StopSound(Sound.FireLoop);
             StunPlayer();
             gameObject.layer = 8;
+            bodyRenderer.color = new Color(1, 1, 1, 0f);
+            armRenderer.color = new Color(1, 1, 1, 0f);
+            headRenderer.color = new Color(1, 1, 1, 0f);
         }
     }
 
