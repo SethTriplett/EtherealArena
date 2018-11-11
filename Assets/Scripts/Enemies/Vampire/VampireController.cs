@@ -125,7 +125,7 @@ public class VampireController : MonoBehaviour {
                 if (helper == 0)
                 {
                     curMeth = "AG";
-                    timer = 7f;
+                    timer = 6f;
                     canTurn = false;
                     GAWait = Time.time + .25f;
                     GATime = Time.time + 1.5f;
@@ -174,15 +174,13 @@ public class VampireController : MonoBehaviour {
 
     private void move()
     {
+        moveVec = Vector3.Normalize(target - transform.position);
         if (!(Mathf.Abs(target.x - transform.position.x) < .25f) || !(Mathf.Abs(target.y - transform.position.y) < .25f))
         {
             transform.position += moveVec * Time.deltaTime * speed;
         }
         else
         {
-            Debug.Log(transform.position);
-            Debug.Log(target);
-            Debug.Log("X: " + Mathf.Abs(target.x - transform.position.x) + "\nY: " + Mathf.Abs(target.y - transform.position.y));
             transform.position = target;
             timer = -1;
         }
@@ -228,7 +226,7 @@ public class VampireController : MonoBehaviour {
         for (int j = 0; j < numOfCircles; j++)
         {
             float angleTar = Mathf.Atan2((playerLoc.y - transform.position.y), (playerLoc.x - transform.position.x));
-            target = new Vector3(Mathf.Cos(angleTar - (Mathf.PI / 2) + (Mathf.PI * j / numOfCircles)), Mathf.Sin(angleTar - (Mathf.PI / 2) + (Mathf.PI * j / numOfCircles)));
+            Vector3 bulletTarget = new Vector3(Mathf.Cos(angleTar - (Mathf.PI / 2) + (Mathf.PI * j / numOfCircles)), Mathf.Sin(angleTar - (Mathf.PI / 2) + (Mathf.PI * j / numOfCircles)));
             for (int i = 0; i < number; i++)
             {
                 float angle = (-i / (float)number) * 2 * Mathf.PI + Mathf.PI / 2;
@@ -240,7 +238,7 @@ public class VampireController : MonoBehaviour {
                     BloodBullet bloodBulletScript = bloodBullet.GetComponent<BloodBullet>();
                     bloodBullet.transform.position = new Vector3(xPos, yPos, 0f);
                     bloodBulletScript.SetOwner(gameObject);
-                    bloodBulletScript.setTarget(target);
+                    bloodBulletScript.setTarget(bulletTarget);
                     bloodBulletScript.setAttackOne();
                     bloodBulletScript.setSpeed(j + 3);
                     bloodBulletScript.setTimer(2);
@@ -269,12 +267,12 @@ public class VampireController : MonoBehaviour {
         {
             timer = timer + .1f;
             float angleTar = Mathf.Atan2((playerLoc.position.y - transform.position.y), (playerLoc.position.x - transform.position.x));
-            target = radius * new Vector3(Mathf.Cos(angleTar - (Mathf.PI / 2) + (Mathf.PI * i)), Mathf.Sin(angleTar - (Mathf.PI / 2) + (Mathf.PI * i))) + transform.position;
+            Vector3 bulletTarget = radius * new Vector3(Mathf.Cos(angleTar - (Mathf.PI / 2) + (Mathf.PI * i)), Mathf.Sin(angleTar - (Mathf.PI / 2) + (Mathf.PI * i))) + transform.position;
             GameObject bloodBullet = bloodPooler.GetDanmaku(bloodBulletIndex);
             if (bloodBullet != null)
             {
                 BloodBullet bloodBulletScript = bloodBullet.GetComponent<BloodBullet>();
-                bloodBullet.transform.position = target;
+                bloodBullet.transform.position = bulletTarget;
                 bloodBulletScript.SetOwner(gameObject);
                 bloodBulletScript.calcTarget(playerLoc.position);
                 bloodBulletScript.setAttackTwo();
@@ -291,17 +289,31 @@ public class VampireController : MonoBehaviour {
         float angleTar = Mathf.Atan2((playerLoc.position.y - transform.position.y), (playerLoc.position.x - transform.position.x));
         for (int i = 0; i < numOfBats; i++)
         {
-            target = new Vector3(Mathf.Cos(angleTar - (Mathf.PI / 2) + (Mathf.PI * i / numOfBats)), Mathf.Sin(angleTar - (Mathf.PI / 2) + (Mathf.PI * i / numOfBats)));
+            Vector3 batTarget = new Vector3(Mathf.Cos(angleTar - (Mathf.PI / 2) + (Mathf.PI * i / numOfBats)), Mathf.Sin(angleTar - (Mathf.PI / 2) + (Mathf.PI * i / numOfBats)));
             GameObject batBullet = bloodPooler.GetDanmaku(batBulletIndex);
             if(batBullet != null)
             {
                 BatBulletController batBulCon = batBullet.GetComponent<BatBulletController>();
-                batBulCon.setTarget(target);
+                batBulCon.setTarget(batTarget);
                 batBulCon.setPos(transform.position);
                 batBulCon.setBounces(numOfBounces);
                 batBullet.SetActive(true);
             }
-            yield return new WaitForSeconds(.25f);
+            yield return new WaitForSeconds(.2f);
+        }
+        for (int i = numOfBats - 1; i > 0; i--)
+        {
+            Vector3 batTarget = new Vector3(Mathf.Cos(angleTar - (Mathf.PI / 2) + (Mathf.PI * i / numOfBats)), Mathf.Sin(angleTar - (Mathf.PI / 2) + (Mathf.PI * i / numOfBats)));
+            GameObject batBullet = bloodPooler.GetDanmaku(batBulletIndex);
+            if (batBullet != null)
+            {
+                BatBulletController batBulCon = batBullet.GetComponent<BatBulletController>();
+                batBulCon.setTarget(batTarget);
+                batBulCon.setPos(transform.position);
+                batBulCon.setBounces(numOfBounces);
+                batBullet.SetActive(true);
+            }
+            yield return new WaitForSeconds(.2f);
         }
     }
 
@@ -334,7 +346,7 @@ public class VampireController : MonoBehaviour {
             {
                 Vector3 toCenter = new Vector3(-transform.position.x, -transform.position.y);
                 toCenter = Vector3.Normalize(toCenter);
-                if (!(Mathf.Abs(transform.position.x) < .1f) && !(Mathf.Abs(transform.position.y) < .1f))
+                if (!(Mathf.Abs(transform.position.x) < .1f) || !(Mathf.Abs(transform.position.y) < .1f))
                 {
                     transform.position = transform.position + toCenter * Time.deltaTime * 5;
                 }

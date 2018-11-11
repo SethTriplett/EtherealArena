@@ -29,7 +29,7 @@ public class BatBulletController : MonoBehaviour, IPoolable {
 	
 	// Update is called once per frame
 	void Update () {
-        if((transform.position.x > 6.5f || transform.position.x < -6.5f) && bounces > 0)
+        if((transform.position.x > 7f || transform.position.x < -7f) && bounces > 0)
         {
             tar = new Vector3(-tar.x, tar.y);
             bounces--;
@@ -56,7 +56,6 @@ public class BatBulletController : MonoBehaviour, IPoolable {
     //gotta deal with player collision and I might possibly try and use this for bouncing the bat back into the arena
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("a bat had a collision");
         if (other.CompareTag("Player"))
         {
             if (other.gameObject.layer != 8)

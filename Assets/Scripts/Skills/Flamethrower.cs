@@ -75,23 +75,31 @@ public class Flamethrower : MonoBehaviour, IEventListener, IPoolable {
 
     void OnTriggerEnter2D(Collider2D other) {
         // if colliding with an enemy, deal damage play hit animation
-        if (other.CompareTag("Enemy") && !deactivating) {
+        if (other.CompareTag("Enemy") && !deactivating)
+        {
             Burnable burnableScript = other.GetComponent<Burnable>();
-            if (burnableScript != null) {
+            if (burnableScript != null)
+            {
                 burnableScript.Burn(baseDamage);
-            } else {
+            }
+            else {
                 Debug.LogError("Enemy not burning.");
             }
-            if (owner != null) {
+            if (owner != null)
+            {
                 PlayerStatus playerStatusReference = owner.GetComponent<PlayerStatus>();
                 if (playerStatusReference != null) playerStatusReference.gainEnergy(1f);
             }
             speed = 0f;
             StartCoroutine(Deactivate());
         }
-        else if (other.transform.parent.gameObject.CompareTag("bat"))
+        else if (other.transform.parent != null)
         {
-            other.transform.parent.gameObject.SetActive(false);
+            if (other.transform.parent.gameObject.CompareTag("bat"))
+            {
+                other.transform.parent.gameObject.SetActive(false);
+                StartCoroutine(Deactivate());
+            }
         }
     }
 

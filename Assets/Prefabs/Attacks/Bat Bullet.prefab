@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 61175529891734790}
   - component: {fileID: 50925818077820500}
   - component: {fileID: 114000626211491662}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bullet Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1077462330129948}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.803469, y: -2.2046094, z: 0}
+  m_LocalPosition: {x: 8.153874, y: -1.5065682, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children:
   - {fileID: 4775645780970406}
@@ -108,7 +108,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0014841557, y: 0.047739983}
+  m_Offset: {x: -0.0014841557, y: 0.05305034}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -119,7 +119,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.22715235, y: 0.15505075}
+  m_Size: {x: 0.3334031, y: 0.21523488}
   m_EdgeRadius: 0
 --- !u!61 &61696454234775698
 BoxCollider2D:
