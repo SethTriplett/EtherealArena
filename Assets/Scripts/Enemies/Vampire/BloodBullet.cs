@@ -46,11 +46,14 @@ public class BloodBullet : MonoBehaviour, IEventListener, IPoolable {
         timeCounter = 0;
         speed = 10;
         deactivating = false;
+        StopAllCoroutines();
         anim.SetTrigger("Appear");
+        GetComponent<SpriteRenderer>().enabled = true;
     }
 
     void OnDisable() {
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(DeleteAttacksEvent), this);
+        GetComponent<SpriteRenderer>().enabled = true;
     }
 
     void Update()

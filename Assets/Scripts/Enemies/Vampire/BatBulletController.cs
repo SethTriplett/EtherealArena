@@ -29,7 +29,7 @@ public class BatBulletController : MonoBehaviour, IPoolable {
 	
 	// Update is called once per frame
 	void Update () {
-        if((transform.position.x > 6.5f || transform.position.x < -6.5f) && bounces > 0)
+        if((transform.position.x > 7f || transform.position.x < -7f) && bounces > 0)
         {
             tar = new Vector3(-tar.x, tar.y);
             bounces--;
@@ -71,7 +71,7 @@ public class BatBulletController : MonoBehaviour, IPoolable {
                 moveSpeed = 0f;
                 gameObject.SetActive(false);
             }
-        }
+        } 
     }
 
     public void setBounces(int numOfBounces)

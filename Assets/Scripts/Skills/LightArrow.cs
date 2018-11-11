@@ -51,8 +51,14 @@ public class LightArrow : MonoBehaviour, IPoolable, IEventListener {
                 }
                 speed = 0f;
                 gameObject.SetActive(false);
+            } else if (other.transform.parent != null) {
+                if (other.transform.parent.gameObject.CompareTag("bat"))
+                {
+                    other.transform.parent.gameObject.SetActive(false);
+
+                }
             }
-        }
+        } 
     }
 
     public void SetCharging() {
