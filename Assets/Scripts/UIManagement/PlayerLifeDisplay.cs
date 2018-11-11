@@ -8,7 +8,6 @@ public class PlayerLifeDisplay : MonoBehaviour, IEventListener {
     private GameObject Life1;
     private GameObject Life2;
     private GameObject Life3;
-    [SerializeField] private PlayerStatus playerStatus;
 
     void OnEnable() {
         EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerCurrentHealthEvent), this);

@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class LarvaController : MonoBehaviour
 {
+<<<<<<< HEAD
     
     private ObjectPooler boulderPooler;
     private ObjectPooler sporePooler;
     public float timer;
     public float attackTimer;
+=======
+
+    private ObjectPooler bloodPooler;
+    public float timer;
+>>>>>>> dfe80e176381487f48034affdf40e57dfbabf4f0
     [SerializeField] float speed;
     bool attacked;
     public Vector3 target;
@@ -17,6 +23,7 @@ public class LarvaController : MonoBehaviour
     private Animator animator;
     private Vector3 IDLE_TARGET_LOC;
     private const float IDLE_TIME = 3.0f;
+<<<<<<< HEAD
     private const float DROP_ROCK_INTERVAL = 0.5f;
     private const float EXCRETE_SPORE = 0.3f;
     private Vector3 TOP_SCREEN_LOC;
@@ -35,6 +42,13 @@ public class LarvaController : MonoBehaviour
     [SerializeField] private Transform playerTransform;
     private int boulderIndex;
     private int sporeIndex;
+=======
+    private Vector3 TOP_SCREEN_LOC;
+    public int direction;
+
+    [SerializeField] private GameObject bloodBulletPrefab;
+    private int bloodBulletIndex;
+>>>>>>> dfe80e176381487f48034affdf40e57dfbabf4f0
 
     public enum BehaviorState
     {
@@ -44,6 +58,7 @@ public class LarvaController : MonoBehaviour
         SporeAttack
     };
 
+<<<<<<< HEAD
     private enum LastAttack
     {
         None,
@@ -51,18 +66,25 @@ public class LarvaController : MonoBehaviour
         SporeAttack
     };
 
+=======
+>>>>>>> dfe80e176381487f48034affdf40e57dfbabf4f0
     public BehaviorState behaviorState;
 
     void Start()
     {
         IDLE_TARGET_LOC = new Vector3(-7.0f, 0.0f);
         TOP_SCREEN_LOC = new Vector3(-7.0f, 3.5f);
+<<<<<<< HEAD
         boulderPooler = ObjectPooler.sharedPooler;
         sporePooler = ObjectPooler.sharedPooler;
+=======
+        bloodPooler = ObjectPooler.instance;
+>>>>>>> dfe80e176381487f48034affdf40e57dfbabf4f0
         timer = IDLE_TIME;
         attacked = true;
         right = true;
         animator = GetComponent<Animator>();
+<<<<<<< HEAD
         boulderIndex = boulderPooler.GetIndex(boulderPrefab);
         sporeIndex = sporePooler.GetIndex(sporePrefab);
         if (boulderIndex == -1)
@@ -86,6 +108,16 @@ public class LarvaController : MonoBehaviour
         currCornerInd = 0;
         cornersLen = corners.Length;
         lastAtk = LastAttack.None;
+=======
+        bloodBulletIndex = bloodPooler.GetIndex(bloodBulletPrefab);
+        if (bloodBulletIndex == -1)
+        {
+            Debug.LogError("BloodBullet not found in object pooler");
+            bloodBulletIndex = 0;
+        }
+        behaviorState = BehaviorState.Idle;
+        direction = -1;
+>>>>>>> dfe80e176381487f48034affdf40e57dfbabf4f0
     }
 
     // Update is called once per frame
@@ -97,6 +129,7 @@ public class LarvaController : MonoBehaviour
             case BehaviorState.Idle:
                 if (timer <= 0.0f)
                 {
+<<<<<<< HEAD
                     if (lastAtk == LastAttack.None || lastAtk == LastAttack.SporeAttack)
                     {
                         // todo: calculate timer based on hp
@@ -111,6 +144,12 @@ public class LarvaController : MonoBehaviour
                         target = corners[currCornerInd];
                         behaviorState = BehaviorState.SporeAttack;
                     }
+=======
+                    // todo: calculate timer based on hp
+                    timer = 10.0f;
+                    target = TOP_SCREEN_LOC;
+                    behaviorState = BehaviorState.DropRocksAttack;
+>>>>>>> dfe80e176381487f48034affdf40e57dfbabf4f0
                 }
                 break;
             case BehaviorState.GoToIdlePos:
@@ -126,8 +165,11 @@ public class LarvaController : MonoBehaviour
                 }
                 break;
             case BehaviorState.DropRocksAttack:
+<<<<<<< HEAD
                 lastAtk = LastAttack.DropsRocksAttack;
                 attackTimer -= Time.deltaTime;
+=======
+>>>>>>> dfe80e176381487f48034affdf40e57dfbabf4f0
                 if (timer <= 0.0f)
                 {
                     target = IDLE_TARGET_LOC;
@@ -142,19 +184,30 @@ public class LarvaController : MonoBehaviour
                     }
                     else
                     {
+<<<<<<< HEAD
 
                         // oscillate between left and right of screen
                         // todo: have it check if collided instead
                         target = new Vector3(9 * direction, 3.5f);
+=======
+                        // oscillate between left and right of screen
+                        // todo: have it check if collided instead
+                        target = new Vector3(9*direction, 3.5f);
+>>>>>>> dfe80e176381487f48034affdf40e57dfbabf4f0
                         if (transform.position.x <= -8.0f)
                         {
                             direction = 1;
                         }
+<<<<<<< HEAD
                         if (transform.position.x >= 8.0f)
+=======
+                        if(transform.position.x >= 8.0f)
+>>>>>>> dfe80e176381487f48034affdf40e57dfbabf4f0
                         {
                             direction = -1;
                         }
                     }
+<<<<<<< HEAD
                     if (attackTimer <= 0.0f)
                     {
                         GameObject aBoulder = boulderPooler.GetDanmaku(boulderIndex);
@@ -168,10 +221,13 @@ public class LarvaController : MonoBehaviour
                         // reset the timer
                         attackTimer = DROP_ROCK_INTERVAL;
                     }
+=======
+>>>>>>> dfe80e176381487f48034affdf40e57dfbabf4f0
 
                 }
                 break;
             case BehaviorState.SporeAttack:
+<<<<<<< HEAD
                 lastAtk = LastAttack.SporeAttack;
                 attackTimer -= Time.deltaTime;
 
@@ -208,6 +264,10 @@ public class LarvaController : MonoBehaviour
                     // reset the timer
                     attackTimer = EXCRETE_SPORE;
                 }
+=======
+                // todo: change logic. this is a placeholder
+                behaviorState = BehaviorState.Idle;
+>>>>>>> dfe80e176381487f48034affdf40e57dfbabf4f0
                 break;
         }
     }
@@ -239,11 +299,14 @@ public class LarvaController : MonoBehaviour
         }
     }*/
 
+<<<<<<< HEAD
     public void SetPlayerTransform(Transform player)
     {
         this.playerTransform = player;
     }
 
+=======
+>>>>>>> dfe80e176381487f48034affdf40e57dfbabf4f0
     private void faceLeft()
     {
         GetComponent<SpriteRenderer>().flipX = true;

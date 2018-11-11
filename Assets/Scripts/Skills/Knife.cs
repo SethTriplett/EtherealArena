@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Knife : MonoBehaviour {
+public class Knife : MonoBehaviour, IPoolable {
 
     private const float baseSpeed = 10f;
     private float speed;

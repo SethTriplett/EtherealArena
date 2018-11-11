@@ -32,7 +32,7 @@ public class SceneManagement : MonoBehaviour, IEventListener {
             if (Input.GetButtonUp("A")) {
                 victory = false;
                 defeat = false;
-                SceneManager.LoadScene("WorldMap");
+                Vignette.LoadScene("WorldMap");
             }
         }
     }
