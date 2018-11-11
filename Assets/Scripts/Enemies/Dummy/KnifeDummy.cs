@@ -74,7 +74,7 @@ public class KnifeDummy : MonoBehaviour, IEventListener {
             if (knife != null) {
                 Knife knifeScript = knife.GetComponent<Knife>();
                 knife.transform.position = gameObject.transform.position;
-                knifeScript.SetTarget(playerTransform);
+                knifeScript.SetTarget(playerTransform.position);
                 knifeScript.StartSpinningAnimation(2f);
                 knifeScript.StartAimingAnimation(1f);
                 knives[i] = knife;
@@ -104,7 +104,7 @@ public class KnifeDummy : MonoBehaviour, IEventListener {
                 Knife knifeScript = knife.GetComponent<Knife>();
                 knife.transform.position = new Vector3(xPos, yPos, 0f);
                 knife.SetActive(true);
-                knifeScript.SetTarget(playerTransform);
+                knifeScript.SetTarget(playerTransform.position);
                 knifeScript.StartSpinningAnimation(3f);
                 knifeScript.StartAimingAnimation(3f);
             }

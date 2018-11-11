@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Knife : MonoBehaviour, IPoolable {
 
+    private enum KnifeState{
+        spinning, aiming, released
+    }
+
     private const float baseSpeed = 10f;
     private float speed;
     private float angle;
@@ -11,7 +15,7 @@ public class Knife : MonoBehaviour, IPoolable {
     private float aimingAnimationTimer = 0f;
     private Quaternion aimedDirection;
     private bool tracking = false;
-    private Transform target;
+    private Vector3 target;
 
     void OnDisable() {
         speed = baseSpeed;
@@ -19,8 +23,8 @@ public class Knife : MonoBehaviour, IPoolable {
 
     void Update() {
         if (tracking) {
-            float xDiff = target.position.x - transform.position.x;
-            float yDiff = target.position.y - transform.position.y;
+            float xDiff = target.x - transform.position.x;
+            float yDiff = target.y - transform.position.y;
             float aimedAngle = Mathf.Atan2(yDiff, xDiff);
             aimedAngle *= 180 / Mathf.PI;
             aimedDirection = Quaternion.Euler(0f, 0f, aimedAngle);
@@ -63,9 +67,17 @@ public class Knife : MonoBehaviour, IPoolable {
         aimingAnimationTimer = duration;
     }
 
-    public void SetTarget(Transform target) {
+    public void SetTarget(Vector3 target) {
         this.target = target;
         this.tracking = true;
+    }
+
+    public void SetTracking(bool tracking) {
+        this.tracking = tracking;
+    }
+
+    public void SetAimedAngle(float angle) {
+        aimedDirection = Quaternion.Euler(0f, 0f, angle);
     }
 
 }

@@ -23,6 +23,9 @@ GameObject:
   - component: {fileID: 114367476549837854}
   - component: {fileID: 114793141009079896}
   - component: {fileID: 114886490302832364}
+  - component: {fileID: 61273682017151122}
+  - component: {fileID: 70208038548145184}
+  - component: {fileID: 58189792806073956}
   m_Layer: 0
   m_Name: Bike
   m_TagString: Untagged
@@ -43,6 +46,61 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &58189792806073956
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1297502672014690}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.637558, y: 0.47226536}
+  serializedVersion: 2
+  m_Radius: 1.291293
+--- !u!61 &61273682017151122
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1297502672014690}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -3.3424687, y: -0.62526035}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 10.8, y: 10.8}
+    newSize: {x: 10.8, y: 10.8}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.7076044, y: 8.309679}
+  m_EdgeRadius: 0
+--- !u!70 &70208038548145184
+CapsuleCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1297502672014690}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.070820555, y: -2.2196581}
+  m_Size: {x: 9.383249, y: 5.2273126}
+  m_Direction: 1
 --- !u!114 &114367476549837854
 MonoBehaviour:
   m_ObjectHideFlags: 1
