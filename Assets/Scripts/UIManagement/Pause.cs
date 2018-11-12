@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Pause : MonoBehaviour {
 
-	public bool gamePaused = false;
+	private bool gamePaused = false;
 	public GameObject pauseMenu;
 
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButtonDown("Cancel"))
+		if (Input.GetButtonDown("Start"))
 		{
 			if (gamePaused == false)
 			{
