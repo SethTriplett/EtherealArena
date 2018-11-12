@@ -28,11 +28,9 @@ public class DarkPlayerController : MonoBehaviour {
 
     [SerializeField] private GameObject spiritShotPrefab;
     [SerializeField] private GameObject darkBowPrefab;
-    [SerializeField] private GameObject darkArrowPrefab;
     [SerializeField] private GameObject darkFlamePrefab;
     private int spiritShotIndex;
     private int darkBowIndex;
-    private int darkArrowIndex;
     private int darkFlameIndex;
 
     private float cooldownTimer = 5f;
@@ -52,7 +50,6 @@ public class DarkPlayerController : MonoBehaviour {
     void Start() {
         spiritShotIndex = ObjectPooler.instance.GetIndex(spiritShotPrefab);
         darkBowIndex = ObjectPooler.instance.GetIndex(darkBowPrefab);
-        darkArrowIndex = ObjectPooler.instance.GetIndex(darkArrowPrefab);
         darkFlameIndex = ObjectPooler.instance.GetIndex(darkFlamePrefab);
 
         state = DarkPlayerState.Idle;

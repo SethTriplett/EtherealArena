@@ -199,6 +199,7 @@ GameObject:
   - component: {fileID: 87162717}
   - component: {fileID: 87162716}
   - component: {fileID: 87162715}
+  - component: {fileID: 87162718}
   m_Layer: 5
   m_Name: Credits Modal
   m_TagString: Untagged
@@ -272,6 +273,18 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 87162713}
   m_CullTransparentMesh: 0
+--- !u!114 &87162718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 87162713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a0f7389377648b43a90fcb668953096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  titleScreen: {fileID: 2103285439}
 --- !u!1 &279023410
 GameObject:
   m_ObjectHideFlags: 0
@@ -5965,8 +5978,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
+  m_SubmitButton: A
+  m_CancelButton: B
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0

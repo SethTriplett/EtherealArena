@@ -1,11 +1,11 @@
-/obj
-/Temp
-/Library
-/.vs
-/.vscode
-/Build
-*.csproj
-*.sln
+obj/
+Temp/
+Library/
+.vs/
+.vscode/
+Build/
+**/*.csproj
+**/*.sln
 
 
 ChangeLog.txt
