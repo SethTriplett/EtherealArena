@@ -264,6 +264,7 @@ public class PlayerControl : MonoBehaviour, IEventListener {
 
     public void StunPlayer() {
         this.stunned = true;
+        activeSkill.ReleaseSkill();
     }
 
     public void UnStunPlayer() {

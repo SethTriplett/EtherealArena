@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class LarvaController : MonoBehaviour
 {
-
-    private ObjectPooler bloodPooler;
+    
+    private ObjectPooler boulderPooler;
+    private ObjectPooler sporePooler;
     public float timer;
+    public float attackTimer;
     [SerializeField] float speed;
     bool attacked;
     public Vector3 target;
@@ -15,11 +17,24 @@ public class LarvaController : MonoBehaviour
     private Animator animator;
     private Vector3 IDLE_TARGET_LOC;
     private const float IDLE_TIME = 3.0f;
+    private const float DROP_ROCK_INTERVAL = 0.5f;
+    private const float EXCRETE_SPORE = 0.3f;
     private Vector3 TOP_SCREEN_LOC;
     public int direction;
+    private Vector3[] corners;
+    private const int TOP_LEFT_IND = 0;
+    private const int TOP_RIGHT_IND = 1;
+    private const int BOTTOM_LEFT_IND = 3;
+    private const int BOTTOM_RIGHT_IND = 2;
+    public int currCornerInd = 0;
+    private int cornersLen = 0;
+    private LastAttack lastAtk;
 
-    [SerializeField] private GameObject bloodBulletPrefab;
-    private int bloodBulletIndex;
+    [SerializeField] private GameObject boulderPrefab;
+    [SerializeField] private GameObject sporePrefab;
+    [SerializeField] private Transform playerTransform;
+    private int boulderIndex;
+    private int sporeIndex;
 
     public enum BehaviorState
     {
@@ -29,25 +44,48 @@ public class LarvaController : MonoBehaviour
         SporeAttack
     };
 
+    private enum LastAttack
+    {
+        None,
+        DropsRocksAttack,
+        SporeAttack
+    };
+
     public BehaviorState behaviorState;
 
     void Start()
     {
         IDLE_TARGET_LOC = new Vector3(-7.0f, 0.0f);
         TOP_SCREEN_LOC = new Vector3(-7.0f, 3.5f);
-        bloodPooler = ObjectPooler.instance;
+        boulderPooler = ObjectPooler.instance;
+        sporePooler = ObjectPooler.instance;
         timer = IDLE_TIME;
         attacked = true;
         right = true;
         animator = GetComponent<Animator>();
-        bloodBulletIndex = bloodPooler.GetIndex(bloodBulletPrefab);
-        if (bloodBulletIndex == -1)
+        boulderIndex = boulderPooler.GetIndex(boulderPrefab);
+        sporeIndex = sporePooler.GetIndex(sporePrefab);
+        if (boulderIndex == -1)
         {
-            Debug.LogError("BloodBullet not found in object pooler");
-            bloodBulletIndex = 0;
+            Debug.LogError("Boulder not found in object pooler");
+            boulderIndex = 0;
+        }
+        if (sporeIndex == -1)
+        {
+            Debug.LogError("Spore not found in object pooler");
+            sporeIndex = 0;
         }
         behaviorState = BehaviorState.Idle;
         direction = -1;
+        attackTimer = DROP_ROCK_INTERVAL;
+        corners = new Vector3[4];
+        corners[TOP_LEFT_IND] = new Vector3(-8.0f, 3.0f);
+        corners[TOP_RIGHT_IND] = new Vector3(8.0f, 3.0f);
+        corners[BOTTOM_RIGHT_IND] = new Vector3(8.0f, -3.0f);
+        corners[BOTTOM_LEFT_IND] = new Vector3(-8.0f, -3.0f);
+        currCornerInd = 0;
+        cornersLen = corners.Length;
+        lastAtk = LastAttack.None;
     }
 
     // Update is called once per frame
@@ -59,10 +97,20 @@ public class LarvaController : MonoBehaviour
             case BehaviorState.Idle:
                 if (timer <= 0.0f)
                 {
-                    // todo: calculate timer based on hp
-                    timer = 10.0f;
-                    target = TOP_SCREEN_LOC;
-                    behaviorState = BehaviorState.DropRocksAttack;
+                    if (lastAtk == LastAttack.None || lastAtk == LastAttack.SporeAttack)
+                    {
+                        // todo: calculate timer based on hp
+                        timer = 10.0f;
+                        target = TOP_SCREEN_LOC;
+                        behaviorState = BehaviorState.DropRocksAttack;
+                    }
+                    else
+                    {
+                        timer = 10.0f;
+                        currCornerInd = TOP_LEFT_IND;
+                        target = corners[currCornerInd];
+                        behaviorState = BehaviorState.SporeAttack;
+                    }
                 }
                 break;
             case BehaviorState.GoToIdlePos:
@@ -78,6 +126,8 @@ public class LarvaController : MonoBehaviour
                 }
                 break;
             case BehaviorState.DropRocksAttack:
+                lastAtk = LastAttack.DropsRocksAttack;
+                attackTimer -= Time.deltaTime;
                 if (timer <= 0.0f)
                 {
                     target = IDLE_TARGET_LOC;
@@ -92,24 +142,72 @@ public class LarvaController : MonoBehaviour
                     }
                     else
                     {
+
                         // oscillate between left and right of screen
                         // todo: have it check if collided instead
-                        target = new Vector3(9*direction, 3.5f);
+                        target = new Vector3(9 * direction, 3.5f);
                         if (transform.position.x <= -8.0f)
                         {
                             direction = 1;
                         }
-                        if(transform.position.x >= 8.0f)
+                        if (transform.position.x >= 8.0f)
                         {
                             direction = -1;
                         }
+                    }
+                    if (attackTimer <= 0.0f)
+                    {
+                        GameObject aBoulder = boulderPooler.GetDanmaku(boulderIndex);
+                        aBoulder.SetActive(true);
+                        if (aBoulder != null)
+                        {
+                            Boulder boulderScript = aBoulder.GetComponent<Boulder>();
+                            aBoulder.transform.position = gameObject.transform.position;
+
+                        }
+                        // reset the timer
+                        attackTimer = DROP_ROCK_INTERVAL;
                     }
 
                 }
                 break;
             case BehaviorState.SporeAttack:
-                // todo: change logic. this is a placeholder
-                behaviorState = BehaviorState.Idle;
+                lastAtk = LastAttack.SporeAttack;
+                attackTimer -= Time.deltaTime;
+
+                if (!closeEnoughToTarget())
+                {
+                    // move to corner of screen
+                    move();
+                }
+                else
+                {
+                    // switch to next target
+                    if (currCornerInd < cornersLen - 1)
+                    {
+                        currCornerInd += 1;
+                        target = corners[currCornerInd];
+                    }
+                    else
+                    {
+                        target = IDLE_TARGET_LOC;
+                        behaviorState = BehaviorState.GoToIdlePos;
+                    }
+                }
+                if (attackTimer <= 0.0f)
+                {
+                    // let a spore loose
+                    GameObject aSpore = boulderPooler.GetDanmaku(sporeIndex);
+                    aSpore.SetActive(true);
+                    if (aSpore != null)
+                    {
+                        Spore boulderScript = aSpore.GetComponent<Spore>();
+                        aSpore.transform.position = gameObject.transform.position;
+
+                    }
+                    // reset the timer
+                    attackTimer = EXCRETE_SPORE;
+                }
                 break;
         }
     }
@@ -129,29 +227,20 @@ public class LarvaController : MonoBehaviour
         transform.position += moveVec * Time.deltaTime * speed;
     }
 
-    /*private void attack()
+    public void SetPlayerTransform(Transform player)
     {
-        if (!secondForm)
-        {
-            StartCoroutine(CircleHell(transform.position, 4, .5f, 4, playerTransform.position));
-        }
-        else
-        {
-            StartCoroutine(CircleHell(transform.position, 5, .5f, 5, playerTransform.position));
-        }
-    }*/
+        this.playerTransform = player;
+    }
 
     private void faceLeft()
     {
         GetComponent<SpriteRenderer>().flipX = true;
-        //hand.transform.position = hand.transform.position + new Vector3(-2, 0, 0);
         right = false;
     }
 
     private void faceRight()
     {
         GetComponent<SpriteRenderer>().flipX = false;
-        //hand.transform.position = hand.transform.position + new Vector3(2, 0, 0);
         right = true;
     }
 }

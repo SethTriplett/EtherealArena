@@ -25,11 +25,6 @@ public class PlayerStatus : MonoBehaviour {
     }
 
     void Update() {
-        // TEMP
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            KO();
-        }
-
         if (invulnerabilityTimer > 0) {
             invulnerabilityTimer -= Time.deltaTime;
             if (invulnerabilityTimer > 0) {

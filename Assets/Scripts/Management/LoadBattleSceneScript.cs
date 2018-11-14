@@ -65,6 +65,8 @@ public class LoadBattleSceneScript : MonoBehaviour {
         BackgroundEnum bg = BackgroundEnum.TelepathicBackground;
         if (enemyType == EnemyType.Vampire) {
             bg = BackgroundEnum.VampireBackground;
+        } else if (enemyType == EnemyType.Psychic) {
+            bg = BackgroundEnum.TelepathicBackground;
         } else if (enemyType == EnemyType.DarkPlayer) {
             bg = BackgroundEnum.DarkPortal;
         }
@@ -77,7 +79,7 @@ public class LoadBattleSceneScript : MonoBehaviour {
         } else {
             Instantiate(enemyPrefabs[(int) enemyType]);
         }
-        EventMessanger.GetInstance().TriggerEvent(new EnemyStartingDataEvent(enemyLevel, enemyMaxPhase, enemyType.ToString()));
+        EventMessanger.GetInstance().TriggerEvent(new EnemyStartingDataEvent(enemyLevel, enemyMaxPhase, enemyType));
     }
 
     public void LoadBattleScene(EnemyType enemyType, int enemyLevel, int enemyMaxPhase) {

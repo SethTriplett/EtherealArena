@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Knife : MonoBehaviour, IPoolable {
+public class Knife : MonoBehaviour, IPoolable, IEventListener {
 
     private enum KnifeState{
         spinning, aiming, released
@@ -16,8 +16,14 @@ public class Knife : MonoBehaviour, IPoolable {
     private Quaternion aimedDirection;
     private bool tracking = false;
     private Vector3 target;
+    private GameObject owner;
+
+    void OnEnable() {
+        EventMessanger.GetInstance().SubscribeEvent(typeof(DeleteAttacksEvent), this);
+    }
 
     void OnDisable() {
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(DeleteAttacksEvent), this);
         speed = baseSpeed;
     }
 
@@ -58,6 +64,14 @@ public class Knife : MonoBehaviour, IPoolable {
         }
     }
 
+    private void Deactivate() {
+        gameObject.SetActive(false);
+    }
+
+    public void SetOwner(GameObject owner) {
+        this.owner = owner;
+    }
+
     public void StartSpinningAnimation(float duration) {
         spinAnimationTimer = duration;
         aimedDirection = gameObject.transform.rotation;
@@ -78,6 +92,13 @@ public class Knife : MonoBehaviour, IPoolable {
 
     public void SetAimedAngle(float angle) {
         aimedDirection = Quaternion.Euler(0f, 0f, angle);
+    }
+
+    public void ConsumeEvent(IEvent e) {
+        if (e.GetType() == typeof(DeleteAttacksEvent)) {
+            DeleteAttacksEvent deleteAttacksEvent = e as DeleteAttacksEvent;
+            if (deleteAttacksEvent.owner == this.owner) Deactivate();
+        }
     }
 
 }

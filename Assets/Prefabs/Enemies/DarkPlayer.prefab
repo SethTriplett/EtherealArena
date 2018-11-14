@@ -56,6 +56,7 @@ GameObject:
   - component: {fileID: 114624378969454814}
   - component: {fileID: 114356123623711706}
   - component: {fileID: 114172313735587630}
+  - component: {fileID: 114125299930715920}
   - component: {fileID: 61701025899025040}
   - component: {fileID: 50184076051768482}
   m_Layer: 0
@@ -248,6 +249,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114125299930715920
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1470388856372068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aa831acad4cefc49ba51ffc256d116e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114172313735587630
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -263,8 +275,6 @@ MonoBehaviour:
   spiritShotPrefab: {fileID: 1644064600827450, guid: 92c887e9aafb3474d864f3aa492d5978,
     type: 2}
   darkBowPrefab: {fileID: 1287539513782064, guid: fe5e4b796ebbdf04987d7365ac8fa6d4,
-    type: 2}
-  darkArrowPrefab: {fileID: 1209114768932214, guid: f3252f8ce83ef6f43a7a74be742860aa,
     type: 2}
   darkFlamePrefab: {fileID: 1128875702155200, guid: 5c9f05072d1fe1b438842594c65e6fce,
     type: 2}

@@ -17,9 +17,10 @@ public class BatHitByDanmaku : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if(col.gameObject.transform.parent.gameObject.CompareTag("danmaku"))
+        if(col.gameObject.CompareTag("danmaku"))
         {
-            col.gameObject.transform.parent.gameObject.SetActive(false);
+            col.gameObject.SetActive(false);
+            gameObject.transform.parent.gameObject.SetActive(false);
         }
     }
 }
