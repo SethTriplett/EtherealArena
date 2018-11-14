@@ -17,13 +17,10 @@ public class EnemyStatus : MonoBehaviour, IEventListener {
 
     private bool defeated = false;
     private bool invulnerable = false;
-
-    private IPhaseTransition phaseTransitioner;
-    private int level;
+    private float invulnerabilityTimer = 0f;
 
     void Start() {
         currentHealth = maxHealth;
-        phaseTransitioner = GetComponent<IPhaseTransition>();
         EventMessanger.GetInstance().TriggerEvent(new EnemyMaxHealthEvent(maxHealth));
         EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(maxHealth));
     }
@@ -37,6 +34,12 @@ public class EnemyStatus : MonoBehaviour, IEventListener {
     }
 
     void Update() {
+        if (invulnerabilityTimer > 0f) {
+            invulnerable = true;
+            invulnerabilityTimer -= Time.deltaTime;
+        } else {
+            invulnerable = false;
+        }
         if (currentHealth <= 0f) {
             if (currentPhase >= maxPhase) {
                 KO();
@@ -61,11 +64,12 @@ public class EnemyStatus : MonoBehaviour, IEventListener {
     }
 
     void TransitionPhases(int nextPhase) {
-        maxHealth = phaseTransitioner.GetPhaseMaxHP(nextPhase, this.level, maxPhase);
+        EventMessanger.GetInstance().TriggerEvent(new PhaseTransitionEvent(nextPhase));
+        invulnerabilityTimer = 1.5f;
         currentHealth = maxHealth;
         EventMessanger.GetInstance().TriggerEvent(new EnemyMaxHealthEvent(maxHealth));
         EventMessanger.GetInstance().TriggerEvent(new EnemyHealthTransitionEvent(1.5f, nextPhase));
-        phaseTransitioner.PhaseTransition(nextPhase);
+        EventMessanger.GetInstance().TriggerEvent(new PhaseTransitionEvent(nextPhase));
     }
 
     public void TakeDamage(float damage) {
@@ -119,7 +123,8 @@ public class EnemyStatus : MonoBehaviour, IEventListener {
     public void ConsumeEvent(IEvent e) {
         if (e.GetType() == typeof(EnemyStartingDataEvent)) {
             EnemyStartingDataEvent dataEvent = e as EnemyStartingDataEvent;
-            this.level = dataEvent.level;
+            this.currentPhase = 1;
+            this.maxPhase = dataEvent.maxPhase;
         }
     }
 

@@ -8,10 +8,23 @@ public class EnemyStartingDataEvent : IEvent {
 
     public string name;
 
-    public EnemyStartingDataEvent(int level, int maxPhase, string name) {
+    public EnemyStartingDataEvent(int level, int maxPhase, EnemyType enemyType) {
         this.level = level;
         this.maxPhase = maxPhase;
-        this.name = name;
+        switch(enemyType) {
+            case EnemyType.Dummy:
+                this.name = "Dummy";
+                break;
+            case EnemyType.Vampire:
+                this.name = "Vampire";
+                break;
+            case EnemyType.Psychic:
+                this.name = "Celif";
+                break;
+            case EnemyType.DarkPlayer:
+                this.name = "???";
+                break;
+        }
     }
 
 }

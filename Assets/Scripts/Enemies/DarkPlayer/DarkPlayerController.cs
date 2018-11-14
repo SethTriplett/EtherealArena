@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DarkPlayerController : MonoBehaviour {
+public class DarkPlayerController : MonoBehaviour, IEventListener {
 
     private enum DarkPlayerState {
-        Idle, Attacking
+        ChoosingAttack, PreppingAttack, Attacking, DoNothing
     }
     private DarkPlayerState state;
 
@@ -28,34 +28,35 @@ public class DarkPlayerController : MonoBehaviour {
 
     [SerializeField] private GameObject spiritShotPrefab;
     [SerializeField] private GameObject darkBowPrefab;
-    [SerializeField] private GameObject darkArrowPrefab;
     [SerializeField] private GameObject darkFlamePrefab;
     private int spiritShotIndex;
     private int darkBowIndex;
-    private int darkArrowIndex;
     private int darkFlameIndex;
 
     private float cooldownTimer = 5f;
-    private int attack;
+    private int preppedAttack;
 
     private float warpTimer;
 
     private const float WARP_DURATION = 1f;
     private readonly Vector3[] positions = {
+        new Vector3(0f, 0f, 0),
+        new Vector3(6.2f, 0f, 0),
         new Vector3(6.2f, 3.8f, 0),
+        new Vector3(0f, 3.8f, 0),
         new Vector3(-6.2f, 3.8f, 0),
+        new Vector3(-6.2f, 0f, 0),
         new Vector3(-6.2f, -3.8f, 0),
+        new Vector3(6.2f, 0f, 0),
         new Vector3(6.2f, -3.8f, 0),
-        new Vector3(0f, 0f, 0)
     };
 
     void Start() {
         spiritShotIndex = ObjectPooler.instance.GetIndex(spiritShotPrefab);
         darkBowIndex = ObjectPooler.instance.GetIndex(darkBowPrefab);
-        darkArrowIndex = ObjectPooler.instance.GetIndex(darkArrowPrefab);
         darkFlameIndex = ObjectPooler.instance.GetIndex(darkFlamePrefab);
 
-        state = DarkPlayerState.Idle;
+        state = DarkPlayerState.ChoosingAttack;
 
         bodyRenderer = GetComponent<SpriteRenderer>();
         arm = transform.Find("DarkPlayer_Arm");
@@ -68,56 +69,96 @@ public class DarkPlayerController : MonoBehaviour {
         animator = GetComponent<Animator>();
     }
 
+    void OnEnable() {
+        EventMessanger.GetInstance().SubscribeEvent(typeof(PhaseTransitionEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(EnemyStartingDataEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerVictoryEvent), this);
+    }
+
+    void OnDisable() {
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(PhaseTransitionEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(EnemyStartingDataEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerVictoryEvent), this);
+    }
+
     void Update() {
-        if (state == DarkPlayerState.Idle) {
+        if (state == DarkPlayerState.ChoosingAttack) {
             cooldownTimer -= Time.deltaTime;
             if (cooldownTimer < 0) {
-                int rand = Random.Range(0, 5);
-                if (rand == 0) {
-                    StartCoroutine(Warp(positions[1]));
-                    attack = 0;
-                } else if (rand == 1) {
-                    StartCoroutine(Warp(positions[4]));
-                    attack = 1;
-                } else if (rand == 2) {
-                    StartCoroutine(Warp(positions[2]));
-                    attack = 2;
-                } else if (rand == 3) {
-                    StartCoroutine(Warp(positions[0]));
-                    attack = 3;
-                } else if (rand == 4) {
-                    StartCoroutine(Warp(positions[3]));
-                    attack = 4;
-                } 
-                cooldownTimer = 3f;
-                state = DarkPlayerState.Attacking;
+                if (phase == 1) {
+                    float randomAttack = Random.Range(0f, 1f);
+                    if (randomAttack < 0.5f) {
+                        preppedAttack = 0;
+                        // Choose one of the corners
+                        int randomPosition = Random.Range(1, 8);
+                        randomPosition = Mathf.CeilToInt(randomPosition / 2f) * 2;
+                        StartCoroutine(Warp(positions[randomPosition]));
+                        cooldownTimer = 5f;
+                    } else {
+                        preppedAttack = 1;
+                        StartCoroutine(Warp(positions[0]));
+                        cooldownTimer = 3f;
+                    }
+                } else if (phase == 2) {
+                    float randomAttack = Random.Range(0f, 1f);
+                    if (randomAttack < 0.5f) {
+                        preppedAttack = 2;
+                        int randomPosition = Random.Range(2, 4);
+                        StartCoroutine(Warp(positions[randomPosition]));
+                        cooldownTimer = 3f;
+                    } else {
+                        preppedAttack = 3;
+                        int randomPosition = Random.Range(6, 8);
+                        StartCoroutine(Warp(positions[randomPosition]));
+                        cooldownTimer = 3f;
+                    }
+                } else if (phase == 3) {
+                    preppedAttack = 4;
+                    int randomPosition = Random.Range(1, 8);
+                    randomPosition = Mathf.FloorToInt((randomPosition + 1) / 2f);
+                    StartCoroutine(Warp(positions[randomPosition]));
+                    cooldownTimer = 5f;
+                }
+                state = DarkPlayerState.PreppingAttack;
             }
-        } else if (state == DarkPlayerState.Attacking) {
+        } else if (state == DarkPlayerState.PreppingAttack) {
             cooldownTimer -= Time.deltaTime;
             if (cooldownTimer < 0) {
-                if (attack == 0) {
-                    StartCoroutine(Storm(10, -45));
-                }
-                //Arrow();
-                else if (attack == 2) {
-                    StartCoroutine(ArcherStorm());
-                } else if (attack == 3) {
-                    StartCoroutine(CrossFire());
-                } else if (attack == 4) {
-                    StartCoroutine(UnholyImmolation());
-                }
-                if (attack == 1) {
+                if (preppedAttack == 0) {
+                    if (transform.position.y > 0) {
+                        if (transform.position.x > 0) {
+                            StartCoroutine(Storm(10, -135));
+                        } else {
+                            StartCoroutine(Storm(10, -45));
+                        }
+                    } else {
+                        if (transform.position.x > 0) {
+                            StartCoroutine(Storm(10, 135));
+                        } else {
+                            StartCoroutine(Storm(10, 45));
+                        }
+                    }
+                } else if (preppedAttack == 1) {
                     StartCoroutine(EndlessPursuit());
+                } else if (preppedAttack == 2) {
+                    StartCoroutine(CrossFire());
+                } else if (preppedAttack == 3) {
+                    StartCoroutine(UnholyImmolation());
+                } else if (preppedAttack == 4) {
+                    StartCoroutine(ArcherStorm());
                 }
-                cooldownTimer = 15f;
-                state = DarkPlayerState.Idle;
+                state = DarkPlayerState.Attacking;
             }
         }
 
-        warpTimer -= Time.deltaTime;
-        if (warpTimer <= 0) {
-            //StartCoroutine(Warp(transform.position));
-            warpTimer = 5f;
+        if (phase == 3 && state == DarkPlayerState.Attacking) {
+            warpTimer -= Time.deltaTime;
+            if (warpTimer < 0f) {
+                int randomPos = Random.Range(1, 8);
+                Mathf.FloorToInt((randomPos + 1) / 2f);
+                StartCoroutine(Warp(positions[randomPos]));
+                warpTimer = 10f;
+            }
         }
 
         // Face toward the center
@@ -158,6 +199,28 @@ public class DarkPlayerController : MonoBehaviour {
                 Satoration.localPosition = new Vector3(Satoration.localPosition.x, -Satoration.localPosition.y, Satoration.localPosition.z);
             }
         }
+    }
+
+    private void TransitionPhase(int nextPhase) {
+        StopAllCoroutines();
+        state = DarkPlayerState.ChoosingAttack;
+        cooldownTimer = 5f;
+        arm.localEulerAngles = new Vector3(0, 0, 0);
+        EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
+        if (nextPhase == 1) {
+            phase = 1;
+        } else if (nextPhase == 2) {
+            phase = 2;
+        } else if (nextPhase == 3) {
+            phase = 3;
+        }
+    }
+
+    private void KO() {
+        StopAllCoroutines();
+        arm.localEulerAngles = new Vector3(0, 0, 0);
+        state = DarkPlayerState.DoNothing;
+        EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
     }
 
     private IEnumerator Warp(Vector3 destination) {
@@ -201,6 +264,7 @@ public class DarkPlayerController : MonoBehaviour {
         }
         arm.localEulerAngles = new Vector3(0, 0, 0);
         cooldownTimer = 5f;
+        state = DarkPlayerState.ChoosingAttack;
     }
 
     private IEnumerator EndlessPursuit() {
@@ -226,8 +290,8 @@ public class DarkPlayerController : MonoBehaviour {
             angle %= 360f;
         }
         arm.localEulerAngles = new Vector3(0, 0, 0);
-        cooldownTimer = 5f;
-
+        cooldownTimer = 2f;
+        state = DarkPlayerState.ChoosingAttack;
     }
 
     private void Arrow() {
@@ -285,7 +349,7 @@ public class DarkPlayerController : MonoBehaviour {
         }
 
         // Attack portion
-        const float DURATION = 10f;
+        const float DURATION = 600f;
         const float COOLDOWN = 0.5f;
 
         for (int x = 0; x < DURATION / COOLDOWN; x++) {
@@ -318,7 +382,6 @@ public class DarkPlayerController : MonoBehaviour {
         for (int x = 0; x < NUM_FLAMES; x++) {
             float xLevel = Mathf.FloorToInt(x / 2) - (NUM_FLAMES / 4f) + 0.5f;
             float xPos = xLevel * 3f;
-            print (x + ": " + xPos);
 
             GameObject darkFlame = ObjectPooler.instance.GetDanmaku(darkFlameIndex);
             if (darkFlame == null) Debug.LogError("Dark flame not found in pool.");
@@ -335,7 +398,8 @@ public class DarkPlayerController : MonoBehaviour {
         }
 
         yield return null;
-        cooldownTimer = 10f;
+        cooldownTimer = 8f;
+        state = DarkPlayerState.ChoosingAttack;
     }
 
     private IEnumerator UnholyImmolation() {
@@ -393,6 +457,18 @@ public class DarkPlayerController : MonoBehaviour {
             }
         }
         cooldownTimer = 10f;
+        state = DarkPlayerState.ChoosingAttack;
+    }
+
+    public void ConsumeEvent(IEvent e) {
+        if (e.GetType() == typeof(PhaseTransitionEvent)) {
+            PhaseTransitionEvent phaseTransitionEvent = e as PhaseTransitionEvent;
+            TransitionPhase(phaseTransitionEvent.nextPhase);
+        } else if (e.GetType() == typeof(EnemyStartingDataEvent)) {
+            TransitionPhase(1);
+        } else if (e.GetType() == typeof(PlayerVictoryEvent)) {
+            KO();
+        }
     }
 
 }

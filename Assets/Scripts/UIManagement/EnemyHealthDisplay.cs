@@ -21,7 +21,7 @@ public class EnemyHealthDisplay : MonoBehaviour, IEventListener {
     private float maxPhase;
     private float currentPhase;
 
-    private float LerpSpeed;
+    private bool transitioning;
 
     void Awake() {
         healthSlider = transform.Find("Enemy Health").GetComponent<Slider>();
@@ -30,6 +30,7 @@ public class EnemyHealthDisplay : MonoBehaviour, IEventListener {
         sliderFill = healthSlider.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
         currentHP = transform.Find("Current HP").GetComponent<TextMeshProUGUI>();
         maxHP = transform.Find("Max HP").GetComponent<TextMeshProUGUI>();
+        transitioning = false;
 
         AddExtraBars();
     }
@@ -49,7 +50,9 @@ public class EnemyHealthDisplay : MonoBehaviour, IEventListener {
     }
 
     void Update() {
-        LerpHealth();
+        if (!transitioning) {
+            LerpHealth();
+        }
     }
 
     private void LerpHealth() {
@@ -97,9 +100,12 @@ public class EnemyHealthDisplay : MonoBehaviour, IEventListener {
     }
 
     private IEnumerator PhaseTransitionHealth(float duration, int nextPhase) {
+        transitioning = true;
         if (nextPhase != 2 && nextPhase != 3) {
-            Debug.LogError("Weird phase given to transition");
+            Debug.LogError("Weird phase given to transition: " + nextPhase);
         } else if (nextPhase == 2) {
+            Color fillColor = Color.HSVToRGB(135 / 360f, 1f, 1f);
+            sliderFill.color = fillColor;
             for (float x = 0; x < duration; x += Time.deltaTime) {
                 float value = Mathf.SmoothStep(0, 1, x/duration);
                 phase2Bar.value = (1 - value);
@@ -107,8 +113,11 @@ public class EnemyHealthDisplay : MonoBehaviour, IEventListener {
                 SetDisplayHealth(Mathf.CeilToInt(value * healthSlider.maxValue));
                 yield return null;
             }
+            lerpHealth = maxHealth;
             SetHealth(maxHealth);
         } else if (nextPhase == 3) {
+            Color fillColor = Color.HSVToRGB(135 / 360f, 1f, 1f);
+            sliderFill.color = fillColor;
             for (float x = 0; x < duration; x += Time.deltaTime) {
                 float value = Mathf.SmoothStep(0, 1, x/duration);
                 phase3Bar.value = (1 - value);
@@ -116,15 +125,20 @@ public class EnemyHealthDisplay : MonoBehaviour, IEventListener {
                 SetDisplayHealth(Mathf.CeilToInt(value * healthSlider.maxValue));
                 yield return null;
             }
+            // So that we don't lerp after filling
+            lerpHealth = maxHealth;
             SetHealth(maxHealth);
         }
+        transitioning = false;
     }
 
     public void ConsumeEvent(IEvent e) {
         if (e.GetType() == typeof(EnemyCurrentHealthEvent)) {
-            EnemyCurrentHealthEvent currentHealthEvent = e as EnemyCurrentHealthEvent;
-            SetHealth(currentHealthEvent.currentHealth);
-            SetDisplayHealth(Mathf.CeilToInt(currentHealthEvent.currentHealth));
+            if (!transitioning) {
+                EnemyCurrentHealthEvent currentHealthEvent = e as EnemyCurrentHealthEvent;
+                SetHealth(currentHealthEvent.currentHealth);
+                SetDisplayHealth(Mathf.CeilToInt(currentHealthEvent.currentHealth));
+            }
         } else if (e.GetType() == typeof(EnemyMaxHealthEvent)) {
             EnemyMaxHealthEvent maxHealthEvent = e as EnemyMaxHealthEvent;
             SetMaxHealth(maxHealthEvent.maxHealth);
