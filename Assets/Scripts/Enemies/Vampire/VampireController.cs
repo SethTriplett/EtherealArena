@@ -121,17 +121,16 @@ public class VampireController : MonoBehaviour {
             if (!attacked && !GADone)
             {
                 timer = 10f;
-                float helper = Random.Range(0, 3);
+                float helper = 0f; //Random.Range(0, 3);
                 if (helper == 0)
                 {
                     curMeth = "AG";
                     timer = 6f;
                     canTurn = false;
-                    GAWait = Time.time + .25f;
-                    GATime = Time.time + 1.5f;
+                    GAWait = Time.time + 1f;
+                    GATime = Time.time + 2f;
                     float angleTar = Mathf.Atan2((playerTransform.position.y - transform.position.y), (playerTransform.position.x - transform.position.x));
-                    target = new Vector3(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y);
-                    target = Vector3.Normalize(target);
+                    target = Vector3.Normalize(new Vector3(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y));
                 }
                 else
                 {
@@ -321,6 +320,7 @@ public class VampireController : MonoBehaviour {
     {
         if (GATime - Time.time <= 0)
         {
+            attacked = true;
             hand.SetActive(false);
             target = Vector3.Normalize(moveLoc[curPos] - transform.position);
             transform.position = transform.position + target * GAS * Time.deltaTime;
@@ -333,7 +333,7 @@ public class VampireController : MonoBehaviour {
         }
         if (GAWait - Time.time <= 0)
         {
-            if (hand.activeSelf != true)
+            if (hand.activeSelf != true && !attacked)
             {
                 hand.SetActive(true);
 
