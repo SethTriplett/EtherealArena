@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VampireController : MonoBehaviour {
+public class VampireController : MonoBehaviour, IEventListener {
 
     private ObjectPooler bloodPooler;
     [SerializeField]
@@ -71,6 +71,13 @@ public class VampireController : MonoBehaviour {
 
     }
 
+    void OnEnable() {
+        EventMessanger.GetInstance().SubscribeEvent(typeof(PhaseTransitionEvent), this);
+    }
+
+    void OnDisable() {
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(PhaseTransitionEvent), this);
+    }
 
     // Update is called once per frame
     void Update() {
@@ -92,7 +99,12 @@ public class VampireController : MonoBehaviour {
             }
             else if (curMeth.Equals("AG") && !GADone)
             {
+                animator.SetTrigger("EnterChargeUp");
                 GrabAttack();
+            }
+            else if (curMeth.Equals("AG") && GADone)
+            {
+                animator.ResetTrigger("EnterChargeUp");
             }
             if (playerTransform.position.x < transform.position.x && right && canTurn)
             {
@@ -333,6 +345,8 @@ public class VampireController : MonoBehaviour {
         }
         if (GAWait - Time.time <= 0)
         {
+            animator.ResetTrigger("EnterChargeUp");
+            animator.SetTrigger("EnterIdle");
             if (hand.activeSelf != true)
             {
                 hand.SetActive(true);
@@ -386,6 +400,11 @@ public class VampireController : MonoBehaviour {
 
     }
 
+    private void TransitionPhases(int nextPhase) {
+        StopFunction();
+        StopAllCoroutines();
+    }
+
     public void StopFunction()
     {
         hand.SetActive(false);
@@ -402,6 +421,13 @@ public class VampireController : MonoBehaviour {
 
     public void SetPlayerTransform(Transform playerTransform) {
         this.playerTransform = playerTransform;
+    }
+
+    public void ConsumeEvent(IEvent e) {
+        if (e.GetType() == typeof(PhaseTransitionEvent)) {
+            PhaseTransitionEvent phaseTransitionEvent = e as PhaseTransitionEvent;
+            TransitionPhases(phaseTransitionEvent.nextPhase);
+        }
     }
 
 }

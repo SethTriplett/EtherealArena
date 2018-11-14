@@ -1605,7 +1605,7 @@ Prefab:
     - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
         type: 2}
       propertyPath: enemyMaxPhase
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 770e668600fa5554182a466d8234c01b, type: 2}
