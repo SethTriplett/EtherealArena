@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PsychicHandler : MonoBehaviour {
+public class PsychicHandler : MonoBehaviour, IEventListener {
 
 	int bikeIndex;
 	int tvIndex;
@@ -11,13 +11,38 @@ public class PsychicHandler : MonoBehaviour {
     [SerializeField] GameObject bikeFab;
     [SerializeField] GameObject tvFab;
     [SerializeField] GameObject knifeFab;
-    [SerializeField] private Transform playerTransform;
 
-	void Start () {
+	void Awake () {
 		bikeIndex = ObjectPooler.instance.GetIndex(bikeFab);
 		tvIndex = ObjectPooler.instance.GetIndex(tvFab);
 		knifeIndex = ObjectPooler.instance.GetIndex(knifeFab);
 	}
+
+    void OnEnable() {
+        EventMessanger.GetInstance().SubscribeEvent(typeof(PhaseTransitionEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(EnemyStartingDataEvent), this);
+    }
+    
+    void OnDisable() {
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(PhaseTransitionEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(EnemyStartingDataEvent), this);
+    }
+
+    private void TransitionPhase(int nextPhase) {
+        StopAllCoroutines();
+        EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
+        switch(nextPhase) {
+            case 1:
+                StartPhase1();
+                break;
+            case 2:
+                StartPhase2();
+                break;
+            case 3:
+                StartPhase3();
+                break;
+        }
+    }
 	
     public void StartPhase1() {
         StartCoroutine(toss());
@@ -36,10 +61,6 @@ public class PsychicHandler : MonoBehaviour {
     public void StopAttacks() {
         StopAllCoroutines();
         EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
-    }
-
-    public void SetPlayerTransform(Transform playerTransform) {
-        this.playerTransform = playerTransform;
     }
 
 	IEnumerator toss(){
@@ -64,6 +85,9 @@ public class PsychicHandler : MonoBehaviour {
         PsychicTossObject psychicObjectScript = psychoball.GetComponent<PsychicTossObject>();
         if (psychicObjectScript == null) {
             Debug.LogError("Psychic object script not found.");
+            print (psychoball);
+            print (tvIndex);
+            print (bikeIndex);
             return;
         }
 		psychicObjectScript.setOwner(gameObject);
@@ -193,6 +217,7 @@ public class PsychicHandler : MonoBehaviour {
                     knife.transform.position = startPos;
                     // Aim directly left
                     knife.transform.rotation = Quaternion.Euler(0, 0, angle);
+                    knifeScript.SetOwner(gameObject);
                     knifeScript.SetTracking(false);
                     knifeScript.SetAimedAngle(angle);
                     knifeScript.StartAimingAnimation(delay);
@@ -225,6 +250,15 @@ public class PsychicHandler : MonoBehaviour {
             if (knives[i].activeInHierarchy) {
                 knives[i].transform.position = knifePos[i];
             }
+        }
+    }
+
+    public void ConsumeEvent(IEvent e) {
+        if (e.GetType() == typeof(PhaseTransitionEvent)) {
+            PhaseTransitionEvent phaseTransitionEvent = e as PhaseTransitionEvent;
+            TransitionPhase(phaseTransitionEvent.nextPhase);
+        } if (e.GetType() == typeof(EnemyStartingDataEvent)) {
+            TransitionPhase(1);
         }
     }
 

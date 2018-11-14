@@ -156,6 +156,26 @@ Prefab:
       propertyPath: m_Name
       value: Lower
       objectReference: {fileID: 0}
+    - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
+        type: 2}
+      propertyPath: enemyType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
+        type: 2}
+      propertyPath: enemyLevel
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
+        type: 2}
+      propertyPath: enemyMaxPhase
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
+        type: 2}
+      propertyPath: isBattleNode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 770e668600fa5554182a466d8234c01b, type: 2}
   m_IsPrefabAsset: 0
@@ -462,6 +482,26 @@ Prefab:
     - target: {fileID: 1799098835533824, guid: 770e668600fa5554182a466d8234c01b, type: 2}
       propertyPath: m_Name
       value: Right Path
+      objectReference: {fileID: 0}
+    - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
+        type: 2}
+      propertyPath: enemyType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
+        type: 2}
+      propertyPath: isBattleNode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
+        type: 2}
+      propertyPath: enemyLevel
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
+        type: 2}
+      propertyPath: enemyMaxPhase
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 770e668600fa5554182a466d8234c01b, type: 2}
@@ -1595,7 +1635,7 @@ Prefab:
     - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
         type: 2}
       propertyPath: enemyType
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
         type: 2}
@@ -1605,7 +1645,7 @@ Prefab:
     - target: {fileID: 114584357381983318, guid: 770e668600fa5554182a466d8234c01b,
         type: 2}
       propertyPath: enemyMaxPhase
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 770e668600fa5554182a466d8234c01b, type: 2}
