@@ -1,3 +1,3 @@
 public enum EnemyType {
-    Dummy, Vampire, DarkPlayer
+    Dummy, Vampire, Psychic, DarkPlayer
 }

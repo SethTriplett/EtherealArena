@@ -227,17 +227,20 @@ public class LarvaController : MonoBehaviour
         transform.position += moveVec * Time.deltaTime * speed;
     }
 
+    public void SetPlayerTransform(Transform player)
+    {
+        this.playerTransform = player;
+    }
+
     private void faceLeft()
     {
         GetComponent<SpriteRenderer>().flipX = true;
-        //hand.transform.position = hand.transform.position + new Vector3(-2, 0, 0);
         right = false;
     }
 
     private void faceRight()
     {
         GetComponent<SpriteRenderer>().flipX = false;
-        //hand.transform.position = hand.transform.position + new Vector3(2, 0, 0);
         right = true;
     }
 }

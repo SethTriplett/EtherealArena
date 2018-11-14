@@ -77,7 +77,7 @@ public class LoadBattleSceneScript : MonoBehaviour {
         } else {
             Instantiate(enemyPrefabs[(int) enemyType]);
         }
-        EventMessanger.GetInstance().TriggerEvent(new EnemyStartingDataEvent(enemyLevel, enemyMaxPhase, enemyType.ToString()));
+        EventMessanger.GetInstance().TriggerEvent(new EnemyStartingDataEvent(enemyLevel, enemyMaxPhase, enemyType));
     }
 
     public void LoadBattleScene(EnemyType enemyType, int enemyLevel, int enemyMaxPhase) {
