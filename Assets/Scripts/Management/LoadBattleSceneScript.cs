@@ -65,6 +65,8 @@ public class LoadBattleSceneScript : MonoBehaviour {
         BackgroundEnum bg = BackgroundEnum.TelepathicBackground;
         if (enemyType == EnemyType.Vampire) {
             bg = BackgroundEnum.VampireBackground;
+        } else if (enemyType == EnemyType.Psychic) {
+            bg = BackgroundEnum.TelepathicBackground;
         } else if (enemyType == EnemyType.DarkPlayer) {
             bg = BackgroundEnum.DarkPortal;
         }

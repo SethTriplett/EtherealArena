@@ -102,7 +102,7 @@ public class EnemyHealthDisplay : MonoBehaviour, IEventListener {
     private IEnumerator PhaseTransitionHealth(float duration, int nextPhase) {
         transitioning = true;
         if (nextPhase != 2 && nextPhase != 3) {
-            Debug.LogError("Weird phase given to transition");
+            Debug.LogError("Weird phase given to transition: " + nextPhase);
         } else if (nextPhase == 2) {
             Color fillColor = Color.HSVToRGB(135 / 360f, 1f, 1f);
             sliderFill.color = fillColor;

@@ -123,6 +123,7 @@ public class EnemyStatus : MonoBehaviour, IEventListener {
     public void ConsumeEvent(IEvent e) {
         if (e.GetType() == typeof(EnemyStartingDataEvent)) {
             EnemyStartingDataEvent dataEvent = e as EnemyStartingDataEvent;
+            this.currentPhase = 1;
             this.maxPhase = dataEvent.maxPhase;
         }
     }
