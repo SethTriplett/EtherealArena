@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//A script to run the first boss, the Vampire: Count Versum the 5th
+//I'm also putting his in here in order for a difference to be made and hopefully updated in git
 public class VampireController : MonoBehaviour, IEventListener {
 
     private ObjectPooler bloodPooler;
-    [SerializeField]
-    private Transform playerTransform;
+    [SerializeField] private Transform playerTransform;
     [SerializeField] private bool secondForm;
     float timer;
     string curMeth;
@@ -27,8 +27,11 @@ public class VampireController : MonoBehaviour, IEventListener {
     private float GAWait;
     private float GATime;
     private bool GADone;
+    private bool blinged;
 
     private EnemyStatus status;
+
+    [SerializeField] GameObject bling;
 
     [SerializeField] private GameObject bloodBulletPrefab;
     [SerializeField] private GameObject batBulletPrefab;
@@ -48,6 +51,7 @@ public class VampireController : MonoBehaviour, IEventListener {
         GADone = false;
         grabbed = false;
         run = false;
+        blinged = false;
         GAS = 15;
         animator = GetComponent<Animator>();
         bloodBulletIndex = bloodPooler.GetIndex(bloodBulletPrefab);
@@ -126,17 +130,18 @@ public class VampireController : MonoBehaviour, IEventListener {
 
     private void setTimer()
     {
-        Debug.Log("resetting timer");
+        //Debug.Log("resetting timer");
         //hand.GetComponent<HandAttack>().release();
         canTurn = true;
         grabbed = false;
         run = true;
+        blinged = false;
         if (!resetMove)
         {
             if (!attacked && !GADone)
             {
                 timer = 10f;
-                float helper = 0f; //Random.Range(0, 3);
+                float helper = Random.Range(0, 3);
                 if (helper == 0)
                 {
                     curMeth = "AG";
@@ -166,6 +171,7 @@ public class VampireController : MonoBehaviour, IEventListener {
             attacked = false;
             GADone = false;
             resetMove = false;
+            blinged = false;
             curMeth = "move";
             moveVec = chooseLocation();
         }
@@ -206,7 +212,7 @@ public class VampireController : MonoBehaviour, IEventListener {
         {
             if (Random.Range(0, 2) == 0)
             {
-                StartCoroutine(CircleHell(transform.position, 4, .5f, 4, playerTransform.position));
+                StartCoroutine(CircleHell(transform.position, 5, .5f, 5, playerTransform.position));
             }
             else 
             {
@@ -218,7 +224,7 @@ public class VampireController : MonoBehaviour, IEventListener {
             int helper = Random.Range(0, 4);
             if (helper == 0)
             {
-                StartCoroutine(CircleHell(transform.position, 5, .5f, 5, playerTransform.position));
+                StartCoroutine(CircleHell(transform.position, 6, .6f, 6, playerTransform.position));
             }
             else if (helper < 3)
             {
@@ -231,7 +237,7 @@ public class VampireController : MonoBehaviour, IEventListener {
         }
         else
         {
-            StartCoroutine(BatAttack(8, playerTransform, 4));
+            StartCoroutine(BatAttack(10, playerTransform, 4));
         }
     }
 
@@ -348,6 +354,12 @@ public class VampireController : MonoBehaviour, IEventListener {
                 }
                 GADone = true;
             }
+        } else if(!blinged)
+        {
+            blinged = true;
+            bling.SetActive(true);
+            //bling.GetComponent<Animator>().ResetTrigger("Glint");
+            bling.GetComponent<Animator>().Play("Glint", -1, 0f);
         }
         if (GAWait - Time.time <= 0) {
 	        animator.ResetTrigger("EnterChargeUp");
@@ -382,6 +394,7 @@ public class VampireController : MonoBehaviour, IEventListener {
     {
         GetComponent<SpriteRenderer>().flipX = true;
         hand.transform.position = hand.transform.position + new Vector3(-2, 0, 0);
+        bling.transform.position = bling.transform.position + new Vector3(-1, 0, 0);
         right = false;
     }
 
@@ -389,6 +402,7 @@ public class VampireController : MonoBehaviour, IEventListener {
     {
         GetComponent<SpriteRenderer>().flipX = false;
         hand.transform.position = hand.transform.position + new Vector3(2, 0, 0);
+        bling.transform.position = bling.transform.position + new Vector3(1, 0, 0);
         right = true;
     }
 
@@ -397,7 +411,7 @@ public class VampireController : MonoBehaviour, IEventListener {
         grabbed = true;
         if(GATime - Time.time < 1f || timer - Time.time < 2f)
         {
-            Debug.Log("need more time");
+            //Debug.Log("need more time");
             GATime = Time.time + 1.5f;
             timer = Time.time + 4f;
         }
