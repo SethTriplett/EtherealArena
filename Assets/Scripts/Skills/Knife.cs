@@ -14,8 +14,8 @@ public class Knife : MonoBehaviour, IPoolable, IEventListener {
     private float spinAnimationTimer = 0f;
     private float aimingAnimationTimer = 0f;
     private Quaternion aimedDirection;
-    private bool tracking = false;
-    private Vector3 target;
+    private bool tracking = true;
+    private Transform target;
     private GameObject owner;
 
     void OnEnable() {
@@ -29,8 +29,8 @@ public class Knife : MonoBehaviour, IPoolable, IEventListener {
 
     void Update() {
         if (tracking) {
-            float xDiff = target.x - transform.position.x;
-            float yDiff = target.y - transform.position.y;
+            float xDiff = target.position.x - transform.position.x;
+            float yDiff = target.position.y - transform.position.y;
             float aimedAngle = Mathf.Atan2(yDiff, xDiff);
             aimedAngle *= 180 / Mathf.PI;
             aimedDirection = Quaternion.Euler(0f, 0f, aimedAngle);
@@ -81,7 +81,7 @@ public class Knife : MonoBehaviour, IPoolable, IEventListener {
         aimingAnimationTimer = duration;
     }
 
-    public void SetTarget(Vector3 target) {
+    public void SetTarget(Transform target) {
         this.target = target;
         this.tracking = true;
     }

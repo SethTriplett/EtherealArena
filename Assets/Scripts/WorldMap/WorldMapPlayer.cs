@@ -28,8 +28,9 @@ namespace EtherealArena.WorldMap {
 
 			// If the current node is null, it's the first time the world map has loaded.
 			// Set the current node to the game start node.
-
-			CURRENT_NODE = gameStartNode;
+            if (CURRENT_NODE == null) {
+			    CURRENT_NODE = gameStartNode;
+            }
 
 			// Start the player at the current node.
 

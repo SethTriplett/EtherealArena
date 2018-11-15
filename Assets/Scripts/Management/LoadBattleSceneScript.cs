@@ -9,7 +9,6 @@ public class LoadBattleSceneScript : MonoBehaviour {
     private EnemyType enemyType;
     private int enemyLevel;
     private int enemyMaxPhase;
-    // private int backgroundEnum
     private SceneManagement sceneManagement;
     private ObjectPooler objectPooler;
 
@@ -62,8 +61,10 @@ public class LoadBattleSceneScript : MonoBehaviour {
     }
 
     void LoadBackground() {
-        BackgroundEnum bg = BackgroundEnum.TelepathicBackground;
-        if (enemyType == EnemyType.Vampire) {
+        BackgroundEnum bg = BackgroundEnum.TutorialBackground;
+        if (enemyType == EnemyType.Dummy) {
+            bg = BackgroundEnum.TutorialBackground;
+        } else if (enemyType == EnemyType.Vampire) {
             bg = BackgroundEnum.VampireBackground;
         } else if (enemyType == EnemyType.Psychic) {
             bg = BackgroundEnum.TelepathicBackground;

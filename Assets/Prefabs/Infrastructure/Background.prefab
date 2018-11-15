@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce5650fcedcea8342baca4d8a3c45a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tutorialBackground: {fileID: 21300000, guid: f985ba6229db3714d869527d095c92a6, type: 3}
   vampireBackground: {fileID: 21300000, guid: a44c15e90d5f9ae41bc2637d405c2325, type: 3}
   telepathicBackground: {fileID: 21300000, guid: 295649a35dca56a4e88e666d7bc1e869,
     type: 3}

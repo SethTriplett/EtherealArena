@@ -51,20 +51,27 @@ public class PlayerControl : MonoBehaviour, IEventListener {
     void OnEnable() {
         EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerVictoryEvent), this);
         EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerDefeatEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(ConversationStartEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(ConversationEndEvent), this);
     }
 
     void OnDisable() {
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerVictoryEvent), this);
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerDefeatEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(ConversationStartEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(ConversationEndEvent), this);
     }
 
     void FixedUpdate () {
         CheckFocus();
         CheckSkillButton();
-        CheckSwapSkill();
         if (!stunned) {
             MovementAndAiming();
         }
+    }
+
+    void Update() {
+        CheckSwapSkill();
     }
 
     void MovementAndAiming() {
@@ -91,6 +98,8 @@ public class PlayerControl : MonoBehaviour, IEventListener {
         // Only change movement angle if left stick has input
         if (leftStickMovement) {
             movementAngle = angleRad * 180 / Mathf.PI;
+            // Used for tutorial
+            EventMessanger.GetInstance().TriggerEvent(new TutorialPlayerMovedEvent());
         }
         // Get magnitude of input
         float magnitude = Mathf.Sqrt(xInput * xInput + yInput * yInput);
@@ -221,13 +230,8 @@ public class PlayerControl : MonoBehaviour, IEventListener {
                 usingSkillPreviousFrame = false;
             }
         } else {
-            if (usingSkillPreviousFrame) {
-                activeSkill.ReleaseSkill();
-            }
-            arm.rotation = Quaternion.Euler(0f, 0f, facingRight ? 0f : 180f);
-            armRenderer.sprite = idleArmSprite;
-            activeSkill.AimSkill(hand);
-            usingSkillPreviousFrame = false;
+            // Reset arm to idle pose when not aiming.
+            ResetArmRenderer();
         }
     }
 
@@ -250,6 +254,7 @@ public class PlayerControl : MonoBehaviour, IEventListener {
     void CheckSwapSkill() {
         if (Input.GetButtonDown("X")) {
             ChangeActiveSkill();
+            EventMessanger.GetInstance().TriggerEvent(new TutorialSkillSwapEvent());
         }
     }
 
@@ -262,9 +267,21 @@ public class PlayerControl : MonoBehaviour, IEventListener {
         EventMessanger.GetInstance().TriggerEvent(new SkillIconEvent(activeSkillIndex + 1));
     }
 
+    // Used to reset arm to idle position in event player is stunned
+    private void ResetArmRenderer() {
+        if (usingSkillPreviousFrame) {
+            activeSkill.ReleaseSkill();
+        }
+        arm.rotation = Quaternion.Euler(0f, 0f, facingRight ? 0f : 180f);
+        armRenderer.sprite = idleArmSprite;
+        activeSkill.AimSkill(hand);
+        usingSkillPreviousFrame = false;
+    }
+
     public void StunPlayer() {
         this.stunned = true;
         activeSkill.ReleaseSkill();
+        ResetArmRenderer();
     }
 
     public void UnStunPlayer() {
@@ -283,6 +300,10 @@ public class PlayerControl : MonoBehaviour, IEventListener {
             bodyRenderer.color = new Color(1, 1, 1, 0f);
             armRenderer.color = new Color(1, 1, 1, 0f);
             headRenderer.color = new Color(1, 1, 1, 0f);
+        } else if (e.GetType() == typeof(ConversationStartEvent)) {
+            StunPlayer();
+        } else if (e.GetType() == typeof(ConversationEndEvent)) {
+            UnStunPlayer();
         }
     }
 

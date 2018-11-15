@@ -33,9 +33,11 @@ public class KnifeDummy : MonoBehaviour, IEventListener {
     }
 
     void Update() {
+        /*  Wait for now.
         if (!stopAttacking) {
             Attack();
         }
+        */
     }
     
     void Attack() {
@@ -74,7 +76,7 @@ public class KnifeDummy : MonoBehaviour, IEventListener {
             if (knife != null) {
                 Knife knifeScript = knife.GetComponent<Knife>();
                 knife.transform.position = gameObject.transform.position;
-                knifeScript.SetTarget(playerTransform.position);
+                knifeScript.SetTarget(playerTransform);
                 knifeScript.StartSpinningAnimation(2f);
                 knifeScript.StartAimingAnimation(1f);
                 knives[i] = knife;
@@ -104,7 +106,7 @@ public class KnifeDummy : MonoBehaviour, IEventListener {
                 Knife knifeScript = knife.GetComponent<Knife>();
                 knife.transform.position = new Vector3(xPos, yPos, 0f);
                 knife.SetActive(true);
-                knifeScript.SetTarget(playerTransform.position);
+                knifeScript.SetTarget(playerTransform);
                 knifeScript.StartSpinningAnimation(3f);
                 knifeScript.StartAimingAnimation(3f);
             }
@@ -112,13 +114,17 @@ public class KnifeDummy : MonoBehaviour, IEventListener {
         }
     }
 
+    public void KnifeTossDemo() {
+        StartCoroutine(KnifeToss(5));
+    }
+
+    public void JackTheRipperDemo() {
+        StartCoroutine(JackTheRipper(Vector3.zero, 5f, 60));
+    }
+
     void StopAttacking() {
         stopAttacking = true;
         StopAllCoroutines();
-    }
-
-    public void SetSecondForm(bool secondForm) {
-        this.secondForm = secondForm;
     }
 
     public void SetPlayerTransform(Transform player) {

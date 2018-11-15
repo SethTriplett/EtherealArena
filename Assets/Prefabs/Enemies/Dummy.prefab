@@ -23,9 +23,10 @@ GameObject:
   - component: {fileID: 70093679429836470}
   - component: {fileID: 114795304836551868}
   - component: {fileID: 114879015130010900}
-  - component: {fileID: 114015338971258618}
   - component: {fileID: 114395897463904114}
   - component: {fileID: 50976532659655090}
+  - component: {fileID: 114433886249227798}
+  - component: {fileID: 114515782181747556}
   m_Layer: 0
   m_Name: Dummy
   m_TagString: Enemy
@@ -81,17 +82,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.64, y: 1.28}
   m_Direction: 0
---- !u!114 &114015338971258618
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1831163507507830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6d318a5e592caa4caf1e2bc5eb3a862, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114395897463904114
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -101,6 +91,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d6e269501d2f31489c172107e532afd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114433886249227798
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1831163507507830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d849996832df4a84eb1f8c907f5dea35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114515782181747556
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1831163507507830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89778ac0c01a1ea40805c850e68eff49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114795304836551868
@@ -114,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39120931f471baa469a0d64d433570fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 100
   currentPhase: 0
   maxPhase: 0
 --- !u!114 &114879015130010900
