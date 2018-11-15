@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//A script to run the first boss, the Vampire: Count Versum the 5th
+//I'm also putting his in here in order for a difference to be made and hopefully updated in git
 public class VampireController : MonoBehaviour, IEventListener {
 
     private ObjectPooler bloodPooler;
