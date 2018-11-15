@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class BackgroundLoader : MonoBehaviour, IEventListener {
 
     private Image backgroundImage;
+    [SerializeField] private Sprite tutorialBackground;
     [SerializeField] private Sprite vampireBackground;
     [SerializeField] private Sprite telepathicBackground;
     [SerializeField] private Sprite darkBackground;
@@ -26,6 +27,9 @@ public class BackgroundLoader : MonoBehaviour, IEventListener {
 
     private void LoadBackground(BackgroundEnum backgroundEnum) {
         switch(backgroundEnum) {
+            case BackgroundEnum.TutorialBackground:
+                backgroundImage.sprite = tutorialBackground;
+                break;
             case BackgroundEnum.VampireBackground:
                 backgroundImage.sprite = vampireBackground;
                 break;

@@ -36,6 +36,7 @@ public class VampireController : MonoBehaviour {
     private int batBulletIndex;
 
     private bool run;
+    private bool bossPaused;
 
 
     void Start() {
