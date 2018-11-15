@@ -48,6 +48,7 @@ public class VampireController : MonoBehaviour, IEventListener {
         GADone = false;
         grabbed = false;
         run = false;
+        GAS = 15;
         animator = GetComponent<Animator>();
         bloodBulletIndex = bloodPooler.GetIndex(bloodBulletPrefab);
         if (bloodBulletIndex == -1) {
@@ -82,12 +83,12 @@ public class VampireController : MonoBehaviour, IEventListener {
 
     // Update is called once per frame
     void Update() {
+        timer -= Time.deltaTime;
         if (timer <= 0)
         {
             setTimer();
         }
-        timer -= Time.deltaTime;
-        if (run)
+        else if (run)
         {
             if (curMeth.Equals("move"))
             {
@@ -125,26 +126,26 @@ public class VampireController : MonoBehaviour, IEventListener {
 
     private void setTimer()
     {
+        Debug.Log("resetting timer");
+        //hand.GetComponent<HandAttack>().release();
         canTurn = true;
         grabbed = false;
         run = true;
-        hand.GetComponent<HandAttack>().release();
         if (!resetMove)
         {
             if (!attacked && !GADone)
             {
                 timer = 10f;
-                float helper = Random.Range(0, 3);
+                float helper = 0f; //Random.Range(0, 3);
                 if (helper == 0)
                 {
                     curMeth = "AG";
-                    timer = 6f;
+                    timer = 10f;
                     canTurn = false;
-                    GAWait = Time.time + .25f;
-                    GATime = Time.time + 1.5f;
+                    GAWait = Time.time + 1f;
+                    GATime = Time.time + 2.5f;
                     float angleTar = Mathf.Atan2((playerTransform.position.y - transform.position.y), (playerTransform.position.x - transform.position.x));
-                    target = new Vector3(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y);
-                    target = Vector3.Normalize(target);
+                    target = Vector3.Normalize(new Vector3(playerTransform.position.x - transform.position.x, playerTransform.position.y - transform.position.y));
                 }
                 else
                 {
@@ -334,44 +335,44 @@ public class VampireController : MonoBehaviour, IEventListener {
     {
         if (GATime - Time.time <= 0)
         {
+            attacked = true;
             hand.SetActive(false);
             target = Vector3.Normalize(moveLoc[curPos] - transform.position);
             transform.position = transform.position + target * GAS * Time.deltaTime;
             if(Mathf.Abs(moveLoc[curPos].y - transform.position.y) < .25f && Mathf.Abs(moveLoc[curPos].x - transform.position.x) < .25f)
             {
                 transform.position = moveLoc[curPos];
-                timer = .25f;
+                if (GADone == false)
+                {
+                    timer = .25f;
+                }
                 GADone = true;
             }
         }
-        if (GAWait - Time.time <= 0)
-        {
-            animator.ResetTrigger("EnterChargeUp");
+        if (GAWait - Time.time <= 0) {
+	        animator.ResetTrigger("EnterChargeUp");
             animator.SetTrigger("EnterIdle");
-            if (hand.activeSelf != true)
-            {
+            if (hand.activeSelf != true && !attacked) {
                 hand.SetActive(true);
-
             }
-            if (canTurn)
-            {
+            if (canTurn) {
                 canTurn = false;
             }
-            if (grabbed)
-            {
+            if (grabbed) {
+                //Debug.Log(timer - Time.time);
                 Vector3 toCenter = new Vector3(-transform.position.x, -transform.position.y);
                 toCenter = Vector3.Normalize(toCenter);
-                if (!(Mathf.Abs(transform.position.x) < .1f) || !(Mathf.Abs(transform.position.y) < .1f))
-                {
-                    transform.position = transform.position + toCenter * Time.deltaTime * 5;
+                if (!(Mathf.Abs(transform.position.x) < .15f) || !(Mathf.Abs(transform.position.y) < .15f)) {
+                    transform.position = transform.position + toCenter * Time.deltaTime * speed;
                 }
-                else if (timer - Time.time < 1f)
-                {
-                    GADone = true;
+                else if (timer - Time.time < 1.5f) {
+                    hand.GetComponent<HandAttack>().release();
+                    hand.SetActive(false);
+                    GATime = 0;
+                    //setTimer();
                 }
             }
-            else
-            {
+            else {
                 transform.position = transform.position + target * GAS * Time.deltaTime;
             }
         } 
@@ -394,6 +395,12 @@ public class VampireController : MonoBehaviour, IEventListener {
     public void playerGrabbed()
     {
         grabbed = true;
+        if(GATime - Time.time < 1f || timer - Time.time < 2f)
+        {
+            Debug.Log("need more time");
+            GATime = Time.time + 1.5f;
+            timer = Time.time + 4f;
+        }
     }
 
     public void Wait()
