@@ -64,8 +64,10 @@ public class UseLightBow : MonoBehaviour, ISkill {
     }
 
     public void ReleaseSkill() {
-        LightArrow arrowScript = arrow.GetComponent<LightArrow>();
-        arrowScript.SetReleased();
+        if (arrow != null) {
+            LightArrow arrowScript = arrow.GetComponent<LightArrow>();
+            arrowScript.SetReleased();
+        }
         chargeTime = 0f;
         bowRenderer.sprite = bowSprites[0];
         AudioManager.GetInstance().PlaySound(Sound.BowRelease);

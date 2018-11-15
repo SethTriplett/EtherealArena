@@ -10,7 +10,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI NameText;
     [SerializeField] private TextMeshProUGUI DialogueText;
     [SerializeField] private Image DialogueImage;
-    [SerializeField] private List<Conversation> ConversationList;
+    private List<Conversation> ConversationList;
 
     // Private Variables
     private int conversationCount;
@@ -43,6 +43,15 @@ public class DialogueManager : MonoBehaviour
         conversationInProgress = false;
 	}
 
+    public void SetConversationList(List<Conversation> conversations) {
+        if (conversationInProgress) { return; }
+        this.ConversationList = conversations;
+        conversationCount = 0;
+    }
+
+    public void SetConversationCount(int conversationCount) {
+        this.conversationCount = conversationCount;
+    }
 
     // Starts the Next Conversation in the ConversationList
     public void NextConversation()
@@ -71,7 +80,7 @@ public class DialogueManager : MonoBehaviour
         // If the given index exists in the ConversationList, start THAT Conversation
         if (index >= 0 && index < ConversationList.Count)
         {
-            Conversation nextConversation = ConversationList[conversationCount];
+            Conversation nextConversation = ConversationList[index];
 
             StartCoroutine(Converse(nextConversation));
         }
@@ -80,7 +89,6 @@ public class DialogueManager : MonoBehaviour
     // Display all Messages in a Conversation
     IEnumerator Converse(Conversation newConversation)
     {
-        // TODO: Stun / Unstun Player during Conversation
 
         ToggleWindow(true);
         conversationInProgress = true;
@@ -99,7 +107,7 @@ public class DialogueManager : MonoBehaviour
             for (int j = 0; j <= newText.Length; j++)
             {
                 // Skip to the end if "X" is pressed or the player right-clicks
-                if (Input.GetKey(KeyCode.X) || Input.GetMouseButton(1)) { j = newText.Length; }
+                if (Input.GetButton("B") || Input.GetMouseButton(1)) { j = newText.Length; }
 
                 // Display newText one Character at a time
                 DialogueText.text = newText.Substring(0, j);
@@ -107,7 +115,7 @@ public class DialogueManager : MonoBehaviour
             }
 
             // Wait to display next Message until "Z" or click is pressed or the player left-clicks
-            while(!Input.GetKeyDown(KeyCode.Z) && !Input.GetMouseButtonDown(0))
+            while(!Input.GetButtonDown("A") && !Input.GetMouseButtonDown(0))
             {
                 yield return null;
             }
@@ -121,6 +129,11 @@ public class DialogueManager : MonoBehaviour
     // Hides or Displays the Dialogue UI
     private void ToggleWindow(bool status)
     {
+        if (status == true) {
+            EventMessanger.GetInstance().TriggerEvent(new ConversationStartEvent());
+        } else {
+            EventMessanger.GetInstance().TriggerEvent(new ConversationEndEvent());
+        }
         DialogueImage.gameObject.SetActive(status);
         NameText.gameObject.SetActive(status);
         DialogueText.gameObject.SetActive(status);

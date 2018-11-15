@@ -55,11 +55,13 @@ public class EnemyStatus : MonoBehaviour, IEventListener {
             defeated = true;
             EventMessanger.GetInstance().TriggerEvent(new PlayerVictoryEvent());
             
+            /*
             LoadBattleSceneScript loadBattleSceneScript = FindObjectOfType<LoadBattleSceneScript>();
             GameJolt.API.Scores.Add(
                 new Score((int)Time.timeSinceLevelLoad, 
                 Time.timeSinceLevelLoad.ToString(), "Someone w/ " + SystemInfo.deviceModel), 
                 HighscoresManager.GetHighscoresIndex(loadBattleSceneScript.EnemyType, loadBattleSceneScript.EnemyLevel), isSuccess => Debug.Log("Highscores update success=" + isSuccess));
+            */
         }
     }
 
@@ -108,6 +110,16 @@ public class EnemyStatus : MonoBehaviour, IEventListener {
                 currentHealth = maxHealth;
             }
             EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(currentHealth));
+        }
+    }
+
+    public void SetInvulnerability(bool invulnerable) {
+        if (invulnerable == true) {
+            this.invulnerable = true;
+            this.invulnerabilityTimer = int.MaxValue;
+        } else {
+            this.invulnerable = false;
+            this.invulnerabilityTimer = 0;
         }
     }
 
