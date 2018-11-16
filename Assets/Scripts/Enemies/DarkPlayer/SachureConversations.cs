@@ -4,14 +4,26 @@ using UnityEngine;
 
 public class SachureConversations : MonoBehaviour, IEventListener {
 
-    private readonly Message[] playerWin = {
-        new Message("Player", "Blood")
+    private readonly Message[] playerLoss1 = {
+        new Message("Sachure", "I can see your heart. So cold.")
+    };
+    private readonly Message[] playerLoss2 = {
+        new Message("Sachure", "No fire could melt this heart of stone.")
+    };
+    private readonly Message[] playerLoss3 = {
+        new Message("Sachure", "Your mind... an eternal battlefield.")
+    };
+    private readonly Message[] playerWin3 = {
+        new Message("Sachure", "Your heart is... warm... and strong.")
     };
 
     private Conversation[,] conversations = new Conversation[4, 2];
 
     void Awake() {
-        conversations[1, 0] = new Conversation(playerWin);
+        conversations[1, 0] = new Conversation(playerLoss1);
+        conversations[2, 0] = new Conversation(playerLoss2);
+        conversations[3, 0] = new Conversation(playerLoss3);
+        conversations[3, 1] = new Conversation(playerWin3);
     }
 
     void OnEnable() {
@@ -39,6 +51,9 @@ public class SachureConversations : MonoBehaviour, IEventListener {
     public void ConsumeEvent(IEvent e) {
         if (e.GetType() == typeof(PostBattleDialogStartEvent)) {
             PostBattleDialogStartEvent dialogStartEvent = e as PostBattleDialogStartEvent;
+            if (dialogStartEvent.phase == 3 && dialogStartEvent.playerVictory == true) {
+                EventMessanger.GetInstance().TriggerEvent(new FinalBossDefeatedEvent());
+            }
             Converse(dialogStartEvent.phase, dialogStartEvent.playerVictory);
         }
     }

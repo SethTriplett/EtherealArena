@@ -6,6 +6,7 @@ namespace EtherealArena.WorldMap {
 		
 		[SerializeField] private WorldMapNode a;
         [SerializeField] private WorldMapNode b;
+        private bool canCross;
 
         // Updates the line positions when the references to A or B change.
         // Also runs when the scene starts.
@@ -42,6 +43,14 @@ namespace EtherealArena.WorldMap {
 
         public bool IsConnectedTo(WorldMapNode node) {
             return (node == a || node == b);
+        }
+        
+        public bool GetCanCross() {
+            return canCross;
+        }
+
+        public void SetCanCross(bool canCross) {
+            this.canCross = canCross;
         }
 
 	}

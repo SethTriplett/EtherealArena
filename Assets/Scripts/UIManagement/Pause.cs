@@ -39,6 +39,7 @@ public class Pause : MonoBehaviour {
         AudioManager.GetInstance().PlaySound(Sound.MenuClick);
         Time.timeScale = 1;
         gamePaused = false;
+        Vignette.LoadScene("Battle");
         pauseMenu.SetActive(false);
     }
 

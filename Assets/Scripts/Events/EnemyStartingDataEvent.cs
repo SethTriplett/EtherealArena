@@ -7,10 +7,12 @@ public class EnemyStartingDataEvent : IEvent {
     public int maxPhase;
 
     public string name;
+    public EnemyType type;
 
     public EnemyStartingDataEvent(int level, int maxPhase, EnemyType enemyType) {
         this.level = level;
         this.maxPhase = maxPhase;
+        this.type = enemyType;
         switch(enemyType) {
             case EnemyType.Dummy:
                 this.name = "Dummy";

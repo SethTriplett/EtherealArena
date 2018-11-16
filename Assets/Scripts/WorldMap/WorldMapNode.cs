@@ -39,18 +39,34 @@ namespace EtherealArena.WorldMap {
             float bestAngle = 100;
 
             foreach (WorldMapEdge edge in edges) {
-                WorldMapNode node = edge.AcrossFrom(this);
-                Vector2 delta = node.Position - Position;
-                float angle = Vector2.Angle(direction, delta);
+                if (edge.GetCanCross()) {
+                    WorldMapNode node = edge.AcrossFrom(this);
+                    Vector2 delta = node.Position - Position;
+                    float angle = Vector2.Angle(direction, delta);
 
-                if (angle < bestAngle) {
-                    bestAngle = angle;
-                    bestNode = node;
+                    if (angle < bestAngle) {
+                        bestAngle = angle;
+                        bestNode = node;
+                    }
                 }
             }
 
             return bestNode;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            WorldMapNode otherNode = obj as WorldMapNode;
+            if (otherNode.Position.Equals(this.Position)) {
+                return true;
+            }
+            return false;
+        }
+
 	}
 
 }

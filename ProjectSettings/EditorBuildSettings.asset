@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/FinalBattle.unity
     guid: b4ae11286cc00da4e9bc205a11c4173f
+  - enabled: 1
+    path: Assets/Scenes/Ending.unity
+    guid: 654493adc1f18934e917c6dd9b1dabd0
   m_configObjects: {}

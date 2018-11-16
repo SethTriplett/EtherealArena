@@ -11,17 +11,21 @@ public class SceneManagement : MonoBehaviour, IEventListener {
     // Tells it to load the world map after the post battle conversation
     private bool loadAfterConversation = false;
 
+    private bool finalBossDefeated = false;
+
 
     void OnEnable() {
         EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerVictoryEvent), this);
         EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerDefeatEvent), this);
         EventMessanger.GetInstance().SubscribeEvent(typeof(ConversationEndEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(FinalBossDefeatedEvent), this);
     }
 
     void OnDisable() {
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerVictoryEvent), this);
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerDefeatEvent), this);
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(ConversationEndEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(FinalBossDefeatedEvent), this);
     }
 
     void PlayerVictory() {
@@ -37,7 +41,11 @@ public class SceneManagement : MonoBehaviour, IEventListener {
             if (Input.GetButtonUp("A")) {
                 victory = false;
                 defeat = false;
-                Vignette.LoadScene("WorldMap");
+                if (finalBossDefeated) {
+                    Vignette.LoadScene("Ending");
+                } else {
+                    Vignette.LoadScene("WorldMap");
+                }
             }
         }
     }
@@ -60,6 +68,8 @@ public class SceneManagement : MonoBehaviour, IEventListener {
             loadAfterConversation = true;
         } else if (e.GetType() == typeof(ConversationEndEvent)) {
             if (loadAfterConversation) ReturnToWorldMap();
+        } else if (e.GetType() == typeof(FinalBossDefeatedEvent)) {
+            finalBossDefeated = true;
         }
     }
 

@@ -81,7 +81,7 @@ public class Vignette : MonoBehaviour {
 		// Open the vignette
 
         float targetAlpha = 0f;
-        if (sceneName.Equals("TitleScreen")) {
+        if (sceneName.Equals("TitleScreen") || sceneName.Equals("Ending")) {
             targetAlpha = 0.4f;
         }
 
