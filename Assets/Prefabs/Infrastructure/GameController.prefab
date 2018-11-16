@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 114910045467237942}
   - component: {fileID: 114066551446630672}
   - component: {fileID: 114829859480920442}
+  - component: {fileID: 114193793343398574}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -86,6 +87,20 @@ MonoBehaviour:
   - {fileID: 1297502672014690, guid: 1d160a8241f0f9e49850b46bdc3582d9, type: 2}
   - {fileID: 1409190720569900, guid: b2551a0b19af7a24d81e9ded8e4e4c43, type: 2}
   numberOfDanmaku: 32000000640000002c010000140000003200000032000000640000001e0000003c000000320000004600000046000000
+--- !u!114 &114193793343398574
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1144083727198016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e6f98b7fda06c345b23f9f93bcceafb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartingNode: {fileID: 0}
+  Edges: []
+  Nodes: []
 --- !u!114 &114374012729824210
 MonoBehaviour:
   m_ObjectHideFlags: 1

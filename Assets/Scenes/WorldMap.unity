@@ -312,25 +312,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9185347146d3e149a45ea6e5c74fb4f, type: 2}
   m_IsPrefabAsset: 0
---- !u!1 &180002138 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1144083727198016, guid: 6d3fe58cd4cd1a844863fc0c996b24c7,
-    type: 2}
-  m_PrefabInternal: {fileID: 517109346}
---- !u!114 &180002139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 180002138}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e6f98b7fda06c345b23f9f93bcceafb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartingNode: {fileID: 0}
-  Edges: []
-  Nodes: []
 --- !u!1001 &220185427
 Prefab:
   m_ObjectHideFlags: 0
@@ -1140,6 +1121,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114193793343398574, guid: 6d3fe58cd4cd1a844863fc0c996b24c7,
+        type: 2}
+      propertyPath: StartingNode
+      value: 
+      objectReference: {fileID: 1261835921}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d3fe58cd4cd1a844863fc0c996b24c7, type: 2}
   m_IsPrefabAsset: 0
@@ -3199,8 +3185,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
+  m_SubmitButton: A
+  m_CancelButton: B
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0

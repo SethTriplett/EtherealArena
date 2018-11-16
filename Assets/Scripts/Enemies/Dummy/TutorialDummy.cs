@@ -46,7 +46,7 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
     }
 
     void Start() {
-        doNothingTimer = 1.5f;
+        doNothingTimer = 2.75f;
         currentSegment = TutorialSegment.FightOpening;
         attackedEarly = false;
         swappedEarly = false;
