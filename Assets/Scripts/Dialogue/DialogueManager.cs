@@ -89,7 +89,6 @@ public class DialogueManager : MonoBehaviour
     // Display all Messages in a Conversation
     IEnumerator Converse(Conversation newConversation)
     {
-
         ToggleWindow(true);
         conversationInProgress = true;
         

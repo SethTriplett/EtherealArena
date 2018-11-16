@@ -18,10 +18,12 @@ public class PlayerControl : MonoBehaviour, IEventListener {
     private SpriteRenderer armRenderer;
     private SpriteRenderer headRenderer;
     private Transform hand;
+    private Rigidbody2D playerRigidBody;
     public ISkill[] equipedSkills = new ISkill[3];
     private ISkill activeSkill;
     private int activeSkillIndex;
     private bool stunned = false;
+    private bool animationStunned = false;
     private bool focusingPosition = false;
     private bool usingSkillButton = false;
     private bool usingSkillPreviousFrame = false;
@@ -30,13 +32,14 @@ public class PlayerControl : MonoBehaviour, IEventListener {
     [SerializeField] private Sprite idleArmSprite;
 
     void Start() {
-        facingRight = false;
+        facingRight = true;
         arm = transform.Find("Arm");
         hand = arm.Find("Hand");
         head = transform.Find("Head");
         bodyRenderer = GetComponent<SpriteRenderer>();
         armRenderer = arm.GetComponent<SpriteRenderer>();
         headRenderer = head.GetComponent<SpriteRenderer>();
+        playerRigidBody = GetComponent<Rigidbody2D>();
 
         // Temporary
         equipedSkills[0] = GetComponent<UseSpiritShot>();
@@ -53,6 +56,7 @@ public class PlayerControl : MonoBehaviour, IEventListener {
         EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerDefeatEvent), this);
         EventMessanger.GetInstance().SubscribeEvent(typeof(ConversationStartEvent), this);
         EventMessanger.GetInstance().SubscribeEvent(typeof(ConversationEndEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(EnemyStartingDataEvent), this);
     }
 
     void OnDisable() {
@@ -60,18 +64,23 @@ public class PlayerControl : MonoBehaviour, IEventListener {
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerDefeatEvent), this);
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(ConversationStartEvent), this);
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(ConversationEndEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(EnemyStartingDataEvent), this);
     }
 
     void FixedUpdate () {
-        CheckFocus();
-        CheckSkillButton();
-        if (!stunned) {
-            MovementAndAiming();
+        if (!animationStunned) {
+            CheckFocus();
+            CheckSkillButton();
+            if (!stunned) {
+                MovementAndAiming();
+            }
         }
     }
 
     void Update() {
-        CheckSwapSkill();
+        if (!animationStunned) {
+            CheckSwapSkill();
+        }
     }
 
     void MovementAndAiming() {
@@ -106,8 +115,13 @@ public class PlayerControl : MonoBehaviour, IEventListener {
         if (magnitude > 1) magnitude = 1;
         // Move based on input
         if (!focusingPosition) {
-            gameObject.transform.position += Vector3.right * magnitude * Mathf.Cos(angleRad) * speed * Time.deltaTime;
-            gameObject.transform.position += Vector3.up * magnitude * Mathf.Sin(angleRad) * speed * Time.deltaTime;
+            if (playerRigidBody != null) {
+                playerRigidBody.AddForce(Vector2.right * magnitude * Mathf.Cos(angleRad) * speed * 100);
+                playerRigidBody.AddForce(Vector2.up * magnitude * Mathf.Sin(angleRad) * speed * 100);
+            } else {
+                gameObject.transform.position += Vector3.right * magnitude * Mathf.Cos(angleRad) * speed * Time.deltaTime;
+                gameObject.transform.position += Vector3.up * magnitude * Mathf.Sin(angleRad) * speed * Time.deltaTime;
+            }
         }
 
         //Aiming
@@ -278,6 +292,37 @@ public class PlayerControl : MonoBehaviour, IEventListener {
         usingSkillPreviousFrame = false;
     }
 
+    private void AnimationLock() {
+        this.animationStunned = true;
+        float animationTimer = 2.75f;
+        StartCoroutine(AnimationLockSubroutine(animationTimer));
+    }
+
+    private IEnumerator AnimationLockSubroutine(float duration) {
+        while (duration > 0) {
+            duration -= Time.deltaTime;
+            yield return null;
+        }
+        this.animationStunned = false;
+    }
+
+    private void KO() {
+        AudioManager.GetInstance().StopSound(Sound.FireLoop);
+        StunPlayer();
+        animationStunned = true;
+        gameObject.layer = 8;
+        bodyRenderer.color = new Color(1, 1, 1, 0f);
+        armRenderer.color = new Color(1, 1, 1, 0f);
+        headRenderer.color = new Color(1, 1, 1, 0f);
+    }
+
+    private void FightOver() {
+        AudioManager.GetInstance().StopSound(Sound.FireLoop);
+        StunPlayer();
+        animationStunned = true;
+        gameObject.layer = 8;
+    }
+
     public void StunPlayer() {
         this.stunned = true;
         activeSkill.ReleaseSkill();
@@ -290,20 +335,15 @@ public class PlayerControl : MonoBehaviour, IEventListener {
 
     public void ConsumeEvent(IEvent e) {
         if (e.GetType() == typeof(PlayerVictoryEvent)) {
-            AudioManager.GetInstance().StopSound(Sound.FireLoop);
-            StunPlayer();
-            gameObject.layer = 8;
+            FightOver();
         } else if (e.GetType() == typeof(PlayerDefeatEvent)) {
-            AudioManager.GetInstance().StopSound(Sound.FireLoop);
-            StunPlayer();
-            gameObject.layer = 8;
-            bodyRenderer.color = new Color(1, 1, 1, 0f);
-            armRenderer.color = new Color(1, 1, 1, 0f);
-            headRenderer.color = new Color(1, 1, 1, 0f);
+            KO();
         } else if (e.GetType() == typeof(ConversationStartEvent)) {
             StunPlayer();
         } else if (e.GetType() == typeof(ConversationEndEvent)) {
             UnStunPlayer();
+        } else if (e.GetType() == typeof(EnemyStartingDataEvent)) {
+            AnimationLock();
         }
     }
 

@@ -8,15 +8,20 @@ public class SceneManagement : MonoBehaviour, IEventListener {
     private bool victory = false;
     private bool defeat = false;
 
+    // Tells it to load the world map after the post battle conversation
+    private bool loadAfterConversation = false;
+
 
     void OnEnable() {
         EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerVictoryEvent), this);
         EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerDefeatEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(ConversationEndEvent), this);
     }
 
     void OnDisable() {
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerVictoryEvent), this);
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerDefeatEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(ConversationEndEvent), this);
     }
 
     void PlayerVictory() {
@@ -42,11 +47,19 @@ public class SceneManagement : MonoBehaviour, IEventListener {
         defeat = false;
     }
 
+    public void ReturnToWorldMap() {
+        Vignette.LoadScene("WorldMap");
+    }
+
     public void ConsumeEvent(IEvent e) {
         if (e.GetType() == typeof(PlayerVictoryEvent)) {
-            PlayerVictory();
+            //PlayerVictory();
+            loadAfterConversation = true;
         } else if (e.GetType() == typeof(PlayerDefeatEvent)) {
-            OpponentVictory();
+            //OpponentVictory();
+            loadAfterConversation = true;
+        } else if (e.GetType() == typeof(ConversationEndEvent)) {
+            if (loadAfterConversation) ReturnToWorldMap();
         }
     }
 

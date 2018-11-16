@@ -16,13 +16,13 @@ public class EnemyStartingDataEvent : IEvent {
                 this.name = "Dummy";
                 break;
             case EnemyType.Vampire:
-                this.name = "Vampire";
+                this.name = "Versum";
                 break;
             case EnemyType.Psychic:
                 this.name = "Celif";
                 break;
             case EnemyType.DarkPlayer:
-                this.name = "???";
+                this.name = "Sachure";
                 break;
         }
     }

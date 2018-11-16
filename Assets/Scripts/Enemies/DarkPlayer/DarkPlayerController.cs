@@ -235,7 +235,7 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
     }
 
     private IEnumerator Storm(int waves, float aimedAngle) {
-        if (Mathf.Abs(transform.position.x) < 4 || Mathf.Abs(transform.position.y) < 3) Debug.LogError("Close to center.");
+        if (Mathf.Abs(transform.position.x) < 4 || Mathf.Abs(transform.position.y) < 3) Debug.LogWarning("Close to center.");
         arm.rotation = Quaternion.Euler(0f, 0f, aimedAngle);
         for (int x = 0; x < waves; x++) {
             // Alternate patterns
@@ -268,7 +268,7 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
     }
 
     private IEnumerator EndlessPursuit() {
-        if (transform.position != Vector3.zero) Debug.LogError("Wrong position");
+        if (transform.position != Vector3.zero) Debug.LogWarning("Wrong position");
         float angle = 90f;
         float duration = 10f;
 
@@ -459,13 +459,26 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
         cooldownTimer = 10f;
         state = DarkPlayerState.ChoosingAttack;
     }
+    
+    private void DelayStart() {
+        float duration = 2.75f;
+        StartCoroutine(DelayStartSubroutine(duration));
+    }
+
+    private IEnumerator DelayStartSubroutine(float duration) {
+        while (duration > 0) {
+            duration -= Time.deltaTime;
+            yield return null;
+        }
+        TransitionPhase(1);
+    }
 
     public void ConsumeEvent(IEvent e) {
         if (e.GetType() == typeof(PhaseTransitionEvent)) {
             PhaseTransitionEvent phaseTransitionEvent = e as PhaseTransitionEvent;
             TransitionPhase(phaseTransitionEvent.nextPhase);
         } else if (e.GetType() == typeof(EnemyStartingDataEvent)) {
-            TransitionPhase(1);
+            DelayStart();
         } else if (e.GetType() == typeof(PlayerVictoryEvent)) {
             KO();
         }

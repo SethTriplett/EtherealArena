@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BatBulletController : MonoBehaviour, IPoolable {
+public class BatBulletController : MonoBehaviour, IPoolable, IEventListener {
 
     private Transform target;
     private float timeCounter;
@@ -11,6 +11,8 @@ public class BatBulletController : MonoBehaviour, IPoolable {
     private float moveSpeed;
     private Vector3 tar;
     private int bounces;
+
+    private GameObject owner;
     
     // Use this for initialization
     void Start () {
@@ -25,6 +27,12 @@ public class BatBulletController : MonoBehaviour, IPoolable {
             bounces = 2;
         }
         moveSpeed = 5;
+
+        EventMessanger.GetInstance().SubscribeEvent(typeof(DeleteAttacksEvent), this);
+    }
+
+    void OnDisable() {
+        EventMessanger.GetInstance().SubscribeEvent(typeof(DeleteAttacksEvent), this);
     }
 	
 	// Update is called once per frame
@@ -82,5 +90,18 @@ public class BatBulletController : MonoBehaviour, IPoolable {
     public void setPos(Vector3 pos)
     {
         transform.position = pos;
+    }
+
+    private void Deactivate() {
+        gameObject.SetActive(false);
+    }
+
+    public void ConsumeEvent(IEvent e) {
+        if (e.GetType() == typeof(DeleteAttacksEvent)) {
+            DeleteAttacksEvent deleteAttacksEvent = e as DeleteAttacksEvent;
+            if (deleteAttacksEvent.owner == this.owner) {
+                Deactivate();
+            }
+        }
     }
 }

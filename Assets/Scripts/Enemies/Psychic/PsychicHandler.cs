@@ -253,12 +253,34 @@ public class PsychicHandler : MonoBehaviour, IEventListener {
         }
     }
 
+    private void KO() {
+        StopAllCoroutines();
+        EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
+    }
+
+    private void FightOver() {
+        StopAllCoroutines();
+    }
+
+    private void StartDelayed() {
+        float duration = 2.75f;
+        StartCoroutine(StartDelayedSubroutine(duration));
+    }
+
+    private IEnumerator StartDelayedSubroutine(float duration) {
+        while (duration > 0) {
+            duration -= Time.deltaTime;
+            yield return null;
+        }
+        TransitionPhase(1);
+    }
+
     public void ConsumeEvent(IEvent e) {
         if (e.GetType() == typeof(PhaseTransitionEvent)) {
             PhaseTransitionEvent phaseTransitionEvent = e as PhaseTransitionEvent;
             TransitionPhase(phaseTransitionEvent.nextPhase);
         } if (e.GetType() == typeof(EnemyStartingDataEvent)) {
-            TransitionPhase(1);
+            StartDelayed();
         }
     }
 
