@@ -9,6 +9,7 @@ public class CreditsBack : MonoBehaviour {
     void Update() {
         if (titleScreen.creditsOn) {
             if (Input.GetButtonDown("B")) {
+                AudioManager.GetInstance().PlaySound(Sound.MenuClick);
                 titleScreen.creditsOn = false;
             }
         }

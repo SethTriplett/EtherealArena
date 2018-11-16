@@ -8,5 +8,19 @@ public enum Sound {
     BowRelease,
     FireStart,
     FireLoop,
-    FireEnd
+    FireEnd,
+    MenuClick,
+    VampireBullet,
+    VampireBats,
+    VampireHiss,
+    PlayerHit,
+    EnemyHit,
+    KnifeDraw,
+    Whirl,
+    WhooshSmall,
+    WhooshLarge,
+    DarkFlameLoop,
+    DarkFlameEnd,
+    DarkBowCharge,
+    DarkBowRelease
 }

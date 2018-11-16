@@ -21,16 +21,23 @@ public class PsychicHandler : MonoBehaviour, IEventListener {
     void OnEnable() {
         EventMessanger.GetInstance().SubscribeEvent(typeof(PhaseTransitionEvent), this);
         EventMessanger.GetInstance().SubscribeEvent(typeof(EnemyStartingDataEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerVictoryEvent), this);
+        EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerDefeatEvent), this);
     }
     
     void OnDisable() {
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(PhaseTransitionEvent), this);
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(EnemyStartingDataEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerVictoryEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerDefeatEvent), this);
+
+        EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
     }
 
     private void TransitionPhase(int nextPhase) {
         StopAllCoroutines();
         EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
+        AudioManager.GetInstance().StopSound(Sound.WhooshLarge);
         switch(nextPhase) {
             case 1:
                 StartPhase1();
@@ -58,15 +65,12 @@ public class PsychicHandler : MonoBehaviour, IEventListener {
         StartCoroutine(JunkStream());
     }
 
-    public void StopAttacks() {
-        StopAllCoroutines();
-        EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
-    }
-
 	IEnumerator toss(){
         do {
 			createTossObject();
-			yield return new WaitForSeconds(2.5f);
+			yield return new WaitForSeconds(1f);
+            AudioManager.GetInstance().PlaySound(Sound.WhooshLarge);
+			yield return new WaitForSeconds(1.5f);
 		} while (true);
 	} 
 
@@ -123,7 +127,9 @@ public class PsychicHandler : MonoBehaviour, IEventListener {
     private IEnumerator PsychicFling() {
         do {
             createFlingObject();
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(1f);
+            AudioManager.GetInstance().PlaySound(Sound.WhooshLarge);
+            yield return new WaitForSeconds(2f);
         } while (true);
     }
 	
@@ -182,6 +188,7 @@ public class PsychicHandler : MonoBehaviour, IEventListener {
         do {
             createStreamObject();
             yield return new WaitForSeconds(0.02f);
+            AudioManager.GetInstance().PlaySound(Sound.WhooshLarge);
         } while (true);
     }
 
@@ -218,6 +225,7 @@ public class PsychicHandler : MonoBehaviour, IEventListener {
                     // Aim directly left
                     knife.transform.rotation = Quaternion.Euler(0, 0, angle);
                     knifeScript.SetOwner(gameObject);
+                    AudioManager.GetInstance().PlaySound(Sound.KnifeDraw);
                     knifeScript.SetTracking(false);
                     knifeScript.SetAimedAngle(angle);
                     knifeScript.StartAimingAnimation(delay);
@@ -279,8 +287,14 @@ public class PsychicHandler : MonoBehaviour, IEventListener {
         if (e.GetType() == typeof(PhaseTransitionEvent)) {
             PhaseTransitionEvent phaseTransitionEvent = e as PhaseTransitionEvent;
             TransitionPhase(phaseTransitionEvent.nextPhase);
-        } if (e.GetType() == typeof(EnemyStartingDataEvent)) {
+        } else if (e.GetType() == typeof(EnemyStartingDataEvent)) {
             StartDelayed();
+            AudioManager.GetInstance().StartMusic(Soundtrack.PsychicTheme);
+            AudioManager.GetInstance().StopMusic(Soundtrack.TitleTheme);
+        } else if (e.GetType() == typeof(PlayerVictoryEvent)) {
+            KO();
+        } else if (e.GetType() == typeof(PlayerDefeatEvent)) {
+            FightOver();
         }
     }
 

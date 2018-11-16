@@ -47,7 +47,7 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
         new Vector3(-6.2f, 3.8f, 0),
         new Vector3(-6.2f, 0f, 0),
         new Vector3(-6.2f, -3.8f, 0),
-        new Vector3(6.2f, 0f, 0),
+        new Vector3(0f, -3.8f, 0),
         new Vector3(6.2f, -3.8f, 0),
     };
 
@@ -79,6 +79,8 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(PhaseTransitionEvent), this);
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(EnemyStartingDataEvent), this);
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(PlayerVictoryEvent), this);
+
+        EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
     }
 
     void Update() {
@@ -87,13 +89,13 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
             if (cooldownTimer < 0) {
                 if (phase == 1) {
                     float randomAttack = Random.Range(0f, 1f);
-                    if (randomAttack < 0.5f) {
+                    if (randomAttack < 0.8f) {
                         preppedAttack = 0;
                         // Choose one of the corners
-                        int randomPosition = Random.Range(1, 8);
-                        randomPosition = Mathf.CeilToInt(randomPosition / 2f) * 2;
+                        int randomPosition = Random.Range(1, 4);
+                        randomPosition *= 2;
                         StartCoroutine(Warp(positions[randomPosition]));
-                        cooldownTimer = 5f;
+                        cooldownTimer = 4f;
                     } else {
                         preppedAttack = 1;
                         StartCoroutine(Warp(positions[0]));
@@ -114,8 +116,9 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
                     }
                 } else if (phase == 3) {
                     preppedAttack = 4;
-                    int randomPosition = Random.Range(1, 8);
-                    randomPosition = Mathf.FloorToInt((randomPosition + 1) / 2f);
+                    int randomPosition = Random.Range(1, 4);
+                    randomPosition *= 2;
+                    randomPosition += 1;
                     StartCoroutine(Warp(positions[randomPosition]));
                     cooldownTimer = 5f;
                 }
@@ -157,7 +160,7 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
                 int randomPos = Random.Range(1, 8);
                 Mathf.FloorToInt((randomPos + 1) / 2f);
                 StartCoroutine(Warp(positions[randomPos]));
-                warpTimer = 10f;
+                warpTimer = 7f;
             }
         }
 
@@ -204,7 +207,7 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
     private void TransitionPhase(int nextPhase) {
         StopAllCoroutines();
         state = DarkPlayerState.ChoosingAttack;
-        cooldownTimer = 5f;
+        cooldownTimer = 1f;
         arm.localEulerAngles = new Vector3(0, 0, 0);
         EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
         if (nextPhase == 1) {
@@ -246,24 +249,26 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
                     spiritShot.transform.position = hand.position;
                     spiritShotScript.SetOwner(gameObject);
                     // Orient each shot
-                    spiritShot.transform.rotation = Quaternion.Euler(0, 0, aimedAngle - (STORM_SPREAD_ANGLE / 2f) + (STORM_SPREAD_ANGLE * y / SHOTS_PER_WAVE));
+                    spiritShot.transform.rotation = Quaternion.Euler(0, 0, aimedAngle - (STORM_SPREAD_ANGLE / 2f) + (STORM_SPREAD_ANGLE * (y / (float) (SHOTS_PER_WAVE - 1))));
                     spiritShot.SetActive(true);
                 }
             } else {
-                for (int y = 0; y < SHOTS_PER_WAVE - 1; y++) {
+                float alternatingOffset = STORM_SPREAD_ANGLE / (2 * SHOTS_PER_WAVE);
+                for (int y = 0; y < SHOTS_PER_WAVE + 1; y++) {
                     GameObject spiritShot = ObjectPooler.instance.GetDanmaku(spiritShotIndex);
                     SpiritShotEnemy spiritShotScript = spiritShot.GetComponent<SpiritShotEnemy>();
                     spiritShot.transform.position = hand.position;
                     spiritShotScript.SetOwner(gameObject);
                     // Orient each shot
-                    spiritShot.transform.rotation = Quaternion.Euler(0, 0, aimedAngle - (STORM_SPREAD_ANGLE / 2f) + (STORM_SPREAD_ANGLE * y / (SHOTS_PER_WAVE - 1)));
+                    spiritShot.transform.rotation = Quaternion.Euler(0, 0, aimedAngle - (STORM_SPREAD_ANGLE / 2f) + (STORM_SPREAD_ANGLE * (y / (float) (SHOTS_PER_WAVE - 1))) - alternatingOffset);
                     spiritShot.SetActive(true);
                 }
             }
+            AudioManager.GetInstance().PlaySound(Sound.Schff);
             yield return new WaitForSeconds(0.4f);
         }
         arm.localEulerAngles = new Vector3(0, 0, 0);
-        cooldownTimer = 5f;
+        cooldownTimer = 4f;
         state = DarkPlayerState.ChoosingAttack;
     }
 
@@ -282,6 +287,7 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
             shot.transform.rotation = hand.rotation;
             shot.SetActive(true);
 
+            AudioManager.GetInstance().PlaySound(Sound.Schff);
             yield return new WaitForSeconds(0.1f);
             duration -= 0.1f;
 
@@ -290,7 +296,7 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
             angle %= 360f;
         }
         arm.localEulerAngles = new Vector3(0, 0, 0);
-        cooldownTimer = 2f;
+        cooldownTimer = 0.5f;
         state = DarkPlayerState.ChoosingAttack;
     }
 
@@ -398,14 +404,14 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
         }
 
         yield return null;
-        cooldownTimer = 8f;
+        cooldownTimer = 3f;
         state = DarkPlayerState.ChoosingAttack;
     }
 
     private IEnumerator UnholyImmolation() {
         const int NUM_FLAMES = 11;
         Vector3 CENTER_POINT = Vector3.zero;
-        float CONVERGE_SPEED = 1f;
+        float CONVERGE_SPEED = 1.2f;
         float ANGULAR_SPEED = 1.8f;
 
         // Set up
@@ -420,8 +426,8 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
             darkFlameScript.SetOwner(gameObject);
             darkFlameScript.SetIdle();
 
-            float xPos = 7 * Mathf.Sin((x * 2 * Mathf.PI / (NUM_FLAMES + 1)) + randomOffset);
-            float yPos = 7 * Mathf.Cos(x * 2 * Mathf.PI / (NUM_FLAMES + 1) + randomOffset);
+            float xPos = 9 * Mathf.Sin((x * 2 * Mathf.PI / (NUM_FLAMES + 1)) + randomOffset);
+            float yPos = 9 * Mathf.Cos(x * 2 * Mathf.PI / (NUM_FLAMES + 1) + randomOffset);
             flame.transform.position = new Vector3(xPos, yPos, 0f);
 
             flame.SetActive(true);
@@ -456,7 +462,7 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
                 darkFlame.Deactivate();
             }
         }
-        cooldownTimer = 10f;
+        cooldownTimer = 5f;
         state = DarkPlayerState.ChoosingAttack;
     }
     
@@ -478,6 +484,8 @@ public class DarkPlayerController : MonoBehaviour, IEventListener {
             PhaseTransitionEvent phaseTransitionEvent = e as PhaseTransitionEvent;
             TransitionPhase(phaseTransitionEvent.nextPhase);
         } else if (e.GetType() == typeof(EnemyStartingDataEvent)) {
+            AudioManager.GetInstance().StartMusic(Soundtrack.FinalBossTheme);
+            AudioManager.GetInstance().StopMusic(Soundtrack.TitleTheme);
             DelayStart();
         } else if (e.GetType() == typeof(PlayerVictoryEvent)) {
             KO();

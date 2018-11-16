@@ -44,6 +44,7 @@ public class DarkBow : MonoBehaviour, IPoolable, IEventListener {
         //arrow.transform.rotation = transform.rotation;
         arrow.transform.position = transform.TransformPoint(FindArrowOffset(0), 0f, 0f);
         darkArrowScript.SetCharging();
+        AudioManager.GetInstance().PlaySound(Sound.DarkBowCharge);
         arrow.SetActive(true);
     }
 
@@ -77,6 +78,7 @@ public class DarkBow : MonoBehaviour, IPoolable, IEventListener {
     private void Fire() {
         DarkArrow darkArrowScript = arrow.GetComponent<DarkArrow>();
         darkArrowScript.SetReleased();
+        AudioManager.GetInstance().PlaySound(Sound.DarkBowRelease);
         arrow = null;
         bowRenderer.sprite = bowSprites[0];
     }

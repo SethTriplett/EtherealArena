@@ -29,18 +29,28 @@ public class Pause : MonoBehaviour {
 	}
 	
 	public void ResumeButton() {
+        AudioManager.GetInstance().PlaySound(Sound.MenuClick);
 		Time.timeScale = 1;
 		gamePaused = false;
 		pauseMenu.SetActive(false);
 	}
 
+    public void RestartButton() {
+        AudioManager.GetInstance().PlaySound(Sound.MenuClick);
+        Time.timeScale = 1;
+        gamePaused = false;
+        pauseMenu.SetActive(false);
+    }
+
 	public void QuitToMenu(){
+        AudioManager.GetInstance().PlaySound(Sound.MenuClick);
 		Time.timeScale = 1;
 		Vignette.LoadScene("TitleScreen");
 		pauseMenu.SetActive(false);
 	}
 
 	public void QuitToWorld(){
+        AudioManager.GetInstance().PlaySound(Sound.MenuClick);
 		Time.timeScale = 1;
 		Vignette.LoadScene("WorldMap");
 		pauseMenu.SetActive(false);

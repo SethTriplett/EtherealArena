@@ -73,6 +73,8 @@ namespace EtherealArena.WorldMap {
 		}
 
 		private IEnumerator MoveToNewNode(WorldMapNode newNode) {
+        
+            AudioManager.GetInstance().PlaySound(Sound.WhooshSmall);
 			
 			canMove = false;
 

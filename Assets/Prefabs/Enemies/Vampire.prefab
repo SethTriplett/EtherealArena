@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 95674222801844498}
   - component: {fileID: 114394736140092750}
   - component: {fileID: 114558374025939750}
+  - component: {fileID: 114985267859955768}
   m_Layer: 0
   m_Name: Vampire
   m_TagString: Enemy
@@ -127,7 +128,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &61332498295971352
 BoxCollider2D:
@@ -283,6 +284,17 @@ MonoBehaviour:
   maxHealth: 5
   currentPhase: 1
   maxPhase: 3
+--- !u!114 &114985267859955768
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1717231491924888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d114538a0082244b17a314dc2246ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212902362648732204
 SpriteRenderer:
   m_ObjectHideFlags: 1

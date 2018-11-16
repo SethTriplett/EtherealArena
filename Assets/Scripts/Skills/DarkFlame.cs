@@ -34,6 +34,9 @@ public class DarkFlame : MonoBehaviour, IPoolable, IEventListener {
     }
 
     void Update() {
+        if (!deactivating) {
+            AudioManager.GetInstance().PlaySound(Sound.DarkFlameLoop);
+        }
         if (state == DarkFlameState.fallingFlame) {
             Vector3 pos = transform.position;
             float currentFloat = Mathf.Sin(fallingTimer * 2 * Mathf.PI / period) * amplitude;
@@ -51,6 +54,7 @@ public class DarkFlame : MonoBehaviour, IPoolable, IEventListener {
 
     private IEnumerator DeactivateCoroutine() {
         this.deactivating = true;
+        AudioManager.GetInstance().StopSound(Sound.DarkFlameLoop);
         while (spriteRenderer.color.a > 0.02) {
             Color targetColor = new Color(1, 1, 1, spriteRenderer.color.a);
             targetColor.a = Mathf.Lerp(targetColor.a, 0, 0.1f);

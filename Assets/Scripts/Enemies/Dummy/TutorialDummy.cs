@@ -17,6 +17,8 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
         SkillSwapAlt,
         SkillExplaination,
         AfterSkillExplaination,
+        AimDialog,
+        AimControls,
         DodgeDialog,
         DodgeDemo,
         PhaseTutorial,
@@ -25,6 +27,8 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
         StrongAttackDemo,
         HealthTutorial,
         AfterHealthTutorial,
+        PauseDialog,
+        AfterPauseTutorial,
         Closing
     }
 
@@ -53,6 +57,9 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
         playerMoved = false;
         playerSwappedSkills = 0;
         enemyStatusScript.SetInvulnerability(true);
+
+        AudioManager.GetInstance().StopMusic(Soundtrack.TitleTheme);
+        AudioManager.GetInstance().StartMusic(Soundtrack.TutorialTheme);
     }
 
     void OnEnable() {
@@ -69,6 +76,8 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(PhaseTransitionEvent), this);
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(TutorialSkillSwapEvent), this);
         EventMessanger.GetInstance().UnsubscribeEvent(typeof(TutorialPlayerMovedEvent), this);
+
+        EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
     }
 
     void Update() {
@@ -81,6 +90,8 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
                 StartNextSegment();
             } else if (currentSegment == TutorialSegment.SkillSwapControls && playerSwappedSkills > 2) {
                 StartNextSegment();
+            } else if (currentSegment == TutorialSegment.AimControls) {
+                StartNextSegment();
             } else if (currentSegment == TutorialSegment.DodgeDemo) {
                 StartNextSegment();
             } else if (currentSegment == TutorialSegment.StrongAttackDemo) {
@@ -88,6 +99,8 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
             } else if (currentSegment == TutorialSegment.AfterSkillExplaination) {
                 StartNextSegment();
             } else if (currentSegment == TutorialSegment.AfterHealthTutorial) {
+                StartNextSegment();
+            } else if (currentSegment == TutorialSegment.AfterPauseTutorial) {
                 StartNextSegment();
             }
         }
@@ -113,7 +126,7 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
                 } else {
                 // Go to alt attack dialog
                     this.currentSegment = TutorialSegment.AttackDialogAlt;
-                    DialogueManager.Instance.SelectConversation(9);
+                    DialogueManager.Instance.SelectConversation(11);
                 }
                 break;
             case TutorialSegment.AttackDialog:
@@ -133,7 +146,7 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
                 } else {
                 // Go to alt route
                     this.currentSegment = TutorialSegment.SkillSwapAlt;
-                    DialogueManager.Instance.SelectConversation(10);
+                    DialogueManager.Instance.SelectConversation(12);
                 }
                 break;
             case TutorialSegment.SkillSwap:
@@ -149,14 +162,25 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
             case TutorialSegment.SkillSwapAlt:
                 // Just go to the 2nd phase now.
                 this.currentSegment = TutorialSegment.PhaseTutorialDemo;
+                enemyStatusScript.SetInvulnerability(false);
                 knifeDummyScript.KnifeTossDemo();
                 break;
             case TutorialSegment.SkillExplaination:
                 // Slight break between dialog
                 this.currentSegment = TutorialSegment.AfterSkillExplaination;
-                doNothingTimer = 0.1f;
+                doNothingTimer = 0.01f;
                 break;
             case TutorialSegment.AfterSkillExplaination:
+                // Go to aim dialog
+                this.currentSegment = TutorialSegment.AimDialog;
+                DialogueManager.Instance.NextConversation();
+                break;
+            case TutorialSegment.AimDialog:
+                // Let them test it
+                this.currentSegment = TutorialSegment.AimControls;
+                doNothingTimer = 3f;
+                break;
+            case TutorialSegment.AimControls:
                 // Go to dodge dialog
                 this.currentSegment = TutorialSegment.DodgeDialog;
                 DialogueManager.Instance.NextConversation();
@@ -180,8 +204,8 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
             case TutorialSegment.PhaseTutorialDemo:
                 // After being hit to 2nd phase, scream
                 this.currentSegment = TutorialSegment.PhaseTutorialTwo;
-                DialogueManager.Instance.SelectConversation(6);
-                DialogueManager.Instance.SetConversationCount(7);
+                DialogueManager.Instance.SelectConversation(7);
+                DialogueManager.Instance.SetConversationCount(8);
                 break;
             case TutorialSegment.PhaseTutorialTwo:
                 // Use the Stronger attack
@@ -199,6 +223,17 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
                 doNothingTimer = 0.01f;
                 break;
             case TutorialSegment.AfterHealthTutorial:
+                // Goto pause tutorial
+                this.currentSegment = TutorialSegment.PauseDialog;
+                DialogueManager.Instance.NextConversation();
+                break;
+            case TutorialSegment.PauseDialog:
+                // Separation between two dialogs
+                this.currentSegment = TutorialSegment.AfterPauseTutorial;
+                doNothingTimer = 0.01f;
+                break;
+            case TutorialSegment.AfterPauseTutorial:
+                // Goto closing
                 this.currentSegment = TutorialSegment.Closing;
                 DialogueManager.Instance.NextConversation();
                 break;
@@ -206,6 +241,15 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
                 SelfDestruct();
                 break;
         }
+    }
+
+    private void DeleteAttacksAsync() {
+        StartCoroutine(DeleteAttacksAsyncRoutine());
+    }
+
+    private IEnumerator DeleteAttacksAsyncRoutine() {
+        yield return null;
+        EventMessanger.GetInstance().TriggerEvent(new DeleteAttacksEvent(gameObject));
     }
 
     private void SelfDestruct() {
@@ -222,7 +266,11 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
                 StartNextSegment();
             } else if (currentSegment == TutorialSegment.SkillSwap) {
                 StartNextSegment();
+            } else if (currentSegment == TutorialSegment.SkillSwapAlt) {
+                StartNextSegment();
             } else if (currentSegment == TutorialSegment.SkillExplaination) {
+                StartNextSegment();
+            } else if (currentSegment == TutorialSegment.AimDialog) {
                 StartNextSegment();
             } else if (currentSegment == TutorialSegment.DodgeDialog) {
                 StartNextSegment();
@@ -231,6 +279,8 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
             } else if (currentSegment == TutorialSegment.PhaseTutorialTwo) {
                 StartNextSegment();
             } else if (currentSegment == TutorialSegment.HealthTutorial) {
+                StartNextSegment();
+            } else if (currentSegment == TutorialSegment.PauseDialog) {
                 StartNextSegment();
             } else if (currentSegment == TutorialSegment.Closing) {
                 StartNextSegment();
@@ -243,6 +293,7 @@ public class TutorialDummy : MonoBehaviour, IEventListener {
                 StartNextSegment();
             }
         } else if (e.GetType() == typeof(PhaseTransitionEvent)) {
+            DeleteAttacksAsync();
             currentSegment = TutorialSegment.PhaseTutorialDemo;
             StartNextSegment();
         } else if (e.GetType() == typeof(TutorialPlayerMovedEvent)) {

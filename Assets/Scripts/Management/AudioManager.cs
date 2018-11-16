@@ -12,6 +12,8 @@ public class AudioManager : MonoBehaviour {
     [SerializeField] private AudioSource[] soundList;
     [SerializeField] private List<Sound> soundIndexList; // Fragile workaround; use Sound enum to retrieve index
     [SerializeField] private int[] numberOfSounds;
+    [SerializeField] private AudioSource[] musicList;
+    private List<AudioSource> musicPool;
     private int[] nextAvailable;
 
     void Awake() {
@@ -72,6 +74,15 @@ public class AudioManager : MonoBehaviour {
         for (int x = 0; x < nextAvailable.Length; x++) {
             nextAvailable[x] = 0;
         }
+
+        GameObject musicPoolObject = new GameObject("Music Pool");
+        musicPoolObject.transform.SetParent(gameObject.transform);
+        musicPool = new List<AudioSource>();
+        for (int x = 0; x < musicList.Length; x++) {
+            AudioSource soundtrack = (AudioSource) Instantiate(musicList[x]);
+            musicPool.Add(soundtrack);
+            soundtrack.transform.SetParent(musicPoolObject.transform);
+        }
     }
 
     public void PlaySound(Sound sound) {
@@ -89,7 +100,30 @@ public class AudioManager : MonoBehaviour {
                 nextAvailable[soundIndex] %= numberOfSounds[soundIndex];
             }
         } while (nextAvailable[soundIndex] != startingIndex);
+        if (sound != Sound.DarkFlameLoop) {
+            Debug.LogWarning("Couldn't play sound: " + sound);
+        }
+    }
+
+    public void PlaySoundPitchAdjusted(Sound sound, float minPitch, float maxPitch) {
+        int soundIndex = soundIndexList.IndexOf(sound);
+        int startingIndex = nextAvailable[soundIndex];
+        do {
+            if (!pools[soundIndex][nextAvailable[soundIndex]].isPlaying) {
+                int readyIndex = nextAvailable[soundIndex];
+                nextAvailable[soundIndex]++;
+                nextAvailable[soundIndex] %= numberOfSounds[soundIndex];
+                AudioSource sample = pools[soundIndex][readyIndex];
+                sample.pitch = Random.Range(minPitch, maxPitch);
+                sample.Play();
+                return;
+            } else {
+                nextAvailable[soundIndex]++;
+                nextAvailable[soundIndex] %= numberOfSounds[soundIndex];
+            }
+        } while (nextAvailable[soundIndex] != startingIndex);
         Debug.LogWarning("Couldn't play sound: " + sound);
+
     }
 
     public void StopSound(Sound sound) {
@@ -97,6 +131,18 @@ public class AudioManager : MonoBehaviour {
         for (int x = 0; x < numberOfSounds[soundIndex]; x++) {
             pools[soundIndex][x].Stop();
         }
+    }
+
+    public void StartMusic(Soundtrack track) {
+        AudioSource soundtrack = musicPool[(int) track];
+        if (!soundtrack.isPlaying) {
+            soundtrack.Play();
+        }
+    }
+
+    public void StopMusic(Soundtrack track) {
+        AudioSource soundtrack = musicPool[(int) track];
+        soundtrack.Stop();
     }
 
 }

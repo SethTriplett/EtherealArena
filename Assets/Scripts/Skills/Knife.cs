@@ -18,6 +18,9 @@ public class Knife : MonoBehaviour, IPoolable, IEventListener {
     private Transform target;
     private GameObject owner;
 
+    private bool spinning;
+    private bool aiming;
+
     void OnEnable() {
         EventMessanger.GetInstance().SubscribeEvent(typeof(DeleteAttacksEvent), this);
     }
@@ -36,12 +39,25 @@ public class Knife : MonoBehaviour, IPoolable, IEventListener {
             aimedDirection = Quaternion.Euler(0f, 0f, aimedAngle);
         }
         if (spinAnimationTimer > 0) {
+            if (!spinning) {
+                spinning = true;
+                AudioManager.GetInstance().PlaySound(Sound.Whirl);
+            }
             gameObject.transform.Rotate(0f, 0f, 1440f * Time.deltaTime);
             spinAnimationTimer -= Time.deltaTime;
+        } else if (spinAnimationTimer <= 0 && spinning) {
+            AudioManager.GetInstance().StopSound(Sound.Whirl);
+            AudioManager.GetInstance().PlaySound(Sound.KnifeDraw);
+            spinning = false;
+            aiming = true;
         } else if (aimingAnimationTimer > 0) {
             gameObject.transform.rotation = aimedDirection;
             aimingAnimationTimer -= Time.deltaTime;
         } else {
+            if (aiming == true) {
+                aiming = false;
+                AudioManager.GetInstance().PlaySound(Sound.WhooshSmall);
+            }
             angle = gameObject.transform.rotation.eulerAngles.z;
             angle *= Mathf.PI / 180;
             gameObject.transform.position += Vector3.right * Mathf.Cos(angle) * speed * Time.deltaTime;

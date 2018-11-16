@@ -30,6 +30,7 @@ public class ObjectPooler : MonoBehaviour {
         for (int y = 0; y < danmakuList.Length; y++) {
             GameObject poolObject = new GameObject();
             poolObject.name = danmakuList[y].name + " Pool";
+            poolObject.transform.SetParent(gameObject.transform);
             poolObjects[y] = poolObject;
         }
         pools = new List<List<GameObject>>();

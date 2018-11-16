@@ -89,6 +89,7 @@ public class EnemyStatus : MonoBehaviour, IEventListener {
         */
         if (damage > 0 && !invulnerable) {
             currentHealth -= damage;
+            AudioManager.GetInstance().PlaySoundPitchAdjusted(Sound.EnemyHit, 0.7f, 1.1f);
         }
         EventMessanger.GetInstance().TriggerEvent(new EnemyCurrentHealthEvent(currentHealth));
     }

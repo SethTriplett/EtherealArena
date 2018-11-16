@@ -7,7 +7,7 @@ public class DummyLoadingAndTransitioning : MonoBehaviour, IEventListener {
     private readonly static string DUMMY_NAME = "Dummy";
     private readonly List<Conversation> conversationList = new List<Conversation>();
     private Message[] welcomeMessages = {
-        new Message(DUMMY_NAME, "Welcome to the Ethereal Arena!"),
+        new Message(DUMMY_NAME, "Welcome to the Ethereal Arena!\n(A button/Z key: Advance text)\n(B button/Z key: Speed up text"),
         new Message(DUMMY_NAME, "As you know, the Ethereal Arena is a tournament home to fighters striving to become champions."),
         new Message(DUMMY_NAME, "Anyway, let's start with some warm ups."),
         new Message(DUMMY_NAME, "Firstly, move around with the left stick or the arrow keys."),
@@ -44,6 +44,12 @@ public class DummyLoadingAndTransitioning : MonoBehaviour, IEventListener {
         new Message(DUMMY_NAME, "Remember, you can choose whichever one you want with the X button or the C key."),
     };
 
+    private Message[] aimTutorialMessages = {
+        new Message(DUMMY_NAME, "It'll pay to aim your skills too."),
+        new Message(DUMMY_NAME, "If you hold Left or Right Bumper or Shift, you can stay in place while aiming your attacks."),
+        new Message(DUMMY_NAME, "If you have a controller, you can aim with the right stick as well."),
+    };
+    
     private Message[] dodgeTutorialMessages = {
         new Message(DUMMY_NAME, "Don't go thinking you're the only one out there who wants to punch stuff."),
         new Message(DUMMY_NAME, "You're opponents will have plenty of attacks to keep you occupied."),
@@ -69,6 +75,10 @@ public class DummyLoadingAndTransitioning : MonoBehaviour, IEventListener {
         new Message(DUMMY_NAME, "Something like that."),
         new Message(DUMMY_NAME, "Keep an eye open while fighting. No matter how hard things get, there's always a way through."),
     };
+    
+    private Message[] pauseTutorialMessages = {
+        new Message(DUMMY_NAME, "By the way, if you want me to explain something again, just pause the game with Start or Escape and restart the fight."),
+    };
 
     private Message[] closingMessages = {
         new Message(DUMMY_NAME, "I think you're getting the hang of it now."),
@@ -82,21 +92,23 @@ public class DummyLoadingAndTransitioning : MonoBehaviour, IEventListener {
         Conversation conversation1 = new Conversation(welcomeMessages);
         Conversation conversation2 = new Conversation(attackTutorialMessages);
         Conversation conversation3 = new Conversation(skillSwapTutorialMessages);
-        Conversation conversation5 = new Conversation(skillExplainationMessages);
+        Conversation conversation4 = new Conversation(skillExplainationMessages);
+        Conversation conversation5 = new Conversation(aimTutorialMessages);
         Conversation conversation6 = new Conversation(dodgeTutorialMessages);
         Conversation conversation7 = new Conversation(phaseChangeTutorialMessages);
         Conversation conversation8 = new Conversation(phaseChangeTwoMessages);
         Conversation conversation9 = new Conversation(healthTutorialMessages);
-        Conversation conversation10 = new Conversation(closingMessages);
+        Conversation conversation10 = new Conversation(pauseTutorialMessages);
+        Conversation conversation11 = new Conversation(closingMessages);
 
-        Conversation conversation11 = new Conversation(attackTutorialAltMessages);
-        Conversation conversation12 = new Conversation(skillSwapTutorialAltMessages);
-        Conversation conversation13 = new Conversation(healthTutorialAltMessages);
+        Conversation conversation12 = new Conversation(attackTutorialAltMessages);
+        Conversation conversation13 = new Conversation(skillSwapTutorialAltMessages);
+        Conversation conversation14 = new Conversation(healthTutorialAltMessages);
 
         conversationList.Add(conversation1);
         conversationList.Add(conversation2);
         conversationList.Add(conversation3);
-
+        conversationList.Add(conversation4);
         conversationList.Add(conversation5);
         conversationList.Add(conversation6);
         conversationList.Add(conversation7);
@@ -106,6 +118,7 @@ public class DummyLoadingAndTransitioning : MonoBehaviour, IEventListener {
         conversationList.Add(conversation11);
         conversationList.Add(conversation12);
         conversationList.Add(conversation13);
+        conversationList.Add(conversation14);
     }
 
     void Start() {
