@@ -19,6 +19,8 @@ public class EnemyStatus : MonoBehaviour, IEventListener {
     private bool invulnerable = false;
     private float invulnerabilityTimer = 0f;
 
+    private EnemyType type;
+
     void Start() {
         currentHealth = maxHealth;
         EventMessanger.GetInstance().TriggerEvent(new EnemyMaxHealthEvent(maxHealth));
@@ -48,12 +50,19 @@ public class EnemyStatus : MonoBehaviour, IEventListener {
                 TransitionPhases(currentPhase);
             }
         }
+
+        if (Input.GetKey(KeyCode.X)
+            && (Input.GetKey(KeyCode.Alpha4) || Input.GetKey(KeyCode.Keypad4))
+            && (Input.GetKey(KeyCode.Alpha9) || Input.GetKey(KeyCode.Keypad9))) {
+                TakeDamage(maxHealth);
+            }
     }
 
     void KO() {
         if (!defeated) {
             defeated = true;
             EventMessanger.GetInstance().TriggerEvent(new PlayerVictoryEvent());
+            EventMessanger.GetInstance().TriggerEvent(new BossDefeatedEvent(type, maxPhase));
             
             /*
             LoadBattleSceneScript loadBattleSceneScript = FindObjectOfType<LoadBattleSceneScript>();
@@ -138,6 +147,7 @@ public class EnemyStatus : MonoBehaviour, IEventListener {
             EnemyStartingDataEvent dataEvent = e as EnemyStartingDataEvent;
             this.currentPhase = 1;
             this.maxPhase = dataEvent.maxPhase;
+            this.type = dataEvent.type;
         }
     }
 

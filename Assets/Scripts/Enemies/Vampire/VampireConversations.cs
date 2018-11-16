@@ -4,14 +4,37 @@ using UnityEngine;
 
 public class VampireConversations : MonoBehaviour, IEventListener {
 
-    private readonly Message[] playerWin = {
-        new Message("Player", "Blood")
+    private readonly Message[] playerLoss1 = {
+        new Message("Vampire", "No match for a count of House Versum.")
+    };
+    private readonly Message[] playerLoss2 = {
+        new Message("Vampire", "No match for a count of House Versum.")
+    };
+    private readonly Message[] playerLoss3 = {
+        new Message("Vampire", "No match for a count of House Versum.")
+    };
+    private readonly Message[] playerWin1 = {
+        new Message("Player", "You'd probably be less pale if you stoped throwing your blood everywere."),
+        new Message("Vampire", "Well, yeah but...")
+    };
+    private readonly Message[] playerWin2 = {
+        new Message("Player", "You'd probably be less pale if you stoped throwing your blood everywere."),
+        new Message("Vampire", "Well, yeah but...")
+    };
+    private readonly Message[] playerWin3 = {
+        new Message("Player", "You'd probably be less pale if you stoped throwing your blood everywere."),
+        new Message("Vampire", "Well, yeah but...")
     };
 
     private Conversation[,] conversations = new Conversation[4, 2];
 
     void Awake() {
-        conversations[1, 0] = new Conversation(playerWin);
+        conversations[1, 0] = new Conversation(playerLoss1);
+        conversations[2, 0] = new Conversation(playerLoss2);
+        conversations[3, 0] = new Conversation(playerLoss3);
+        conversations[1, 1] = new Conversation(playerWin1);
+        conversations[2, 1] = new Conversation(playerWin2);
+        conversations[3, 1] = new Conversation(playerWin3);
     }
 
     void OnEnable() {

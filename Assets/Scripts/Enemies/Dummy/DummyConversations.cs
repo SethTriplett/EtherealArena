@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class DummyConversations : MonoBehaviour, IEventListener {
 
+    private readonly Message[] playerLoss = {
+        new Message("Player", "...")
+    };
     private readonly Message[] playerWin = {
-        new Message("Player", "Blood")
+        new Message("Dummy", "Good luck.")
     };
 
-    private Conversation[,] conversations = new Conversation[4, 2];
+    private Conversation[,] conversations = new Conversation[2, 2];
 
     void Awake() {
-        conversations[1, 0] = new Conversation(playerWin);
+        conversations[1, 0] = new Conversation(playerLoss);
+        conversations[1, 1] = new Conversation(playerWin);
     }
 
     void OnEnable() {

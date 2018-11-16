@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace EtherealArena.WorldMap {
 
-	public class WorldMapPlayer : MonoBehaviour {
+	public class WorldMapPlayer : MonoBehaviour, IEventListener {
 
 		[SerializeField] private WorldMapNode gameStartNode;
 		
@@ -36,6 +36,14 @@ namespace EtherealArena.WorldMap {
 
 			transform.position = CURRENT_NODE.transform.position;
 		}
+
+        void OnEnable() {
+            EventMessanger.GetInstance().SubscribeEvent(typeof(WorldMapMenuEvent), this);
+        }
+
+        void OnDisable() {
+            EventMessanger.GetInstance().UnsubscribeEvent(typeof(WorldMapMenuEvent), this);
+        }
 
 		private void Update() {
 
@@ -101,7 +109,18 @@ namespace EtherealArena.WorldMap {
 			transform.position = newNode.Position;
 			CURRENT_NODE = newNode;
 
+            EventMessanger.GetInstance().TriggerEvent(new WorldMapMovementEvent(CURRENT_NODE));
+
 			canMove = true;
 		}
+
+        public void ConsumeEvent(IEvent e) {
+            if (e.GetType() == typeof(WorldMapMenuEvent)) {
+                WorldMapMenuEvent menuEvent = e as WorldMapMenuEvent;
+                canMove = !(menuEvent.paused);
+            }
+        }
+
 	}
+
 }

@@ -3,15 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PsychicConversations : MonoBehaviour, IEventListener {
-
-    private readonly Message[] playerWin = {
-        new Message("Player", "Blood")
+    
+    private readonly Message[] playerLoss1 = {
+        new Message("Celif", "Just five more minutes.")
+    };
+    private readonly Message[] playerWin1 = {
+        new Message("Celif", "Just five more minutes.")
+    };
+    private readonly Message[] playerWin2 = {
+        new Message("Player", "Wake up, you're going to be late for school."),
+        //new Message("Celif", "Doctor's note... Narcolepsy..."),
+    };
+    private readonly Message[] playerWin3 = {
+        new Message("Player", "Sweet dreams."),
+        new Message("Celif", "I should have stayed in bed.")
     };
 
     private Conversation[,] conversations = new Conversation[4, 2];
 
     void Awake() {
-        conversations[1, 0] = new Conversation(playerWin);
+        conversations[1, 1] = new Conversation(playerWin1);
+        conversations[2, 1] = new Conversation(playerWin2);
+        conversations[3, 1] = new Conversation(playerWin3);
     }
 
     void OnEnable() {
