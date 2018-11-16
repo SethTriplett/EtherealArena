@@ -79,6 +79,12 @@ public class UseLightBow : MonoBehaviour, ISkill {
     }
 
     public void SetInactiveSkill() {
+        if (arrow != null) {
+            arrow.SetActive(false);
+            arrow = null;
+        }
+        chargeTime = 0f;
+        bowRenderer.sprite = bowSprites[0];
         bow.SetActive(false);
         AudioManager.GetInstance().StopSound(Sound.Charge);
     }

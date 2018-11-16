@@ -59,6 +59,7 @@ GameObject:
   - component: {fileID: 114125299930715920}
   - component: {fileID: 61701025899025040}
   - component: {fileID: 50184076051768482}
+  - component: {fileID: 114431588575137688}
   m_Layer: 0
   m_Name: DarkPlayer
   m_TagString: Enemy
@@ -287,6 +288,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d6e269501d2f31489c172107e532afd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114431588575137688
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1470388856372068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55ea181a353ba8e45b38a0b33eb1651a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114587740633041530

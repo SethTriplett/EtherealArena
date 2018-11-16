@@ -13,7 +13,6 @@ public class FinishScreen : MonoBehaviour, IEventListener {
     private TextMeshProUGUI enemyText;
 
     private int phase;
-    private bool playerVictory;
 
     void OnEnable() {
         EventMessanger.GetInstance().SubscribeEvent(typeof(PlayerVictoryEvent), this);
@@ -57,9 +56,7 @@ public class FinishScreen : MonoBehaviour, IEventListener {
         }
 
         float FINISH_ACTIVE_DURATION = 1f;
-        for (float x = 0; x < FINISH_ACTIVE_DURATION; x += Time.deltaTime) {
-            yield return null;
-        }
+        yield return new WaitForSeconds(FINISH_ACTIVE_DURATION);
         
         float FINISH_DISAPPEAR_DURATION = 0.5f;
         currentAlpha = finishText.alpha;
@@ -70,9 +67,7 @@ public class FinishScreen : MonoBehaviour, IEventListener {
         }
 
         float WAIT_TO_WINNER_DURATION = 0.25f;
-        for (float x = 0; x < WAIT_TO_WINNER_DURATION; x += Time.deltaTime) {
-            yield return null;
-        }
+        yield return new WaitForSeconds(WAIT_TO_WINNER_DURATION);
         
         float WINNER_APPEAR_DURATION = 0.5f;
         currentAlpha = winnerText.alpha;
@@ -92,9 +87,7 @@ public class FinishScreen : MonoBehaviour, IEventListener {
             }
 
             float TEXT_ACTIVE_DURATION = 1f;
-            for (float x = 0; x < TEXT_ACTIVE_DURATION; x += Time.deltaTime) {
-                yield return null;
-            }
+            yield return new WaitForSeconds(TEXT_ACTIVE_DURATION);
             
             EventMessanger.GetInstance().TriggerEvent(new PostBattleDialogStartEvent(phase, playerVictory));
 
@@ -116,9 +109,7 @@ public class FinishScreen : MonoBehaviour, IEventListener {
             }
             
             float TEXT_ACTIVE_DURATION = 1f;
-            for (float x = 0; x < TEXT_ACTIVE_DURATION; x += Time.deltaTime) {
-                yield return null;
-            }
+            yield return new WaitForSeconds(TEXT_ACTIVE_DURATION);
 
             EventMessanger.GetInstance().TriggerEvent(new PostBattleDialogStartEvent(phase, playerVictory));
 
@@ -137,10 +128,8 @@ public class FinishScreen : MonoBehaviour, IEventListener {
 
     public void ConsumeEvent(IEvent e) {
         if (e.GetType() == typeof(PlayerVictoryEvent)) {
-            playerVictory = true;
             MatchFinish(true);
         } else if (e.GetType() == typeof(PlayerDefeatEvent)) {
-            playerVictory = false;
             MatchFinish(false);
         } else if (e.GetType() == typeof(EnemyStartingDataEvent)) {
             phase = 1;

@@ -10,6 +10,16 @@ public class TitleScreen : MonoBehaviour {
     public bool creditsOn;
     private float creditsAlpha;
 
+    private void Start() {
+        AudioManager.GetInstance().StopMusic(Soundtrack.TutorialTheme);
+        AudioManager.GetInstance().StopMusic(Soundtrack.VampireTheme);
+        AudioManager.GetInstance().StopMusic(Soundtrack.PsychicTheme);
+        AudioManager.GetInstance().StopMusic(Soundtrack.FinalBossTheme);
+        AudioManager.GetInstance().StopMusic(Soundtrack.EndingTheme);
+
+        AudioManager.GetInstance().StartMusic(Soundtrack.TitleTheme);
+    }
+
     private void Update() {
 
         // Make title float
@@ -29,18 +39,22 @@ public class TitleScreen : MonoBehaviour {
     }
 
     public void PlayButton() {
+        AudioManager.GetInstance().PlaySound(Sound.MenuClick);
         Vignette.LoadScene("WorldMap");
     }
 
     public void CreditsButton() {
+        AudioManager.GetInstance().PlaySound(Sound.MenuClick);
         creditsOn = true;
     }
 
     public void CreditsBackButton() {
+        AudioManager.GetInstance().PlaySound(Sound.MenuClick);
         creditsOn = false;
     }
 
     public void QuitButton() {
+        AudioManager.GetInstance().PlaySound(Sound.MenuClick);
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
         #else

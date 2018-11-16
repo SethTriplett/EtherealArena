@@ -32,7 +32,7 @@ public class BatBulletController : MonoBehaviour, IPoolable, IEventListener {
     }
 
     void OnDisable() {
-        EventMessanger.GetInstance().SubscribeEvent(typeof(DeleteAttacksEvent), this);
+        EventMessanger.GetInstance().UnsubscribeEvent(typeof(DeleteAttacksEvent), this);
     }
 	
 	// Update is called once per frame
@@ -90,6 +90,10 @@ public class BatBulletController : MonoBehaviour, IPoolable, IEventListener {
     public void setPos(Vector3 pos)
     {
         transform.position = pos;
+    }
+
+    public void SetOwner(GameObject owner) {
+        this.owner = owner;
     }
 
     private void Deactivate() {

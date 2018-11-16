@@ -65,6 +65,7 @@ public class PlayerStatus : MonoBehaviour {
                 invulnerabilityTimer = baseInvulnerabilityTime;
                 flickerFrames = - baseFlickerRate;
             }
+            AudioManager.GetInstance().PlaySound(Sound.PlayerHit);
         }
     }
 

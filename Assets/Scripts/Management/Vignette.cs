@@ -80,13 +80,18 @@ public class Vignette : MonoBehaviour {
 		
 		// Open the vignette
 
+        float targetAlpha = 0f;
+        if (sceneName.Equals("TitleScreen")) {
+            targetAlpha = 0.4f;
+        }
+
 		for (float f = 0; f < fadeLength; f += Time.deltaTime) {
-			float t = Mathf.SmoothStep(1, 0, f / fadeLength);
+			float t = Mathf.SmoothStep(1, targetAlpha, f / fadeLength);
 			mat.SetFloat("_Alpha", t);
 			yield return null;
 		}
 
-		mat.SetFloat("_Alpha", 0);
+		mat.SetFloat("_Alpha", targetAlpha);
 
 		busy = false;
 	}
